@@ -9,4 +9,4 @@ ignore/
 /doc/manuscript
 RomanConference/
 discard/
-inferenceLSTM/logs/
+logs/
