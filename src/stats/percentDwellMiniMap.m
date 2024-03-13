@@ -2,13 +2,15 @@ clear all
 close all
 clc
 
+
+% Writes fraction of dwell time to file
 addpath("subtightplot\")
 % Read subject id list
 subject = cellstr(num2str(readmatrix('..\..\data\participantID1.csv')));  % Get subject id list
 % Standard order of trials, which is different from subjectwise trial
 % order
 trialNum = [111,211,121,221,112,212,122,222];
-trialName = {'NNL','YNL','NYL','YYL','NNH','YNH','NYH','YYH'}; % Person, Terrain, Swarm cohesion
+trialName = {'NNU','YNU','NYU','YYU','NNC','YNC','NYC','YYC'};  % Person, Terrain, Swarm cohesion
 minimap = [[1919,2560],[809,1080]];
 for ii = 1:numel(subject)
 

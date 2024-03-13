@@ -3,15 +3,15 @@ clearvars
 %close all
 clc
 
-% This file plots filtered EEG and cognitive load
+% This file plots filtered EEG
 
 subject = cellstr(num2str(readmatrix('..\data\participantID1.csv')));
 preFolder = '..\data\';
-trialName = {'Fam','NNL','YNL','NYL','YYL','NNH','YNH','NYH','YYH'};  % Person, Terrain, Swarm cohesion
+trialName = {'NNU','YNU','NYU','YYU','NNC','YNC','NYC','YYC'};  % Person, Terrain, Swarm cohesion
 preFolder = '..\data\'; % location of subject data folders
 % Standard order of trials, which is different from subjectwise trial
 % order
-trialNum = [0,111,211,121,221,112,212,122,222];
+trialNum = [111,211,121,221,112,212,122,222];
 
 for ii = 1:numel(subject)
     for j = 1:numel(trialNum)

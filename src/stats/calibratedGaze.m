@@ -54,8 +54,8 @@ for ii = 1:numel(subject)
 
             % Save mapped gaze
             fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialOrder(j)),'\','calibratedGaze.csv'];
-            writematrix(["Time (s)","x (pixels)", "y (pixels)"],fileName);
-            writematrix([gazeTime, calibGaze],fileName,'WriteMode','append');
+            %writematrix(["Time (s)","x (pixels)", "y (pixels)"],fileName);
+            %writematrix([gazeTime, calibGaze],fileName,'WriteMode','append');
         end
 
     end

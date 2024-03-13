@@ -2,11 +2,12 @@ clear all
 close all
 clc
 
-% TODO: Comment this file
+% This file calculates cognitive load over an experiment and saves to a file
 
 subject = cellstr(num2str(readmatrix('..\data\participantID1.csv')));
 preFolder = '..\data\'; % location of subject data folders
-trialNum = [0,111,211,121,221,112,212,122,222];
+trialName = {'NNU','YNU','NYU','YYU','NNC','YNC','NYC','YYC'};  % Person, Terrain, Swarm cohesion
+trialNum = [111,211,121,221,112,212,122,222];
 samplerate = 256; % Hz
 baselineWindow = 5; % in second
 EEGThreshold = 1000; % Max allowable EEG muV
@@ -22,12 +23,12 @@ eegChannelWeighting = [ 0.0398,    0.370,    0.1741 ,   0.6393 ,  ...
 cognitiveLoad = [];
 for ii = 1:numel(subject)
     % Import trial order
-    trialOrder = readmatrix([preFolder, cell2mat(subject(ii)),'\','trialOrder.txt']);
-    for j = 1:numel(trialOrder)
-        fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialOrder(j)),'\','eegBaselineFiltered.csv'];
+    %trialOrder = readmatrix([preFolder, cell2mat(subject(ii)),'\','trialOrder.txt']);
+    for j = 1:numel(trialNum)
+        fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','eegBaselineFiltered.csv'];
         if isfile(fileName)
             baselineEEG = readmatrix(fileName); % read trajectory file
-        fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialOrder(j)),'\','eegFiltered.csv'];
+        fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','eegFiltered.csv'];
 
         eeg = readmatrix(fileName); % read trajectory file
         frontalEEG = [eeg(:,2:5),eeg(:,12:15)];
@@ -38,7 +39,7 @@ for ii = 1:numel(subject)
             % Calculate cogntive load using alphaDiff method over all the trial
             [~,~,~,~,~,cognitiveLoad] = cogload(baselineEEG(:,2:end)', eeg(:,2:end)', ...
                 1/samplerate,eegChannelWeighting/sum(eegChannelWeighting),'alphaDiff','fft');
-            fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialOrder(j)),'\','cogLoad_win=',num2str(baselineWindow),'s','.csv'];
+            fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','cogLoad_win=',num2str(baselineWindow),'s','.csv'];
             writematrix("uV^2/Hz",fileName);
             writematrix(cognitiveLoad,fileName,'WriteMode','append');
         end

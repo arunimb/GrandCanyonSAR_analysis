@@ -7,3 +7,6 @@ nppBackup/
 otherScripts/
 ignore/
 /doc/manuscript
+RomanConference/
+discard/
+inferenceLSTM/logs/

@@ -14,20 +14,20 @@ subject = cellstr(num2str(readmatrix('..\..\data\participantID1.csv')));
 preFolder = '..\..\data\'; % location of subject data folders
 % Standard order of trials, which is different from subjectwise trial
 % order
-
-trialNum = [111,211,121,221,112,212,122,222];
+trialNum = [0,111,211,121,221,112,212,122,222];
+trialName = {'NNU','YNU','NYU','YYU','NNC','YNC','NYC','YYC'};  % Person, Terrain, Swarm cohesion
 % Window size for smoothing speed and turn rate
 smoothWindow = 6;
+outlierRemove = 1;
 smoothing  = 1; % To smooth or not
 interpolating = 1; % To interpolate or not
 unwrapOrNot = 1; % Unwrap heading data or not, 1 = yes
-outlierRemove = 1;
-maxSubjectSpeed = 50; % m/s
-maxSubjectTurnRate = 25; % deg/s
+regularizationDt = 1/24;
 for ii = 1:numel(subject)
     % Import trial order
     trialOrder = readmatrix([preFolder, cell2mat(subject(ii)),'\','trialOrder.txt']);
-
+    h1 = figure(1); %create empty figure
+    h2 = figure(2); %create empty figure
     %figure(1);
     %clf;
     for j = 1:numel(trialOrder)
@@ -96,7 +96,7 @@ for ii = 1:numel(subject)
         end
 
         % Regularize timestamps, trajectory, heading
-        regTimeStamps = timeStamps(1):1/24:timeStamps(end); % resample timestamps to regularly spaced timestamps
+        regTimeStamps = timeStamps(1):regularizationDt:timeStamps(end); % resample timestamps to regularly spaced timestamps
 
         % Resample trajectory data, heading, to new timestamps
         if interpolating
@@ -109,13 +109,23 @@ for ii = 1:numel(subject)
             regTimeStamps = timeStamps;
         end
 
-        if smoothing
-            tempTraj = trajFile;
-            for kk = 2:7
-                tempTraj(:,kk) = sma(trajFile(:,kk),smoothWindow);
-            end
-            trajFile = tempTraj;
-        end
+        %         if outlierRemove == 1
+        % %             subjectSpeed = rmoutliers(subjectSpeed,"mean");
+        % %             subjectTurnRate = rmoutliers(subjectTurnRate,"mean");
+        %             for kk = 2:7
+        %                 %trajFile(:,kk) = rmoutliers(trajFile(:,kk),"mean");
+        %                 trajFile(:,kk) = filloutliers(trajFile(:,kk),"linear","mean");
+        %             end
+        %
+        %         end
+        %
+        %         if smoothing
+        %             tempTraj = trajFile;
+        %             for kk = 2:7
+        %                 tempTraj(:,kk) = sma(trajFile(:,kk),smoothWindow);
+        %             end
+        %             trajFile = tempTraj;
+        %         end
 
 
         % Because unity y is real world z
@@ -143,44 +153,26 @@ for ii = 1:numel(subject)
 
             subjectDelGroundDistance(dNo) = ((subjectXPos(dNo) - subjectXPos(dNo+1))^2 + (subjectYPos(dNo) - subjectYPos(dNo+1))^2)^0.5;
 
-            xDot(dNo) = (subjectXPos(dNo) - subjectXPos(dNo+1))/(regTimeStamps(dNo+1)-regTimeStamps(dNo));
-
-            yDot(dNo) = (subjectYPos(dNo) - subjectYPos(dNo+1))/(regTimeStamps(dNo+1)-regTimeStamps(dNo));
-
-            zDot(dNo) = (subjectZPos(dNo) - subjectZPos(dNo+1))/(regTimeStamps(dNo+1)-regTimeStamps(dNo));
-
             % Calculate instantaneous speed
             subjectSpeed(dNo) = abs(subjectDelDistance(dNo))/(regTimeStamps(dNo+1)-regTimeStamps(dNo));
 
-            subjectGroundSpeed(dNo) = abs(subjectDelGroundDistance(dNo))/(regTimeStamps(dNo+1)-regTimeStamps(dNo));
 
             % Calculate Turn rate
             subjectTurnRate(dNo) = abs(subjectHeading(dNo+1)-subjectHeading(dNo))/(regTimeStamps(dNo+1)-regTimeStamps(dNo));
             subjectTurn(dNo) = abs(subjectHeading(dNo+1)-subjectHeading(dNo));
             % Calculate Height Rate
-            subjectHeightDot(dNo) = abs(subjectZPos(dNo+1)-subjectZPos(dNo))/(regTimeStamps(dNo+1)-regTimeStamps(dNo));
+
         end
 
 
-%         subjectSpeed=subjectSpeed(~isnan(subjectSpeed)); % remove NaN values from speed
-%         subjectSpeed=subjectSpeed(~isinf(subjectSpeed)); % remove undefined values from speed
-%         subjectTurnRate=subjectTurnRate(~isnan(subjectTurnRate));  % remove NaN values from turn rate
-%         subjectTurnRate=subjectTurnRate(~isinf(subjectTurnRate));  % remove undefined values from turn rate
+        subjectSpeed=subjectSpeed(~isnan(subjectSpeed)); % remove NaN values from speed
+        subjectSpeed=subjectSpeed(~isinf(subjectSpeed)); % remove undefined values from speed
+        subjectTurnRate=subjectTurnRate(~isnan(subjectTurnRate));  % remove NaN values from turn rate
+        subjectTurnRate=subjectTurnRate(~isinf(subjectTurnRate));  % remove undefined values from turn rate
+
         if outlierRemove
-            %subjectSpeed = rmoutliers(subjectSpeed,"mean");
-            %subjectTurnRate = rmoutliers(subjectTurnRate,"mean");
-
-            meanSubjectSpeed = mean(subjectSpeed);
-            meanSubjectTurnRate = mean(subjectTurnRate);
-
-            stdSubjectSpeed = std(subjectSpeed);
-            stdSubjectTurnRate = std(subjectTurnRate);
-
-            idx = subjectSpeed>meanSubjectSpeed + 3*stdSubjectSpeed;
-            subjectSpeed(idx) = maxSubjectSpeed;
-
-            idx = subjectTurnRate>meanSubjectTurnRate + 3*stdSubjectTurnRate;
-            subjectTurnRate(idx) = maxSubjectTurnRate;
+            subjectSpeed = filloutliers(subjectSpeed,"linear","mean");
+            subjectTurnRate = filloutliers(subjectTurnRate,"linear","mean");
         end
 
         if smoothing
@@ -188,59 +180,33 @@ for ii = 1:numel(subject)
             subjectTurnRate = sma(subjectTurnRate,smoothWindow);
         end
 
-        totalDistance = sum(abs(subjectDelDistance));
-        totalTurn = sum(subjectTurn);
-        avgSpeed = mean(subjectSpeed); % calc mean
-        avgTurnRate = mean(subjectTurnRate); % calc mean
-        avgHeight = mean(subjectZPos);
-        avgSubjectHeightDot = mean(subjectHeightDot);
-        avgSubjectGroundSpeed = mean(subjectGroundSpeed);
-        % Export time to finish, average speed, average turn rate, speed,
-        % turnrate, average height to csv file
-        fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','time_to_finish.csv'];
-        writematrix("s",fileName);
-        writematrix(time2finish,fileName,'WriteMode','append');
 
-        fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','avgSpeed.csv'];
-        writematrix("m/s",fileName);
-        writematrix(avgSpeed,fileName,'WriteMode','append'); 
+        figure(1)
+        subplot(3,3,j)
+        plot(regTimeStamps(1:numel(subjectSpeed)),subjectSpeed)
+        xlabel("Time (s)");
+        ylabel("Regularised Speed (m/s)");
+        title(trialName{j});
+        grid on
+        sgtitle(subject(ii))
 
-        fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','speed.csv'];
-        writematrix("m/s",fileName);
-        writematrix(subjectSpeed',fileName,'WriteMode','append');
-
-        fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','regTime.csv'];
-        writematrix("s",fileName);
-        writematrix(regTimeStamps',fileName,'WriteMode','append');
-
-        fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','avgTurnRate.csv'];
-        writematrix("deg/s",fileName);
-        writematrix(avgTurnRate,fileName,'WriteMode','append');
-
-        fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','turnRate.csv'];
-        writematrix("deg/s",fileName);
-        writematrix(subjectTurnRate',fileName,'WriteMode','append');
-
-        fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','avgHeight.csv'];
-        writematrix("m",fileName);
-        writematrix(avgHeight,fileName,'WriteMode','append');
-
-        fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','avgSubjectHeightDot.csv'];
-        writematrix("m/s",fileName);
-        writematrix(avgSubjectHeightDot,fileName,'WriteMode','append');
-
-        fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','avgSubjectGroundSpeed.csv'];
-        writematrix("m/s",fileName);
-        writematrix(avgSubjectGroundSpeed,fileName,'WriteMode','append');
-
-        fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','totalDistance.csv'];
-        writematrix("m",fileName);
-        writematrix(totalDistance,fileName,'WriteMode','append');
-
-        fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','totalTurn.csv'];
-        writematrix("deg",fileName);
-        writematrix(totalTurn,fileName,'WriteMode','append');
-
-
+        % Routine to plot Turn rate vs time
+        figure(2)
+        subplot(3,3,j)
+        plot(regTimeStamps(1:numel(subjectTurnRate)),subjectTurnRate)
+        xlabel("Time (s)");
+        ylabel("Regularised Turn rate (deg/s)");
+        %ylim([0,30])
+        title(trialName{j});
+        grid on
+        sgtitle(subject(ii))
     end
+
+    folderr = ['plots\speedAndTurnRateBySubject\', cell2mat(subject(ii))];
+    mkdir(folderr);
+    %     saveas(h1,['plots\speedAndTurnRateBySubject','\', cell2mat(subject(ii)),'\','SmoothedRegularisedSpeed.png']);
+    %     saveas(h2,['plots\speedAndTurnRateBySubject','\', cell2mat(subject(ii)),'\','SmoothedRegularisedTurnRate.png']);
+    saveas(h1,['plots\speedAndTurnRateBySubject','\', cell2mat(subject(ii)),'\','SmoothedRegularisedSpeed_rmoutlier.png']);
+    saveas(h2,['plots\speedAndTurnRateBySubject','\', cell2mat(subject(ii)),'\','SmoothedRegularisedTurnRate_rmoutlier.png']);
+
 end

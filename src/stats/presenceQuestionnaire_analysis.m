@@ -8,7 +8,7 @@ subject = cellstr(num2str(readmatrix('..\..\data\participantID1.csv')));
 preFolder = '..\..\data\';
 % Trial names are in the order Missing Person Prior knowledge Y or N,
 % Terrain knowledge Y or N, Swarm Cohesion L or H.
-trialName = {'NNL','YNL','NYL','YYL','NNH','YNH','NYH','YYH'};
+trialName = {'NNU','YNU','NYU','YYU','NNC','YNC','NYC','YYC'};  % Person, Terrain, Swarm cohesion
 preFolder = '..\..\data\'; % location of subject data folders
 trialNum = [111,211,121,221,112,212,122,222];
 accPres = [];

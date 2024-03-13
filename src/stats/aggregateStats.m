@@ -7,11 +7,11 @@ clc
 %% Run this section
 subject = cellstr(num2str(readmatrix('..\..\data\participantID1.csv')));
 preFolder = '..\..\data\';
-trialName = {'dontUse','NNU','YNU','NYU','YYU','NNC','YNC','NYC','YYC'};  % Person, Terrain, Swarm cohesion
+trialName = {'NNU','YNU','NYU','YYU','NNC','YNC','NYC','YYC'};  % Person, Terrain, Swarm cohesion
 
 % Standard order of trials, which is different from subjectwise trial
 % order
-trialNum = [0,111,211,121,221,112,212,122,222];
+trialNum = [111,211,121,221,112,212,122,222];
 
 %% Average Speed and Turn rate
 figure

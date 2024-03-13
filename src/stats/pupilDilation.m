@@ -6,7 +6,7 @@ clc
 
 subject = cellstr(num2str(readmatrix('..\..\data\participantID1.csv'))); % Get subject id list
 preFolder = '..\..\data\';
-trialName = {'NNL','YNL','NYL','YYL','NNH','YNH','NYH','YYH'};  % Person, Terrain, Swarm cohesion
+trialName = {'NNU','YNU','NYU','YYU','NNC','YNC','NYC','YYC'};  % Person, Terrain, Swarm cohesion
 preFolder = '..\..\data\'; % location of subject data folders
 % Standard order of trials, which is different from subjectwise trial
 % order
