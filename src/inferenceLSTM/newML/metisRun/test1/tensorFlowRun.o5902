@@ -1,0 +1,46 @@
+The job working directory $PBS_O_WORKDIR is /home/arunimb/inferenceTest/test2/test1
+#=============
+PBS Environment variables, can be used in the job submission scripts as $PBS_VARNAME
+PBS_ENVIRONMENT=PBS_BATCH
+PBS_O_LANG=en_US.UTF-8
+PBS_O_HOME=/home/arunimb
+PBS_JOBID=5902.cm
+PBS_JOBNAME=tensorFlowRun
+PBS_O_PATH=/home/arunimb/miniconda3/bin:/home/arunimb/.local/bin:/home/arunimb/bin:/opt/clmgr/sbin:/opt/clmgr/bin:/opt/sgi/sbin:/opt/sgi/bin:/usr/share/Modules/bin:/usr/condabin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/c3/bin:/opt/pbs/bin:/sbin:/bin
+PBS_O_WORKDIR=/home/arunimb/inferenceTest/test2/test1
+PBS_NODEFILE=/var/spool/pbs/aux/5902.cm
+PBS_TASKNUM=1
+PBS_MOMPORT=15003
+PBS_JOBCOOKIE=6090433D2365BCA70D190922027C896D
+PBS_O_SHELL=/bin/bash
+PBS_O_QUEUE=rqdf
+PBS_O_HOST=metis.niu.edu
+PBS_O_SYSTEM=Linux
+PBS_O_LOGNAME=arunimb
+PBS_NODENUM=0
+PBS_JOBDIR=/home/arunimb
+PBS_QUEUE=short
+PBS_O_MAIL=/var/spool/mail/arunimb
+#=============
+For example,we can find the number NPmpi of allocated MPI processes as
+NPmpi="$(cat $PBS_NODEFILE | wc -l)"
+NPmpi=1
+****************************************************
+Job starting at: Thu Dec 21 14:07:57 CST 2023 at compute node cn24
+****************************************************
+Loading required environment modules
+StartingTensorFlowJob
+2023-12-21 14:07:58.477577: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2023-12-21 14:07:58.477613: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2023-12-21 14:07:58.478352: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2023-12-21 14:07:58.482435: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2023-12-21 14:07:59.215531: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2023-12-21 14:08:03.613085: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1929] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 38236 MB memory:  -> device: 0, name: NVIDIA A100-PCIE-40GB, pci bus id: 0000:27:00.0, compute capability: 8.0
+2023-12-21 14:08:08.256757: I external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:454] Loaded cuDNN version 8902
+2023-12-21 14:08:12.064860: I external/local_xla/xla/service/service.cc:168] XLA service 0x14c3f8afaad0 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2023-12-21 14:08:12.064883: I external/local_xla/xla/service/service.cc:176]   StreamExecutor device (0): NVIDIA A100-PCIE-40GB, Compute Capability 8.0
+2023-12-21 14:08:12.071383: I tensorflow/compiler/mlir/tensorflow/utils/dump_mlir_util.cc:269] disabling MLIR crash reproducer, set env var `MLIR_CRASH_REPRODUCER_DIRECTORY` to enable.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1703189292.168844 1814979 device_compiler.h:186] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+=>> PBS: job killed: walltime 990 exceeded limit 900

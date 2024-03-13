@@ -1,0 +1,67 @@
+The job working directory $PBS_O_WORKDIR is /home/arunimb/inferenceTest/test2/test1
+#=============
+PBS Environment variables, can be used in the job submission scripts as $PBS_VARNAME
+PBS_ENVIRONMENT=PBS_BATCH
+PBS_O_LANG=en_US.UTF-8
+PBS_O_HOME=/home/arunimb
+PBS_JOBID=5901.cm
+PBS_JOBNAME=tensorFlowRun
+PBS_O_PATH=/home/arunimb/miniconda3/bin:/home/arunimb/.local/bin:/home/arunimb/bin:/opt/clmgr/sbin:/opt/clmgr/bin:/opt/sgi/sbin:/opt/sgi/bin:/usr/share/Modules/bin:/usr/condabin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/c3/bin:/opt/pbs/bin:/sbin:/bin
+PBS_O_WORKDIR=/home/arunimb/inferenceTest/test2/test1
+PBS_NODEFILE=/var/spool/pbs/aux/5901.cm
+PBS_TASKNUM=1
+PBS_MOMPORT=15003
+PBS_JOBCOOKIE=21FB09061B412B37653832144654CCBC
+PBS_O_SHELL=/bin/bash
+PBS_O_QUEUE=rqdf
+PBS_O_HOST=metis.niu.edu
+PBS_O_SYSTEM=Linux
+PBS_O_LOGNAME=arunimb
+PBS_NODENUM=0
+PBS_JOBDIR=/home/arunimb
+PBS_QUEUE=short
+PBS_O_MAIL=/var/spool/mail/arunimb
+#=============
+For example,we can find the number NPmpi of allocated MPI processes as
+NPmpi="$(cat $PBS_NODEFILE | wc -l)"
+NPmpi=1
+****************************************************
+Job starting at: Thu Dec 21 14:04:21 CST 2023 at compute node cn24
+****************************************************
+Loading required environment modules
+StartingTensorFlowJob
+2023-12-21 14:04:22.878985: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2023-12-21 14:04:22.879045: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2023-12-21 14:04:22.903385: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2023-12-21 14:04:22.956352: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2023-12-21 14:04:23.890629: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2023-12-21 14:04:28.841925: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1929] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 38236 MB memory:  -> device: 0, name: NVIDIA A100-PCIE-40GB, pci bus id: 0000:27:00.0, compute capability: 8.0
+2023-12-21 14:04:31.887021: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:447] Loaded runtime CuDNN library: 8.5.0 but source was compiled with: 8.9.4.  CuDNN library needs to have matching major version and equal or higher minor version. If using a binary install, upgrade your CuDNN library.  If building from sources, make sure the library loaded at runtime is compatible with the version specified during compile configuration.
+2023-12-21 14:04:31.887648: W tensorflow/core/framework/op_kernel.cc:1839] OP_REQUIRES failed at cudnn_rnn_ops.cc:1764 : UNKNOWN: Fail to find the dnn implementation.
+2023-12-21 14:04:31.891135: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:447] Loaded runtime CuDNN library: 8.5.0 but source was compiled with: 8.9.4.  CuDNN library needs to have matching major version and equal or higher minor version. If using a binary install, upgrade your CuDNN library.  If building from sources, make sure the library loaded at runtime is compatible with the version specified during compile configuration.
+2023-12-21 14:04:31.891599: W tensorflow/core/framework/op_kernel.cc:1839] OP_REQUIRES failed at conv_ops_impl.h:1199 : UNIMPLEMENTED: DNN library is not found.
+Window Size = 5, Outer Loop no. = 0, Inner Loop no. = 0, Parameter Space no. = 0 
+
+
+Window Size = 5, Outer Loop no. = 0, Inner Loop no. = 0, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 %Traceback (most recent call last):
+  File "/nfs/ihfs/home_metis/arunimb/inferenceTest/test2/test1/kFoldMultilabel_Inference.py", line 213, in <module>
+    innerHistory = mlModel.fit(trainTrajData,trainOutputData,epochs=epochLength,batch_size=parameterSpace[k][0],validation_data=(testTrajData, testOutputData),verbose=0)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/arunimb/miniconda3/envs/tf_test/lib/python3.11/site-packages/keras/src/utils/traceback_utils.py", line 70, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+  File "/home/arunimb/miniconda3/envs/tf_test/lib/python3.11/site-packages/tensorflow/python/eager/execute.py", line 53, in quick_execute
+    tensors = pywrap_tfe.TFE_Py_Execute(ctx._handle, device_name, op_name,
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tensorflow.python.framework.errors_impl.UnknownError: Graph execution error:
+
+Detected at node CudnnRNN defined at (most recent call last):
+<stack traces unavailable>
+Fail to find the dnn implementation.
+	 [[{{node CudnnRNN}}]]
+	 [[model/lstm/PartitionedCall]] [Op:__inference_train_function_4911]
+****************************************************
+Job completed at: Thu Dec 21 14:04:34 CST 2023
+****************************************************

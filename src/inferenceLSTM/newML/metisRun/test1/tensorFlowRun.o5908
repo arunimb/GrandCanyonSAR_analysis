@@ -1,0 +1,401 @@
+The job working directory $PBS_O_WORKDIR is /home/arunimb/inferenceTest/test2/test1
+#=============
+PBS Environment variables, can be used in the job submission scripts as $PBS_VARNAME
+PBS_ENVIRONMENT=PBS_BATCH
+PBS_O_LANG=en_US.UTF-8
+PBS_O_HOME=/home/arunimb
+PBS_JOBID=5908.cm
+PBS_JOBNAME=tensorFlowRun
+PBS_O_PATH=/home/arunimb/miniconda3/bin:/home/arunimb/.local/bin:/home/arunimb/bin:/opt/clmgr/sbin:/opt/clmgr/bin:/opt/sgi/sbin:/opt/sgi/bin:/usr/share/Modules/bin:/usr/condabin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/c3/bin:/opt/pbs/bin:/sbin:/bin
+PBS_O_WORKDIR=/home/arunimb/inferenceTest/test2/test1
+PBS_NODEFILE=/var/spool/pbs/aux/5908.cm
+PBS_TASKNUM=1
+PBS_MOMPORT=15003
+PBS_JOBCOOKIE=173100B633AD3CEA25B17EAD3C234B99
+PBS_O_SHELL=/bin/bash
+PBS_O_QUEUE=rqdf
+PBS_O_HOST=metis.niu.edu
+PBS_O_SYSTEM=Linux
+PBS_O_LOGNAME=arunimb
+PBS_NODENUM=0
+PBS_JOBDIR=/home/arunimb
+PBS_QUEUE=short
+PBS_O_MAIL=/var/spool/mail/arunimb
+#=============
+For example,we can find the number NPmpi of allocated MPI processes as
+NPmpi="$(cat $PBS_NODEFILE | wc -l)"
+NPmpi=1
+****************************************************
+Job starting at: Thu Dec 21 14:36:26 CST 2023 at compute node cn22
+****************************************************
+Loading required environment modules
+StartingTensorFlowJob
+2023-12-21 14:36:27.128253: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2023-12-21 14:36:27.128321: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2023-12-21 14:36:27.147315: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2023-12-21 14:36:27.208258: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2023-12-21 14:36:28.208761: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2023-12-21 14:36:33.194796: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1929] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 38236 MB memory:  -> device: 0, name: NVIDIA A100-PCIE-40GB, pci bus id: 0000:27:00.0, compute capability: 8.0
+2023-12-21 14:36:36.937913: I external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:454] Loaded cuDNN version 8902
+2023-12-21 14:36:38.838668: I external/local_xla/xla/service/service.cc:168] XLA service 0x14d4705abaf0 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2023-12-21 14:36:38.838691: I external/local_xla/xla/service/service.cc:176]   StreamExecutor device (0): NVIDIA A100-PCIE-40GB, Compute Capability 8.0
+2023-12-21 14:36:38.847723: I tensorflow/compiler/mlir/tensorflow/utils/dump_mlir_util.cc:269] disabling MLIR crash reproducer, set env var `MLIR_CRASH_REPRODUCER_DIRECTORY` to enable.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1703190998.954783 2126529 device_compiler.h:186] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+Window Size = 5, Outer Loop no. = 0, Inner Loop no. = 0, Parameter Space no. = 0 
+
+
+Window Size = 5, Outer Loop no. = 0, Inner Loop no. = 0, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 0, Inner Loop no. = 1, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 0, Inner Loop no. = 2, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 0, Inner Loop no. = 3, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 0, Inner Loop no. = 4, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 0, Inner Loop no. = 5, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 0, Inner Loop no. = 6, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 0, Inner Loop no. = 7, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 0, Inner Loop no. = 8, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 0, Inner Loop no. = 9, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 % 
+==================Saving Data========================
+
+Window Size = 5, Outer Loop no. = 1, Inner Loop no. = 0, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 1, Inner Loop no. = 1, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 1, Inner Loop no. = 2, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 1, Inner Loop no. = 3, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 1, Inner Loop no. = 4, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 1, Inner Loop no. = 5, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 1, Inner Loop no. = 6, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 1, Inner Loop no. = 7, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 1, Inner Loop no. = 8, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 1, Inner Loop no. = 9, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 % 
+==================Saving Data========================
+
+Window Size = 5, Outer Loop no. = 2, Inner Loop no. = 0, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 2, Inner Loop no. = 1, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 2, Inner Loop no. = 2, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 2, Inner Loop no. = 3, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 2, Inner Loop no. = 4, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 2, Inner Loop no. = 5, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 2, Inner Loop no. = 6, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 2, Inner Loop no. = 7, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 2, Inner Loop no. = 8, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 2, Inner Loop no. = 9, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 % 
+==================Saving Data========================
+
+Window Size = 5, Outer Loop no. = 3, Inner Loop no. = 0, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 3, Inner Loop no. = 1, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 3, Inner Loop no. = 2, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 3, Inner Loop no. = 3, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 3, Inner Loop no. = 4, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 3, Inner Loop no. = 5, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 3, Inner Loop no. = 6, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 3, Inner Loop no. = 7, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 3, Inner Loop no. = 8, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 3, Inner Loop no. = 9, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 % 
+==================Saving Data========================
+
+Window Size = 5, Outer Loop no. = 4, Inner Loop no. = 0, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 4, Inner Loop no. = 1, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 4, Inner Loop no. = 2, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 4, Inner Loop no. = 3, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 4, Inner Loop no. = 4, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 4, Inner Loop no. = 5, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 4, Inner Loop no. = 6, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 4, Inner Loop no. = 7, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 4, Inner Loop no. = 8, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 4, Inner Loop no. = 9, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 % 
+==================Saving Data========================
+
+Window Size = 5, Outer Loop no. = 5, Inner Loop no. = 0, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 5, Inner Loop no. = 1, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 5, Inner Loop no. = 2, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 5, Inner Loop no. = 3, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 5, Inner Loop no. = 4, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 5, Inner Loop no. = 5, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 5, Inner Loop no. = 6, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 5, Inner Loop no. = 7, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 5, Inner Loop no. = 8, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 5, Inner Loop no. = 9, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 % 
+==================Saving Data========================
+
+Window Size = 5, Outer Loop no. = 6, Inner Loop no. = 0, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 6, Inner Loop no. = 1, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 6, Inner Loop no. = 2, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 6, Inner Loop no. = 3, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 6, Inner Loop no. = 4, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 6, Inner Loop no. = 5, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 6, Inner Loop no. = 6, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 6, Inner Loop no. = 7, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 6, Inner Loop no. = 8, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 6, Inner Loop no. = 9, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 % 
+==================Saving Data========================
+
+Window Size = 5, Outer Loop no. = 7, Inner Loop no. = 0, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 7, Inner Loop no. = 1, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 7, Inner Loop no. = 2, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 7, Inner Loop no. = 3, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 7, Inner Loop no. = 4, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 7, Inner Loop no. = 5, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 7, Inner Loop no. = 6, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 7, Inner Loop no. = 7, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 7, Inner Loop no. = 8, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 7, Inner Loop no. = 9, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 % 
+==================Saving Data========================
+
+Window Size = 5, Outer Loop no. = 8, Inner Loop no. = 0, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 8, Inner Loop no. = 1, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 8, Inner Loop no. = 2, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 8, Inner Loop no. = 3, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 8, Inner Loop no. = 4, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 8, Inner Loop no. = 5, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 8, Inner Loop no. = 6, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 8, Inner Loop no. = 7, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 8, Inner Loop no. = 8, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 8, Inner Loop no. = 9, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 % 
+==================Saving Data========================
+
+Window Size = 5, Outer Loop no. = 9, Inner Loop no. = 0, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 9, Inner Loop no. = 1, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 9, Inner Loop no. = 2, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 9, Inner Loop no. = 3, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 9, Inner Loop no. = 4, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 9, Inner Loop no. = 5, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 9, Inner Loop no. = 6, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 9, Inner Loop no. = 7, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 9, Inner Loop no. = 8, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 5, Outer Loop no. = 9, Inner Loop no. = 9, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 % 
+==================Saving Data========================
+Window Size = 10, Outer Loop no. = 0, Inner Loop no. = 0, Parameter Space no. = 0 
+
+
+Window Size = 10, Outer Loop no. = 0, Inner Loop no. = 0, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 10, Outer Loop no. = 0, Inner Loop no. = 1, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 10, Outer Loop no. = 0, Inner Loop no. = 2, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 10, Outer Loop no. = 0, Inner Loop no. = 3, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 10, Outer Loop no. = 0, Inner Loop no. = 4, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 10, Outer Loop no. = 0, Inner Loop no. = 5, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 10, Outer Loop no. = 0, Inner Loop no. = 6, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 10, Outer Loop no. = 0, Inner Loop no. = 7, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 10, Outer Loop no. = 0, Inner Loop no. = 8, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 %
+Window Size = 10, Outer Loop no. = 0, Inner Loop no. = 9, Parameter Space no. = 0 
+
+ Inner Loop Progress: 0.50 % Inner Loop Progress: 1.00 % 
+=>> PBS: job killed: walltime 992 exceeded limit 900

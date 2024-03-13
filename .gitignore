@@ -1,0 +1,9 @@
+/data
+src/data.zip
+src/data/
+*.asv
+*.mat
+nppBackup/
+otherScripts/
+ignore/
+/doc/manuscript

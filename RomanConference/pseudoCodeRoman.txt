@@ -1,0 +1,68 @@
+searchCondition= [NNL, YYL]
+subjects = 1:20
+swarmSize = 5
+
+
+foreach condition in searchCondition
+	foreach subject in subjects
+		read participantTrajectory
+		read ethanPosition
+		read calibratedGaze
+		initialize swarm[swarmSize]
+		initialize playbackDrone
+		initialize fixation[]
+		predictionTime = 15
+		for i = 1:length(participantTrajectory)
+			if(timeElapsed >= 15)
+				playbackDrone.position = participantTrajectory(i)
+				Predict fixation(previousFixation)
+			else
+				playbackDrone.position = participantTrajectory(i)
+				Update swarm.position %use zonal model low zoo-zor
+				Check for fixation
+				Store previousFixation
+			end
+			
+		end
+		
+	end
+end
+
+Calculate Average Time Gain Across All Subjects for Each condition
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Dataset D, K1 outer iterations, K2 inner iterations and, P parameter sets.
+for i = 1 to K1 do
+randomize D dataset by subjects
+train1 ← 80% of randomized dataset
+test1 ← 20% of randomized dataset
+for j = 1 to K2 do
+randomize train1 dataset by subjects
+train2 ← 80% of train1 dataset
+test2 ← 20% of test1 dataset
+for each p in P parameter set do
+M 2 ← create model with p parameters
+train M 2 with train2 dataset
+validate M 2 with test2 dataset
+end for
+end for
+Select the hyper parameter set p with highest validation accuracy
+M 1 ← create model with selected hyper parameters
+train M 1 with train1 dataset
+validate M 1 with test1 dataset
+end for
+Select hyper-parameters with highest averaged maximum accuracy over parameter sets
