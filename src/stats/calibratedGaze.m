@@ -9,7 +9,8 @@ subject = cellstr(num2str(readmatrix('..\..\data\participantID1.csv'))); % Get s
 preFolder = '..\..\data\'; % location of subject data folders
 
 cluster2Flag = 0;
-
+meanAverageSampleRateAccumulator = [];
+c = 1;
 for ii = 1:numel(subject)
     % Import trial order
     trialOrder = readmatrix([preFolder, cell2mat(subject(ii)),'\','trialOrder.txt']);
@@ -31,6 +32,9 @@ for ii = 1:numel(subject)
             gazeTime = rawGaze(:,1);
             gazeTime = gazeTime - gazeTime(1);
             calibGaze = zeros(size(rawGaze,1),2);
+
+            meanAverageSampleRateAccumulator(c) = 1/mean(diff(gazeTime));
+            c = c + 1;
             % Use cluster 1 for trials before break
             if (cluster2Flag == 0)
                 fileName1 = [preFolder, cell2mat(subject(ii)),'\','cluster1','\','XCalib.mat'];

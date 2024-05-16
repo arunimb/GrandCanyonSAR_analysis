@@ -21,13 +21,13 @@ for ii = 1:numel(subject)
             disp(cell2mat(subject(ii)));
             gaze = readmatrix(fileName1);
             gaze = gaze(:,2:3);
-            opt = [0.001 0.001];
+            opt = [0.01 0.01];
             subtightplot(2,4,j,opt,opt,opt)
             %scatter(gaze(:,1),gaze(:,2),2,'+')
             histogram2(gaze(:,1),gaze(:,2),25,'DisplayStyle','tile','ShowEmptyBins','on','EdgeColor','none','Normalization','probability','FaceColor','flat');
-            %hh = hist3(gaze,[50,50]);
-            %hh = hh/sum(sum(hh));
-            %imagesc(hh,'Interpolation','bilinear');
+            hh = hist3(gaze,[50,50]);
+            hh = hh/sum(sum(hh));
+            imagesc(hh,'Interpolation','bilinear');
             %caxis([0,0.04])
             xlim([0 2540]);
             ylim([0 1080]);
