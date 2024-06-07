@@ -1,0 +1,40 @@
+Comments to author (Associate Editor)
+=====================================
+
+This paper presents a study on operator control of UAV
+swarms for search and rescue.
+
+Review summary:
+- R2 and R4 both note that the simulation itself is
+well-done.
+- While R5 notes (and AE agrees) that the paper itself is
+well-written, R2 is confused about the exact motivations of
+the study. R4 and R5 also note missing components in their
+reviews. AE would also like to see specific hypotheses in
+the introduction.
+- R2 and R4 note that this work seems similar in aim to,
+yet not a replication study of, some of the cited work,
+such as [12,13,16], but the authors do not clearly
+delineate how this paper extends prior literature.
+- R2 and R5 point to specific places where the experiment
+is oversimplified, potentially ignoring several counfounds.
+
+Suggestions:
+The authors should carefully consider the comments of the
+reviewers in any future revision of this work. The
+experiment must be clearly motivated in terms of related
+literature and set up with statistical justification, such
+as a power analysis. Human-subject experiments are
+difficult, even when done in simulation, so it is worth the
+up-front effort to ensure the results will make a solid
+contribution to the field.
+
+
+----------------------------------------
+Comments on Video:
+
+[None found]
+Comments to author (Editor)
+================================
+
+[None found]

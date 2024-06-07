@@ -28,6 +28,9 @@ for ii = 1:numel(subject)
         fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(jj)),'\',csvfileName];
         if isfile(fileName)
             time2finish(c) = readmatrix(fileName);
+            if(time2finish(c)>=599)
+                time2finish(c) = nan;
+            end            
             swarmCohesion(c)  = cKnowledge(jj);
             targetKnowledge(c)  = tarKnowledge(jj);
             terrainKnowledge(c)  = terKnowledge(jj);
@@ -57,4 +60,4 @@ preTable(any(isnan(preTable),2),:) = [];
 % preTable(any(isnan(preTable),2),:) = [];
 outputTable = array2table(preTable,...
     'VariableNames',{'performance','SwarmCohesion','TargetKnowledge','TerrainKnowledge'});
-writetable(outputTable,['outputTables/outputForPerformanceGLMM_GrandCanyon.csv'],'Delimiter',',');
+writetable(outputTable,['outputTables/outputForPerformanceGLMM_GrandCanyon_trialsUnder600.csv'],'Delimiter',',');

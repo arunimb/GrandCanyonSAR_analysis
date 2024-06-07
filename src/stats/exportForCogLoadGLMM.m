@@ -25,11 +25,20 @@ trials = strings;
 %csvfileName = 'cogload_First6s_from0s.csv';
 for mm = 1:numel(fileNamesToRead)
     csvfileName = ['cogload_First',num2str(fileNamesToRead(mm)),'s_from0s.csv'];
+    csvfileName2 = ['time_to_finish.csv'];
     for ii = 1:numel(subject)
         for jj = 1:numel(trialNum)
             fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(jj)),'\',csvfileName];
+            fileName2 = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(jj)),'\',csvfileName2];
             if isfile(fileName)
-                cogLoadBySubject(c) = readmatrix(fileName);
+                time2finish = readmatrix(fileName2);
+                if (time2finish>=599)
+                    cogLoadBySubject(c) = nan;
+                end
+                if (time2finish<599)
+                    cogLoadBySubject(c) = readmatrix(fileName);
+                end
+                
                 swarmCohesion(c)  = cKnowledge(jj);
                 targetKnowledge(c)  = tarKnowledge(jj);
                 terrainKnowledge(c)  = terKnowledge(jj);
@@ -71,7 +80,7 @@ preTable(any(isnan(preTable),2),:) = [];
 
 outputTable = array2table(preTable,...
     'VariableNames',{'CognitiveLoad','SwarmCohesion','TargetKnowledge','TerrainKnowledge','CogWindow'});
-writetable(outputTable,['outputTables/outputForGLMM_GrandCanyon_test.csv'],'Delimiter',',');
+writetable(outputTable,['outputTables/outputForGLMM_GrandCanyon_test_trialsUnder600.csv'],'Delimiter',',');
 
 copyTable(all(~isnan(copyTable),2),:) = []; % extract all the nan values
 

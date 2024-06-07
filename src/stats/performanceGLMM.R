@@ -22,7 +22,7 @@ library(interactions)
 #read glm file
 delim = ","
 dec = "."
-testResults = read.csv("E:/PreliminaryAnalysisGrandCanyon/src/stats/outputTables/outputForPerformanceGLMM_GrandCanyon.csv", header=TRUE, sep=delim, dec=dec, stringsAsFactors=FALSE)
+testResults = read.csv("E:/GrandCanyonSAR_analysis/src/stats/outputTables/outputForPerformanceGLMM_GrandCanyon_trialsUnder600.csv", header=TRUE, sep=delim, dec=dec, stringsAsFactors=FALSE)
 
 
 # Set predictors as categorical variables
@@ -40,7 +40,7 @@ mod0 = glm(performance ~ 1 , family = gaussian(link="identity"), data = testResu
 mod1 = glm(performance ~ 1 + SwarmCohesion  , family = gaussian(link="identity"), data = testResults)
 mod2 = glm(performance ~ 1 + SwarmCohesion + TargetKnowledge , family = gaussian(link="identity"), data = testResults)
 mod3 = glm(performance ~ 1 + SwarmCohesion + TargetKnowledge + TerrainKnowledge , family = gaussian(link="identity"), data = testResults)
-
+mod4 = glm(performance ~ 1 + SwarmCohesion + TargetKnowledge + TerrainKnowledge + SwarmCohesion * TargetKnowledge , family = gaussian(link="identity"), data = testResults)
 models <- list(mod0,mod1,mod2,mod3)
 aictab(cand.set = models, modnames = c('mod0','mod1','mod2','mod3'))
 # Model comparison 

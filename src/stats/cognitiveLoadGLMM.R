@@ -22,7 +22,7 @@ library(latex2exp)
 #read glm file
 delim = ","
 dec = "."
-testResults = read.csv("E:/PreliminaryAnalysisGrandCanyon/src/stats/outputTables/outputForGLMM_GrandCanyon_test.csv", header=TRUE, sep=delim, dec=dec, stringsAsFactors=FALSE)
+testResults = read.csv("E:/GrandCanyonSAR_analysis/src/stats/outputTables/outputForGLMM_GrandCanyon_test_trialsUnder600.csv", header=TRUE, sep=delim, dec=dec, stringsAsFactors=FALSE)
 
 # Set predictors as categorical variables
 testResults$SwarmCohesion <- as.factor(testResults$SwarmCohesion)
@@ -178,14 +178,15 @@ plot9+ylab("Cognitive Load") + theme(text = element_text(size = 38))+ theme(axis
 plot10 = cat_plot(
   mod10,
   pred = CogWindow,
-  modx = TerrainKnowledge,legend.main = c("Terrain prior knowledge"))
+  modx = TerrainKnowledge,legend.main = c("Terrain prior knowledge")) + 
+  scale_x_continuous(breaks = seq(1,25,by=3))
 plot10 + xlab(TeX("\\textbf{Length of observation window} ($s$)"))+
-  ylab(TeX("\\textbf{Cognitive load} ($\\mu V^2 /Hz $)"))+ 
+  ylab(TeX("\\textbf{Cognitive load} ($\\mu V^2 /Hz $)"))+
   theme(axis.text=element_text(size=30)) +
   theme(axis.title=element_text(size=32)) +
   theme(legend.position = c(0.6, 0.24)) +
   theme(legend.text=element_text(size=32)) +
-  theme(legend.title=element_text(size=32))
+  theme(legend.title=element_text(size=32)) 
   
 
 #+ ylab(TeX("Cognitive load $\\mu V^2 /Hz $"))

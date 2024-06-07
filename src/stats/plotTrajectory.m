@@ -21,52 +21,41 @@ for ii = 1:numel(subject)
         fileName = dir([preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','Trajectory*.csv']);
         % Get swarm position
         fileName1 = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','calibratedGaze.csv'];
-        if isfile(fileName1)
-            disp(cell2mat(subject(ii)));
-            gaze = readmatrix(fileName1);                        
-            figure(1)
-            subplot(3,3,j)
-            scatter(gaze(:,1),gaze(:,2),2,'+')
-            hold on
-            plot([0,2560,2560,0,0],[0,0,1080,1080,0],LineWidth=2,Color=[1.0,0.7,0])
-            %axis image
+        trajFile = readmatrix(fileName); % Get Trajectory data
+            timeStamps = trajFile(:,1); % 1st column of trajectory data is time stamps
 
-            pbaspect([2.37 1 1])
-            xlabel("x position (pixel)")
-            ylabel("y position (pixel)")
-            title(num2str(trialNum(j)))
-            sgtitle(cell2mat(subject(ii)))
+            % Routine to identify paused simulation, f2 key marks the beginning
+            % of the trial, also unpauses the simulation for the subject. F11
+            % key marks the end of the trial, pauses the trial for the subject.
+            % When the simulation is paused, the recorded timestamps do not
+            % change, so the diff function lets us identify beginning and
+            % ending of a trial.
+            diffTimeStamps = diff(timeStamps(2:end));
+
+            pause1 = 0; % start of trial index (guess)
+            for k = 1:numel(diffTimeStamps)
+                if (diffTimeStamps(k) ~= 0)
+                    pause1 = k+1;
+                    break; % Break when encountering a non zero diff value
+                end
+            end
+
+            pause2 = 0; % end of trial index (guess)
+            for k = pause1+1:numel(diffTimeStamps)
+                if (diffTimeStamps(k) == 0)
+                    pause2 = k; % Break when encountering a zero diff value
+                    break;
+                end
+            end
+
+            % Trim time to 600 seconds. subjects who do not search within 600
+            % seconds are truncated.
+            time2finish = timeStamps(pause2)-timeStamps(pause1); % guess time to finish
 
 
-           
-        end
-
-
-        subplot(3,3,j)
-        plot3(xPos,yPos,zPos) % Plot trajectory of human controlled drone
-        hold on
-        scatter3 (xPos(1),yPos(1),zPos(1),"green","filled","o") % Plot Drone start position
-        hold on
-        scatter3 (xPos(end),yPos(end),zPos(end),"red","filled","o")% Plot Drone end position
-        hold on
-        scatter3 (swarmPosition(:,1),swarmPosition(:,3),swarmPosition(:,2),"k","filled","o")% Plot swarm drone locations
-        hold on
-        scatter3 (ethanPos(1),ethanPos(3),ethanPos(2),12,"r","+"); % Plot missing person position
-        hold on
-        xlabel("X location (m)");
-        ylabel("Y location (m)");
-        zlabel("Z location (m)");
-        title(trialName{j});
-        grid on
-        hold off
-        view(2)
-        % Only Plot legend for the first plot
-        if j==1
-            legend("Trajectory","Start","End","Swarm","Missing Person");
-        end
+            % truncate the trajectory data
+            trajFile = trajFile(pause1:pause2,:);
+            trajFile2 = trajFile;
+            timeStamps = trajFile(:,1)-trajFile(1,1);
     end
-    sgtitle(subject(ii))
-    % save plots
-    saveas(gcf,[preFolder, cell2mat(subject(ii)),'\','Trajectory.png']);
-    saveas(gcf,[preFolder, cell2mat(subject(ii)),'\','Trajectory.fig']);
 end

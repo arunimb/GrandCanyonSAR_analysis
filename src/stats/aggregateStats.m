@@ -44,14 +44,14 @@ c = 1;
 avgSpeedBySubject = [];
 trials = strings;
 for ii = 1:numel(subject)
-    for j = 2:numel(trialNum)
+    for j = 1:numel(trialNum)
         fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','avgSpeed.csv'];
         if isfile(fileName)
-            avgSpeedBySubject(ii,j-1) = readmatrix(fileName);
+            avgSpeedBySubject(ii,j) = readmatrix(fileName);
             c = c + 1;
         end
         if ~isfile(fileName)
-            avgSpeedBySubject(ii,j-1) = nan;
+            avgSpeedBySubject(ii,j) = nan;
             c = c + 1;
         end
     end
@@ -76,21 +76,21 @@ ylabel("Speed (m/s)")
 ax = gca;
 ax.FontSize = 18;
 ax.TickLabelInterpreter = 'latex';
-ax.XTickLabel = trialName(2:9);
+ax.XTickLabel = trialName;
 
 
 c = 1;
 avgTurnRateBySubject = [];
 trials = strings;
 for ii = 1:numel(subject)
-    for j = 2:numel(trialNum)
+    for j = 1:numel(trialNum)
         fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','avgTurnRate.csv'];
         if isfile(fileName)
-            avgTurnRateBySubject(ii,j-1) = readmatrix(fileName);
+            avgTurnRateBySubject(ii,j) = readmatrix(fileName);
             c = c + 1;
         end
         if ~isfile(fileName)
-            avgTurnRateBySubject(ii,j-1) = nan;
+            avgTurnRateBySubject(ii,j) = nan;
             c = c + 1;
         end
     end
@@ -115,7 +115,7 @@ ylabel("Turn rate (deg/s)")
 ax = gca;
 ax.FontSize = 18;
 ax.TickLabelInterpreter = 'latex';
-ax.XTickLabel = trialName(2:9);
+ax.XTickLabel = trialName;
 %% Average Height
 figure
 c = 1;
@@ -327,7 +327,7 @@ ylabel("Average Gaze Speed ( deg/s)")
 ax = gca;
 ax.FontSize = 18;
 ax.TickLabelInterpreter = 'latex';
-ax.XTickLabel = trialName(2:9);
+ax.XTickLabel = trialName;
 
 %% Average Ground Speed
 figure
@@ -409,7 +409,7 @@ ylabel("Time to find (s)")
 ax = gca;
 ax.FontSize = 18;
 ax.TickLabelInterpreter = 'latex';
-ax.XTickLabel = trialName(2:9);
+ax.XTickLabel = trialName;
 
 %% NASA TLX
 figure
@@ -465,7 +465,7 @@ for i = 1:size(q,3)
     ax = gca;
     ax.FontSize = 18;
     ax.TickLabelInterpreter = 'latex';
-    ax.XTickLabel = trialName(2:9);
+    ax.XTickLabel = trialName;
 end
 
 
@@ -744,7 +744,7 @@ ylabel("Percentage of time fixation")
 ax = gca;
 ax.FontSize = 18;
 ax.TickLabelInterpreter = 'latex';
-ax.XTickLabel = trialName(2:9);
+ax.XTickLabel = trialName;
 
 %% Dwell time percent inside mini-map
 figure(3)
@@ -785,4 +785,4 @@ ylabel("Percent dwell time")
 ax = gca;
 ax.FontSize = 18;
 ax.TickLabelInterpreter = 'latex';
-ax.XTickLabel = trialName(2:9);
+ax.XTickLabel = trialName;

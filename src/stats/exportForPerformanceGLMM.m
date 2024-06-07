@@ -26,10 +26,19 @@ trials = strings;
 for ii = 1:numel(subject)
     csvfileName1 = 'avgSpeed.csv';
     csvfileName2 = 'avgTurnRate.csv';
+    csvfileName3 = ['time_to_finish.csv'];
     for jj = 1:numel(trialNum)
         fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(jj)),'\',csvfileName1];
+        fileName3 = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(jj)),'\',csvfileName3];
+        time2finish = readmatrix(fileName3);
         if isfile(fileName)
-            avgSpeed(c) = readmatrix(fileName);
+            
+            if(time2finish>=599)
+                avgSpeed(c) = nan;
+            end
+            if(time2finish<599)
+                avgSpeed(c) = readmatrix(fileName);
+            end            
             swarmCohesion(c)  = cKnowledge(jj);
             targetKnowledge(c)  = tarKnowledge(jj);
             terrainKnowledge(c)  = terKnowledge(jj);
@@ -46,8 +55,16 @@ for ii = 1:numel(subject)
     end
     for jj = 1:numel(trialNum)
         fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(jj)),'\',csvfileName2];
+        fileName3 = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(jj)),'\',csvfileName3];
+        time2finish = readmatrix(fileName3);
         if isfile(fileName)
-            avgTurnRate(d) = readmatrix(fileName);
+            if(time2finish>=599)
+                avgTurnRate(d) = nan;
+            end
+            if(time2finish<599)
+                avgTurnRate(d) = readmatrix(fileName);
+            end
+            
             swarmCohesion(d)  = cKnowledge(jj);
             targetKnowledge(d)  = tarKnowledge(jj);
             terrainKnowledge(d)  = terKnowledge(jj);
@@ -81,5 +98,5 @@ outputTable1 = array2table(preTable1,...
     'VariableNames',{'avgSpeed','SwarmCohesion','TargetKnowledge','TerrainKnowledge'});
 outputTable2 = array2table(preTable2,...
     'VariableNames',{'avgTurnRate','SwarmCohesion','TargetKnowledge','TerrainKnowledge'});
-writetable(outputTable1,['outputTables/outputForSpeedGLMM_GrandCanyon.csv'],'Delimiter',',');
-writetable(outputTable2,['outputTables/outputForTurnRateGLMM_GrandCanyon.csv'],'Delimiter',',');
+writetable(outputTable1,['outputTables/outputForSpeedGLMM_GrandCanyon_trialsUnder600.csv'],'Delimiter',',');
+writetable(outputTable2,['outputTables/outputForTurnRateGLMM_GrandCanyon_trialsUnder600.csv'],'Delimiter',',');

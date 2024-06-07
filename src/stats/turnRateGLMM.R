@@ -22,7 +22,7 @@ library(interactions)
 #read glm file
 delim = ","
 dec = "."
-testResults = read.csv("E:/PreliminaryAnalysisGrandCanyon/src/stats/outputTables/outputForTurnRateGLMM_GrandCanyon.csv", header=TRUE, sep=delim, dec=dec, stringsAsFactors=FALSE)
+testResults = read.csv("E:/GrandCanyonSAR_analysis/src/stats/outputTables/outputForTurnRateGLMM_GrandCanyon_trialsUnder600.csv", header=TRUE, sep=delim, dec=dec, stringsAsFactors=FALSE)
 
 
 # Set predictors as categorical variables

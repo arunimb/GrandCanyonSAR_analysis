@@ -139,8 +139,8 @@ end
 targetFoundOrNotReshaped = [];
 swarmTimeGainedReshaped = [];
 for i = 1:size(swarmTimeGained,3)
-targetFoundOrNotReshaped = [targetFoundOrNotReshaped;targetFoundOrNot(:,:,i)];
-swarmTimeGainedReshaped = [swarmTimeGainedReshaped;swarmTimeGained(:,:,i)];
+    targetFoundOrNotReshaped = [targetFoundOrNotReshaped;targetFoundOrNot(:,:,i)];
+    swarmTimeGainedReshaped = [swarmTimeGainedReshaped;swarmTimeGained(:,:,i)];
 end
 
 %Do the stats

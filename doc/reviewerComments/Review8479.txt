@@ -1,0 +1,140 @@
+Reviewer 5 of RO-MAN 2024 submission 70
+
+Comments to the author
+======================
+
+Summary: This paper investigates how prior knowledge in a
+missing person’s speed, prior terrain knowledge, and
+distribution of UAVs in a search area influences operators’
+performance, workload, and actions in a search and rescue
+teleoperation task. The authors conclude the following: 
+- prior knowledge of a missing person’s walking speed
+improves performance and reduces turn rate
+- prior terrain knowledge increases cognitive load and
+increases gaze fixations on an inset overhead view
+- the presence of clustered UAV swarms improves performance
+and increases cognitive load across the task, with reduced
+cognitive load for the first segment of the task
+
+
+
+Comments: This work was well written and easy to read. The
+work contributes to teleoperation in search and rescue
+situations by investigating the effects of prior knowledge
+of the terrain, missing person’s speed, and the presence of
+UAV swarms on important metrics for teleoperation including
+performance, workload, cognitive load, gaze fixation, and
+users’ actions. I recommend the authors clarify the
+following:
+
+How did the authors determine that they needed 20
+participants? If they conducted a power analysis that
+should be reported in the paper.
+
+There are potentially confounds in the performance analyses
+as the upper bounds of the performance metric seems to have
+been included in the analysis. The 600 second upper bounds
+is assigned to all participants who did not find the
+missing person within the allotted time. If those
+participants were to have unbounded time, their performance
+could be anywhere from 601+ seconds, however, they are all
+treated the same. Unfinished runs should be treated as
+missing data as we do not have an accurate measurement of
+the participants’ performance.
+
+There are potentially confounds in the UAV distribution
+analyses. It is mentioned in the introduction that the
+intent on using the drone cluster was “to indicate the
+possibility of useful information”, however, the clusters
+were randomly placed and “had no relation to the actual
+location of the missing person”. The random placement seems
+to go against the intended benefits, potentially
+misdirecting participants to focus on random regions. Since
+the random clusters could only appear in the outer two
+POAs, I wonder if we would see different results if the
+uniformly distributed UAVs were also only in the outer two
+POAs. I also wonder if in conditions where prior knowledge
+was present, if drone clusters or distributions in the
+corresponding regions would help improve performance over
+the random placements used in this study. Participants
+reported that they did not find the placement of the UAVs
+beneficial (Table 1), this should be further discussed
+along with suggestions to improve this visualization.
+ 
+It is unclear why the observation window of 1-25 seconds
+was selected for further analysis of cognitive load, when
+Section III D. mentions that it levels off after five
+seconds. This subset of analyses is also missing the
+effects of swarm distribution. 
+
+Is dwell time on the inset necessarily a positive effect? A
+further discussion of the negative effects of participants
+shifting their focus away from identifying the missing
+person to focus on the overhead map should be included in
+Section III G. I recommend the authors also offer
+suggestions on how to improve the user interface to keep
+participants focused on the area where they can see missing
+people.
+
+Statistical analyses of the NASA TLX in Section III E are
+not reported. I don’t see how the claim that “participants
+felt that they had to work somewhat hard to accomplish the
+task for conditions where they did not have missing person
+prior knowledge” can be made, especially since all
+subscales, except for performance, in the table report
+means below half, indicating low workload. Typically an
+overall score is calculated for the TLX, the authors should
+report the scores and analyses of these scores even if they
+are not significant. Statistical analyses should back up
+all of the authors' claims. 
+
+If the authors are using the standard NASA TLX scale, the
+claim "participants generally rated their performance as
+good" seems incorrect as all performance responses were
+past the half mark, trending towards the "Failure" (20) end
+of responses. If non-standard scales are used, they should
+be reported in the paper.
+
+In Section IV, results might be more clearly discussed if
+they were broken down in regards to the original three
+research questions. Further discussions on how the results
+related to findings or contribute to related literature
+would also be beneficial.
+
+
+
+Typos and small suggestions:
+Table 1 header “Questions about Virtual Reality” would more
+accurately be “Questions about Virtual Environment”. There
+is only one VR question asked, and based on the
+experimental setup, this study was not conducted in VR.
+
+Table 2 header “Fraction of Dwell Time” would be more clear
+if renamed to “Fraction of Dwell Time on Inset”
+
+In Figure 5. Graphs A, C, and D it is not easy to follow
+the connected lines to see values for each participant. I
+would recommend removing them to make the graphs clearer.
+
+Participant gaze is discussed in Section III B, when it has
+its own subsection: Section III G.
+
+Section III C. should reference Figure 5a, not 4a.
+
+Section IV, the authors list “mental workload”, based on
+their results I believe they mean “cognitive workload”
+since statistical analyses of the mental workload subscale
+of the NASA TLX were not reported.
+
+
+
+Suggested related work:
+Ewers, J. H., Anderson, D., & Thomson, D. (2023). Optimal
+path planning using psychological profiling in
+drone&#8208;assisted missing person search. Advanced
+Control for Applications: Engineering and Industrial
+Systems, 5(4), e167.
+
+Kashino, Z. (2020). An Adaptive Approach to Optimal Sparse
+Mobile-Target Search Planning Using Heterogeneous Agents.
+University of Toronto (Canada). (Doctoral dissertation).
