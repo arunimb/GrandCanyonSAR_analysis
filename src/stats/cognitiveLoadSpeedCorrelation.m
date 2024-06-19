@@ -1,6 +1,6 @@
 %% housekeeping
 clearvars
-%close all
+close all
 clc
 
 % This file plots filtered EEG and cognitive load
@@ -144,25 +144,7 @@ parfor ll = 1:numel(cogWindow)
                     totalAngleMovedSegment(c1) = totalAngleMoved;
                     c1 = c1 + 1;
                 end
-                % figure(1);
-                % clf;
-                % plot(movmean(cogLoad,10))
-                % hold on 
-                % yyaxis right
-                % plot(movmean(diff(avgTurnRate),10))
-                % % plot(movmean(avgTurnRate,10))
-                % grid on
-                % legend("cog load","avg turn rate")
-                % 
-                % figure(2);
-                % clf;
-                % plot(movmean(cogLoad,10))
-                % hold on 
-                % yyaxis right
-                % plot(movmean(diff(avgSpeed),10))
-                % % plot(movmean(avgSpeed,10))
-                % grid on
-                % legend("cog load","avg speed")
+
             end
             aggCogLoad = [aggCogLoad,cogLoad(1:end-1)];
             aggAvgTurnRate = [aggAvgTurnRate,avgTurnRate];

@@ -221,10 +221,10 @@ fractionLSTMSwarmTargetsFound = fractionOfTrialsTargetFound;
 trialNames = {'NNL','YNL','NYL','YYL','NNH','YNH','NYH','YYH'};
 figure(1)
 subplot(1,2,1)
-scatter(1:1:8,fractionFollowSwarmTargetsFound,100,'d','filled','MarkerFaceColor',[1 .2 .2]);
+scatter(1:1:8,fractionFollowSwarmTargetsFound,200,'d','filled','MarkerFaceColor',[1 .2 .2]);
 hold on
-scatter(1:1:8,fractionRandomSwarmTargetsFound,60,'s','filled','MarkerFaceColor',[0.2 .2 1.0]);
-scatter(1:1:8,fractionLSTMSwarmTargetsFound,60,'^','filled','MarkerFaceColor',[0.2 1.0 0.2]);
+scatter(1:1:8,fractionRandomSwarmTargetsFound,200,'s','filled','MarkerFaceColor',[0.2 .2 1.0]);
+scatter(1:1:8,fractionLSTMSwarmTargetsFound,200,'^','filled','MarkerFaceColor',[0.2 1.0 0.2]);
 grid on
 legend("Follow Human","Random Search","Closed Loop")
 ylabel("Fraction of trials target found by swarm")
@@ -233,13 +233,13 @@ set(gca,'xtick',1:8,'xticklabel',trialNames)
 ylim([0, 1]);
 
 subplot(1,2,2)
-scatter(1:1:8,meanFollowSwarmTimeGained,100,'d','filled','MarkerFaceColor',[1 .2 .2]);
+scatter(1:1:8,meanFollowSwarmTimeGained,200,'d','filled','MarkerFaceColor',[1 .2 .2]);
 errorbar(1:1:8,meanFollowSwarmTimeGained,stdFollowSwarmTimeGained, 'vertical', 'color',[1 .2 .2]);
 hold on
-scatter(1:1:8,meanRandomSwarmTimeGained,60,'s','filled','MarkerFaceColor',[0.2 .2 1.0]);
+scatter(1:1:8,meanRandomSwarmTimeGained,200,'s','filled','MarkerFaceColor',[0.2 .2 1.0]);
 errorbar(1:1:8,meanRandomSwarmTimeGained,stdRandomSwarmTimeGained, 'vertical', 'color',[0.2 .2 1]);
 
-scatter(1:1:8,meanLSTMSwarmTimeGained,60,'^','filled','MarkerFaceColor',[0.2 1.0 0.2]);
+scatter(1:1:8,meanLSTMSwarmTimeGained,200,'^','filled','MarkerFaceColor',[0.2 1.0 0.2]);
 errorbar(1:1:8,meanLSTMSwarmTimeGained,stdLSTMSwarmTimeGained, 'vertical', 'color',[0.2 1.0 0.2]);
 ylim([-100, 600]);
 

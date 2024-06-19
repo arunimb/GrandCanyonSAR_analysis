@@ -32,10 +32,10 @@ for ii = 1:numel(subject)
             plot(pupilDiaLeft)
             hold on
             plot(pupilDiaRight)
-            %avgPupilDia = nanmean(pupilDiaRight);
+            avgPupilDia = nanmean(pupilDiaRight);
             fileName = ['..\..\data\', cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','avgPupilDilation.csv'];
-            %writematrix("Pupil Dia (mm)",fileName);
-            %writematrix(avgPupilDia,fileName,'WriteMode','append');
+            writematrix("Pupil Dia (mm)",fileName);
+            writematrix(avgPupilDia,fileName,'WriteMode','append');
 
         end
     end

@@ -1,5 +1,5 @@
 clearvars
-close all
+%close all
 clc
 
 
@@ -8,7 +8,7 @@ subject = cellstr(num2str(readmatrix('..\..\..\data\participantID1.csv')));
 preFolder = '..\..\..\data\';
 trialNames = {'NNU','YNU','NYU','YYU','NNC','YNC','NYC','YYC'};  % Person, Terrain, Swarm cohesion
 trialNum = [111,211,121,221,112,212,122,222];
-auvNumber = 20; %[5 10 20]
+auvNumber = 10; %[5 10 20]
 numRuns = [1];
 humanTimeToLand = 15;
 simulationMode = {'followSearch','LSTMSearch','randomSearch','spiralSearch'};
@@ -478,11 +478,11 @@ fractionSpiralTargetsFound = fractionOfTrialsTargetFound;
 figure(1)
 clf;
 subplot(1,2,1)
-scatter(1:1:8,fractionFollowSwarmTargetsFound,100,'d','filled','MarkerFaceColor',[1 .2 .2]);
+scatter(1:1:8,fractionFollowSwarmTargetsFound,200,'d','filled','MarkerFaceColor',[1 .2 .2]);
 hold on
-scatter(1:1:8,fractionClosedLoopTargetsFound,50,'s','filled','MarkerFaceColor',[0.2 .2 1.0]);
-scatter(1:1:8,fractionRandomSearchTargetsFound,40,'d','filled','MarkerFaceColor',[0.2 1.0 0.2]);
-scatter(1:1:8,fractionSpiralTargetsFound,70,'s','filled','MarkerFaceColor',[0.5 0.5 0.5]);
+scatter(1:1:8,fractionClosedLoopTargetsFound,200,'s','filled','MarkerFaceColor',[0.2 .2 1.0]);
+scatter(1:1:8,fractionRandomSearchTargetsFound,200,'d','filled','MarkerFaceColor',[0.2 1.0 0.2]);
+scatter(1:1:8,fractionSpiralTargetsFound,200,'^','filled','MarkerFaceColor',[0.5 0.5 0.5]);
 grid on
 legend("Follow Search","Closed Loop","Random Search","Spiral Search")
 % legend("Follow Search","Closed Loop","Random Search")
@@ -493,17 +493,17 @@ set(gca,'xtick',1:8,'xticklabel',trialNames)
 ylim([0, 1]);
 
 subplot(1,2,2)
-scatter(1:1:8,meanFollowHumanSwarmTime,100,'d','filled','MarkerFaceColor',[1 .2 .2]);
-errorbar(1:1:8,meanFollowHumanSwarmTime,stdFollowHumanSwarmTime, 'vertical', 'color',[1 .2 .2]);
+scatter(1:1:8,meanFollowHumanSwarmTime,200,'d','filled','MarkerFaceColor',[1 .2 .2]);
+errorbar(1:1:8,meanFollowHumanSwarmTime,stdFollowHumanSwarmTime,'.', 'vertical', 'color',[1 .2 .2]);
 hold on
-scatter(1:1:8,meanClosedLoopHumanSwarmTime,60,'p','filled','MarkerFaceColor',[0.2 .2 1.0]);
-errorbar(1:1:8,meanClosedLoopHumanSwarmTime,stdClosedLoopHumanSwarmTime, 'vertical', 'color',[0.2 .2 1]);
+scatter(1:1:8,meanClosedLoopHumanSwarmTime,200,'s','filled','MarkerFaceColor',[0.2 .2 1.0]);
+errorbar(1:1:8,meanClosedLoopHumanSwarmTime,stdClosedLoopHumanSwarmTime,'.', 'vertical', 'color',[0.2 .2 1]);
 
-scatter(1:1:8,meanRandomSearchHumanSwarmTime,60,'h','filled','MarkerFaceColor',[0.2 1.0 0.2]);
-errorbar(1:1:8,meanRandomSearchHumanSwarmTime,stdRandomSearchHumanSwarmTime, 'vertical', 'color',[0.2 1.0 0.2]);
+scatter(1:1:8,meanRandomSearchHumanSwarmTime,200,'d','filled','MarkerFaceColor',[0.2 1.0 0.2]);
+errorbar(1:1:8,meanRandomSearchHumanSwarmTime,stdRandomSearchHumanSwarmTime,'.', 'vertical', 'color',[0.2 1.0 0.2]);
 
-scatter(1:1:8,meanSpiralHumanSwarmTime,60,'s','filled','MarkerFaceColor',[0.5 0.5 0.5]);
-errorbar(1:1:8,meanSpiralHumanSwarmTime,stdSpiralHumanSwarmTime, 'vertical', 'color',[0.5 0.5 0.5]);
+scatter(1:1:8,meanSpiralHumanSwarmTime,200,'^','filled','MarkerFaceColor',[0.5 0.5 0.5]);
+errorbar(1:1:8,meanSpiralHumanSwarmTime,stdSpiralHumanSwarmTime,'.', 'vertical', 'color',[0.5 0.5 0.5]);
 
 ylim([-100, 600]);
 

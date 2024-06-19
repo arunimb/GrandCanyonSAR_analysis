@@ -14,7 +14,7 @@ distanceFromScreen = 488.95; %mm
 screenWidth = 798; %mm
 screenHeight = 338;
 subject = cellstr(num2str(readmatrix('..\..\data\participantID1.csv')));  % Get subject id list
-trialName = {'Fam','NNL','YNL','NYL','YYL','NNH','YNH','NYH','YYH'}; % Person, Terrain, Swarm cohesion
+trialName = {'NNL','YNL','NYL','YYL','NNH','YNH','NYH','YYH'}; % Person, Terrain, Swarm cohesion
 preFolder = '..\..\data\'; % location of subject data folders
 
 % Standard order of trials, which is different from subjectwise trial
@@ -29,7 +29,7 @@ trialNum = [111,211,121,221,112,212,122,222];
 
 % thresholds
 timeThreshold = 200/1000; % sec 100 - 300
-dispersionThreshold = 1; % degree 0.5 -1 
+dispersionThreshold = 1; % degree 0.5 -1
 
 %distance per pixel
 xDpixel = screenWidth/2560;
@@ -37,11 +37,11 @@ yDpixel = screenHeight/1080;
 
 for ii = 1:numel(subject)
 
-%     tiledlayout(3,3,'TileSpacing','Compact','Padding','Compact')
-
+    %     tiledlayout(3,3,'TileSpacing','Compact','Padding','Compact')
+    figure(1);
+    clf;
     for j = 1:numel(trialNum)
-%         figure(1);
-%         clf;
+
         fileName1 = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','calibratedGaze.csv'];
         if (isfile(fileName1))
             calibratedGaze = readmatrix(fileName1);
@@ -52,6 +52,7 @@ for ii = 1:numel(subject)
             meanSampleRate = mean(diffTime);
             windowsSizeInit = ceil(timeThreshold/meanSampleRate);
             fixations = [];
+            saccades = [];
             point2pointDistance = []; %mm
             for k = 1:size(calibratedGaze,1)
                 %             xDistance = (calibratedGaze(k,1)-calibratedGaze(k-1,1))*xDpixel;
@@ -82,23 +83,26 @@ for ii = 1:numel(subject)
                     k = k+windowsSize-2;
                 end
                 if fixFlag == 0
+                    saccades(c,1) = calibratedGaze(k,1);
+                    saccades(c,2) = calibratedGaze(k,2);
                     k = k + 1;
                 end
 
                 windowsSize = windowsSizeInit;
             end
             %subplot(3,3,j)
-            
+            saccades(saccades(:,1)== 0) = [];
             %plot(calibratedGaze(:,1),calibratedGaze(:,2),'-.');
-%             hold on
-%             scatter(fixations(:,1),fixations(:,2),1,'red');
-%             plot([0, 2560, 2560, 0, 0],[0, 0, 1080, 1080, 0],LineWidth=2);
-%             plot([2278, 2467, 2467, 2278, 2278],[291, 291, 435, 435, 291],LineWidth=2);
-%             plot([1919, 2560, 2560, 1919, 1919],[809, 809, 1080, 1080, 809],LineWidth=2);
-
-            fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','fixations.csv'];
-            writematrix(["Start Time (sec)","Fixation Time (sec)","xPos (pixels)","yPos (pixels)"],fileName);
-            writematrix(fixations,fileName,'WriteMode','append');
+            scatter(fixations(:,3),fixations(:,4),20,'red');
+            hold on
+            plot(saccades(:,1),saccades(:,2),'blue');
+            plot([0, 2560, 2560, 0, 0],[0, 0, 1080, 1080, 0],LineWidth=2);
+            plot([2278, 2467, 2467, 2278, 2278],[291, 291, 435, 435, 291],LineWidth=2);
+            plot([1919, 2560, 2560, 1919, 1919],[809, 809, 1080, 1080, 809],LineWidth=2);
+            hold off
+            %fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','fixations.csv'];
+            %writematrix(["Start Time (sec)","Fixation Time (sec)","xPos (pixels)","yPos (pixels)"],fileName);
+            %writematrix(fixations,fileName,'WriteMode','append');
         end
 
     end
