@@ -31,6 +31,9 @@ trialNum = [111,211,121,221,112,212,122,222];
 timeThreshold = 200/1000; % sec 100 - 300
 dispersionThreshold = 1; % degree 0.5 -1
 
+% saccade params
+saccadeFreqWindow = 15; % in seconds
+
 %distance per pixel
 xDpixel = screenWidth/2560;
 yDpixel = screenHeight/1080;
@@ -38,8 +41,8 @@ yDpixel = screenHeight/1080;
 for ii = 1:numel(subject)
 
     %     tiledlayout(3,3,'TileSpacing','Compact','Padding','Compact')
-    figure(1);
-    clf;
+    %figure(1);
+    %clf;
     for j = 1:numel(trialNum)
 
         fileName1 = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','calibratedGaze.csv'];
@@ -52,7 +55,7 @@ for ii = 1:numel(subject)
             meanSampleRate = mean(diffTime);
             windowsSizeInit = ceil(timeThreshold/meanSampleRate);
             fixations = [];
-            saccades = [];
+
             point2pointDistance = []; %mm
             for k = 1:size(calibratedGaze,1)
                 %             xDistance = (calibratedGaze(k,1)-calibratedGaze(k-1,1))*xDpixel;
@@ -83,27 +86,73 @@ for ii = 1:numel(subject)
                     k = k+windowsSize-2;
                 end
                 if fixFlag == 0
-                    saccades(c,1) = calibratedGaze(k,1);
-                    saccades(c,2) = calibratedGaze(k,2);
+
                     k = k + 1;
                 end
 
                 windowsSize = windowsSizeInit;
             end
             %subplot(3,3,j)
-            saccades(saccades(:,1)== 0) = [];
+            saccadeFreq = getSaccadeFrequency(cell2mat(subject(ii)),saccadeFreqWindow,gazeTime,calibratedGaze,fixations);
+
             %plot(calibratedGaze(:,1),calibratedGaze(:,2),'-.');
-            scatter(fixations(:,3),fixations(:,4),20,'red');
-            hold on
-            plot(saccades(:,1),saccades(:,2),'blue');
-            plot([0, 2560, 2560, 0, 0],[0, 0, 1080, 1080, 0],LineWidth=2);
-            plot([2278, 2467, 2467, 2278, 2278],[291, 291, 435, 435, 291],LineWidth=2);
-            plot([1919, 2560, 2560, 1919, 1919],[809, 809, 1080, 1080, 809],LineWidth=2);
-            hold off
+            % scatter(fixations(:,3),fixations(:,4),20,'red');
+            % hold on
+            % plot(saccades(:,1),saccades(:,2),'blue');
+            % plot([0, 2560, 2560, 0, 0],[0, 0, 1080, 1080, 0],LineWidth=2);
+            % plot([2278, 2467, 2467, 2278, 2278],[291, 291, 435, 435, 291],LineWidth=2);
+            % plot([1919, 2560, 2560, 1919, 1919],[809, 809, 1080, 1080, 809],LineWidth=2);
+            % hold off
             %fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','fixations.csv'];
             %writematrix(["Start Time (sec)","Fixation Time (sec)","xPos (pixels)","yPos (pixels)"],fileName);
             %writematrix(fixations,fileName,'WriteMode','append');
+            fileName2 = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','saccadicFrequency_window',num2str(saccadeFreqWindow),'.csv'];
+            writematrix(["Frequency (Hz)"],fileName2);
+            writematrix(saccadeFreq',fileName2,'WriteMode','append');
         end
 
     end
+end
+
+function y = getSaccadeFrequency(subject, window, gazeTime,calibratedGaze,fixations )
+regularizationDt = 1/24;
+regularizedTime = gazeTime(1):regularizationDt:gazeTime(end);
+numFixations = [];
+numSaccades = [];
+c = 1;
+for k = 1:window*(1/regularizationDt):gazeTime(end)*(1/regularizationDt)-(window*(1/regularizationDt))+1
+    timeStart = k*regularizationDt - regularizationDt;
+    timeEnd = timeStart + window;
+    timeStartInd = [];
+    timeEndInd = [];
+    if size(fixations,1) > 0
+        [ val1, timeStartInd ] = min(abs(fixations(:,1)-timeStart ));
+        [ val2, timeEndInd ] = min(abs(fixations(:,1)-timeEnd));
+        numFixations(c) = timeEndInd-timeStartInd;
+        numFixations(c)
+        numSaccades(c) = (numFixations(c)-1)/window;
+    end
+
+    if size(fixations,1) == 0
+        numSaccades(c) = 0;
+    end
+
+    % for j = 1:size(fixations,1)
+    %     if(fixations(j)>=timeStart)
+    %         timeStartInd = j;
+    %         break;
+    %     end
+    % end
+    %
+    % for j = 1:size(fixations,1)
+    %     if(fixations(j)>=timeEnd)
+    %         timeEndInd = j;
+    %         break;
+    %     end
+    % end
+    % numFixations(c) = timeEndInd-timeStartInd;
+    % numSaccades(c) = (numFixations(c)-1)/window;
+    c = c + 1;
+end
+y = numSaccades;
 end

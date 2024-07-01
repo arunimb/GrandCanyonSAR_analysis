@@ -1,7 +1,6 @@
 clearvars
 %close all
 clc
-)
 fileName = "outputTables\outputForPupilDiaGLMM_GrandCanyon_test.csv";
 table = readtable(fileName);
 
