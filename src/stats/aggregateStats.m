@@ -786,3 +786,109 @@ ax = gca;
 ax.FontSize = 18;
 ax.TickLabelInterpreter = 'latex';
 ax.XTickLabel = trialName;
+
+%% Dwell time percent inside mini-map
+figure(3)
+c = 1;
+percentDwellTime = [];
+trials = strings;
+for ii = 1:numel(subject)
+    for j = 2:numel(trialNum)
+        fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','percentDwellMiniMap.csv'];
+        if isfile(fileName)
+            percentDwellTime(ii,j-1) = mean(readmatrix(fileName));
+            c = c + 1;
+        end
+        if ~isfile(fileName)
+            percentDwellTime(ii,j-1) = nan;
+            c = c + 1;
+        end
+    end
+end
+percentDwellTime(any(isnan(percentDwellTime),2),:) = [];
+
+subplot(1,1,1)
+[p_data, tbl_data, stats_data]=friedman(percentDwellTime, 1, 'off');
+plot(percentDwellTime', '-o', 'markersize', 12, 'color', ones(1,3)*.5, 'markerface', ones(1,3)*.75);
+hold on;
+plot(median(percentDwellTime), 'k+', 'markersize', 16, 'linewidth', 2);
+title(p_data)
+if p_data < 0.05
+    res_data=multcompare(stats_data, 'Ctype','bonferroni', 'Display', 'off');
+    %         if disp1
+
+    sigstar([],res_data,1);
+    %         end
+end
+set(gca, 'xtick', 1:8)
+xlabel("Condition")
+ylabel("Percent dwell time")
+ax = gca;
+ax.FontSize = 18;
+ax.TickLabelInterpreter = 'latex';
+ax.XTickLabel = trialName;
+
+%% Freeze time
+figure(3)
+c = 1;
+completeStop = [];
+partialStop = [];
+trials = strings;
+for ii = 1:numel(subject)
+    for j = 1:numel(trialNum)
+        fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','freeze.csv'];
+        if isfile(fileName)
+            temp = readmatrix(fileName);
+            completeStop(ii,j) =temp(1);
+            partialStop(ii,j) = temp(2);
+            c = c + 1;
+        end
+        if ~isfile(fileName)
+            completeStop(ii,j) = nan;
+            partialStop(ii,j) = nan;
+            c = c + 1;
+        end
+    end
+end
+
+subplot(1,2,1)
+[p_data, tbl_data, stats_data]=friedman(completeStop, 1, 'off');
+plot(completeStop', '-o', 'markersize', 12, 'color', ones(1,3)*.5, 'markerface', ones(1,3)*.75);
+hold on;
+plot(median(completeStop), 'k+', 'markersize', 16, 'linewidth', 2);
+title(p_data)
+if p_data < 0.05
+    res_data=multcompare(stats_data, 'Ctype','bonferroni', 'Display', 'off');
+    %         if disp1
+
+    sigstar([],res_data,1);
+    %         end
+end
+set(gca, 'xtick', 1:8)
+xlabel("Condition")
+ylabel("Complete Stop")
+ax = gca;
+ax.FontSize = 18;
+ax.TickLabelInterpreter = 'latex';
+ax.XTickLabel = trialName;
+
+subplot(1,2,2)
+[p_data, tbl_data, stats_data]=friedman(partialStop, 1, 'off');
+plot(partialStop', '-o', 'markersize', 12, 'color', ones(1,3)*.5, 'markerface', ones(1,3)*.75);
+hold on;
+plot(median(partialStop), 'k+', 'markersize', 16, 'linewidth', 2);
+title(p_data)
+if p_data < 0.05
+    res_data=multcompare(stats_data, 'Ctype','bonferroni', 'Display', 'off');
+    %         if disp1
+
+    sigstar([],res_data,1);
+    %         end
+end
+set(gca, 'xtick', 1:8)
+xlabel("Condition")
+ylabel("Partial Stop")
+ax = gca;
+ax.FontSize = 18;
+ax.TickLabelInterpreter = 'latex';
+ax.XTickLabel = trialName;
