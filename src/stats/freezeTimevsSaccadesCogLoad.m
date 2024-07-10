@@ -14,6 +14,7 @@ eegChannelWeighting = [ 0.0398,    0.370,    0.1741 ,   0.6393 ,  ...
 aggFracCompleteStops= [];
 aggFracPartialStops = [];
 aggSaccadeFreq = [];
+windowSize = 20;
 for ii = 1:numel(subject)
     % Import trial order
     for j = 1:numel(trialNum)
@@ -72,7 +73,7 @@ for ii = 1:numel(subject)
         trajFile(:,6) = unwrap(trajFile(:,6)*2*pi/360); % [in radians]
         trajFile(:,6) = trajFile(:,6)*180/pi; % [deg]
 
-
+        trajTimeEnd = floor(timeStamps(end));
         % Regularize timestamps, trajectory, heading
         regTimeStamps = timeStamps(1):regularizationDt:timeStamps(end); % resample timestamps to regularly spaced timestamps
         if 1
@@ -123,20 +124,24 @@ for ii = 1:numel(subject)
 
         end
 
-        numCompleteStops = 0;
-        numPartialStops = 0;
-
-        for dd = 1:numel(subjectTurnRate)
-            if(abs(subjectTurnRate(dd)) <= 1 && abs(subjectSpeed(dd)) <= 0.1)
-                numCompleteStops = numCompleteStops + 1;
+        % fracCompleteStops = numCompleteStops/ numel(subjectTurnRate);
+            % fracPartialStops = numPartialStops/ numel(subjectTurnRate);
+            fracCompleteStops = [];
+            fracPartialStops = [];
+            for k = 1:windowSize*1/regularizationDt:trajTimeEnd*(1/regularizationDt)-(windowSize*1/regularizationDt)
+                numCompleteStops = 0;
+                numPartialStops = 0;
+                for dd = k:k+windowSize*1/regularizationDt-1
+                    if(abs(subjectTurnRate(dd)) <= 1 && abs(subjectSpeed(dd)) <= 0.1)
+                        numCompleteStops = numCompleteStops + 1;
+                    end
+                    if(abs(subjectSpeed(dd)) <= 0.1)
+                        numPartialStops = numPartialStops + 1;
+                    end
+                end
+                fracCompleteStops = [fracCompleteStops numCompleteStops/(windowSize*1/regularizationDt)];
+                fracPartialStops = [fracPartialStops numPartialStops/(windowSize*1/regularizationDt)];
             end
-            if(abs(subjectSpeed(dd)) <= 0.1)
-                numPartialStops = numPartialStops + 1;
-            end
-        end
-        fracCompleteStops = numCompleteStops/ numel(subjectTurnRate);
-        fracPartialStops = numPartialStops/ numel(subjectTurnRate);
-
         fileName1 = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','saccadicFrequency_window',num2str(5),'.csv'];
         fileName2 = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','time_to_finish.csv'];
         if isfile(fileName1)
@@ -148,8 +153,14 @@ for ii = 1:numel(subject)
             time2Finish = readmatrix(fileName2);
             
         end
+        if(numel(saccadicFrequency)<numel(fracCompleteStops))
+            fracCompleteStops=fracCompleteStops(1:numel(saccadicFrequency));
+            fracPartialStops=fracPartialStops(1:numel(saccadicFrequency));
+        elseif (numel(saccadicFrequency)> numel(fracCompleteStops))
+            saccadicFrequency=saccadicFrequency(1:numel(fracCompleteStops));
+        end
 
-        aggSaccadeFreq = [aggSaccadeFreq,mean(saccadicFrequency)];
+        aggSaccadeFreq = [aggSaccadeFreq,saccadicFrequency'];
         aggFracCompleteStops= [aggFracCompleteStops fracCompleteStops];
         aggFracPartialStops = [aggFracPartialStops fracPartialStops];
     end
