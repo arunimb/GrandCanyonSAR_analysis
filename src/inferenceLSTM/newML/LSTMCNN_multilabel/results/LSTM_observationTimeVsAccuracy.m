@@ -22,7 +22,7 @@ meanAccuracy = mean(accuracyByWindow);
 stdAccuracy = std(accuracyByWindow);
 
 
-scatter([5,10,15,20],meanAccuracy,40,"red","filled");
+scatter([5,10,15,20],meanAccuracy,200,'d',"red","filled");
 hold on
 errorbar([5,10,15,20],meanAccuracy,stdAccuracy,'.');
 xlim([4.5,20.5]);

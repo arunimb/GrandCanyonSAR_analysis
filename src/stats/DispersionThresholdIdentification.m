@@ -14,6 +14,7 @@ distanceFromScreen = 488.95; %mm
 screenWidth = 798; %mm
 screenHeight = 338;
 subject = cellstr(num2str(readmatrix('..\..\data\participantID1.csv')));  % Get subject id list
+subject = subject(randperm( numel(subject))); %Testing, comment later
 trialName = {'NNL','YNL','NYL','YYL','NNH','YNH','NYH','YYH'}; % Person, Terrain, Swarm cohesion
 preFolder = '..\..\data\'; % location of subject data folders
 
@@ -28,11 +29,11 @@ trialNum = [111,211,121,221,112,212,122,222];
 % gaze_normal1_y, gaze_normal1_z, diameter0_2d, diameter1_2d, diameter0_3d, diameter1_3d
 
 % thresholds
-timeThreshold = 200/1000; % sec 100 - 300
+timeThreshold = 100/1000; % sec 100 - 300
 dispersionThreshold = 1; % degree 0.5 -1
 
 % saccade params
-saccadeFreqWindow = 15; % in seconds
+saccadeFreqWindow = 5; % in seconds
 
 %distance per pixel
 xDpixel = screenWidth/2560;
@@ -95,20 +96,20 @@ for ii = 1:numel(subject)
             %subplot(3,3,j)
             saccadeFreq = getSaccadeFrequency(cell2mat(subject(ii)),saccadeFreqWindow,gazeTime,calibratedGaze,fixations);
 
-            %plot(calibratedGaze(:,1),calibratedGaze(:,2),'-.');
+            % plot(calibratedGaze(:,1),calibratedGaze(:,2),'-.');
             % scatter(fixations(:,3),fixations(:,4),20,'red');
             % hold on
-            % plot(saccades(:,1),saccades(:,2),'blue');
+            % %plot(saccades(:,1),saccades(:,2),'blue');
             % plot([0, 2560, 2560, 0, 0],[0, 0, 1080, 1080, 0],LineWidth=2);
             % plot([2278, 2467, 2467, 2278, 2278],[291, 291, 435, 435, 291],LineWidth=2);
             % plot([1919, 2560, 2560, 1919, 1919],[809, 809, 1080, 1080, 809],LineWidth=2);
             % hold off
-            %fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','fixations.csv'];
-            %writematrix(["Start Time (sec)","Fixation Time (sec)","xPos (pixels)","yPos (pixels)"],fileName);
-            %writematrix(fixations,fileName,'WriteMode','append');
+            fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','fixations.csv'];
+            % writematrix(["Start Time (sec)","Fixation Time (sec)","xPos (pixels)","yPos (pixels)"],fileName);
+            % writematrix(fixations,fileName,'WriteMode','append');
             fileName2 = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','saccadicFrequency_window',num2str(saccadeFreqWindow),'.csv'];
-            writematrix(["Frequency (Hz)"],fileName2);
-            writematrix(saccadeFreq',fileName2,'WriteMode','append');
+            % writematrix(["Frequency (Hz)"],fileName2);
+            % writematrix(saccadeFreq',fileName2,'WriteMode','append');
         end
 
     end

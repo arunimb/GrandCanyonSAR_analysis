@@ -14,7 +14,7 @@ trialName = {'NNU','YNU','NYU','YYU','NNC','YNC','NYC','YYC'};  % Person, Terrai
 trialNum = [111,211,121,221,112,212,122,222];
 
 %% Average Speed and Turn rate
-figure
+
 trajAggregate = [];
 trials = {};
 c = 1;
@@ -57,11 +57,12 @@ for ii = 1:numel(subject)
     end
 end
 avgSpeedBySubject(any(isnan(avgSpeedBySubject),2),:) = [];
-subplot(1,2,1)
+figure
 [p_data, tbl_data, stats_data]=friedman(avgSpeedBySubject, 1, 'off');
-plot(avgSpeedBySubject', '-o', 'markersize', 12, 'color', ones(1,3)*.5, 'markerface', ones(1,3)*.75);
-hold on;
-plot(median(avgSpeedBySubject), 'k+', 'markersize', 16, 'linewidth', 2);
+% plot(avgSpeedBySubject', '-o', 'markersize', 12, 'color', ones(1,3)*.5, 'markerface', ones(1,3)*.75);
+% hold on;
+% plot(median(avgSpeedBySubject), 'k+', 'markersize', 16, 'linewidth', 2);
+boxchart(avgSpeedBySubject);
 %title(p_data)
 % if p_data < 0.05
 %     res_data=multcompare(stats_data, 'Ctype','bonferroni', 'Display', 'off');
@@ -70,7 +71,7 @@ plot(median(avgSpeedBySubject), 'k+', 'markersize', 16, 'linewidth', 2);
 %     sigstar([],res_data,1);
 %     %         end
 % end
-set(gca, 'xtick', 1:8)
+% set(gca, 'xtick', 1:8)
 xlabel("Condition")
 ylabel("Speed (m/s)")
 ax = gca;
@@ -96,11 +97,11 @@ for ii = 1:numel(subject)
     end
 end
 avgTurnRateBySubject(any(isnan(avgTurnRateBySubject),2),:) = [];
-subplot(1,2,2)
+figure
 [p_data, tbl_data, stats_data]=friedman(avgTurnRateBySubject, 1, 'off');
-plot(avgTurnRateBySubject', '-o', 'markersize', 12, 'color', ones(1,3)*.5, 'markerface', ones(1,3)*.75);
-hold on;
-plot(median(avgTurnRateBySubject), 'k+', 'markersize', 16, 'linewidth', 2);
+% plot(avgTurnRateBySubject', '-o', 'markersize', 12, 'color', ones(1,3)*.5, 'markerface', ones(1,3)*.75);
+% hold on;
+boxchart(avgTurnRateBySubject);
 %title(p_data)
 % if p_data < 0.05
 %     res_data=multcompare(stats_data, 'Ctype','bonferroni', 'Display', 'off');
@@ -109,7 +110,7 @@ plot(median(avgTurnRateBySubject), 'k+', 'markersize', 16, 'linewidth', 2);
 %     sigstar([],res_data,1);
 %     %         end
 % end
-set(gca, 'xtick', 1:8)
+% set(gca, 'xtick', 1:8)
 xlabel("Condition")
 ylabel("Turn rate (deg/s)")
 ax = gca;
@@ -376,26 +377,34 @@ c = 1;
 time2FinishBySubject = [];
 trials = strings;
 for ii = 1:numel(subject)
-    for j = 2:numel(trialNum)
+    for j = 1:numel(trialNum)
         fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','time_to_finish.csv'];
         if isfile(fileName)
-            time2FinishBySubject(ii,j-1) = readmatrix(fileName);
+            if(readmatrix(fileName)<599)
+                time2FinishBySubject(ii,j) = readmatrix(fileName);
+            end
+            if(readmatrix(fileName)>=599)
+                time2FinishBySubject(ii,j) = nan;
+            end
             c = c + 1;
         end
         if ~isfile(fileName)
-            time2FinishBySubject(ii,j-1) = nan;
+            time2FinishBySubject(ii,j) = nan;
             c = c + 1;
         end
     end
 end
-time2FinishBySubject(any(isnan(time2FinishBySubject),2),:) = [];
+%time2FinishBySubject(any(isnan(time2FinishBySubject),2),:) = [];
 
 subplot(1,1,1)
-[p_data, tbl_data, stats_data]=friedman(time2FinishBySubject, 1, 'off');
-plot(time2FinishBySubject', '-o', 'markersize', 12, 'color', ones(1,3)*.5, 'markerface', ones(1,3)*.75);
-hold on;
-plot(median(time2FinishBySubject), 'k+', 'markersize', 16, 'linewidth', 2);
+%[p_data, tbl_data, stats_data]=friedman(time2FinishBySubject, 1, 'off');
+% plot(time2FinishBySubject', '-o', 'markersize', 12, 'color', ones(1,3)*.5, 'markerface', ones(1,3)*.75);
+
+% hold on;
+% plot(median(time2FinishBySubject), 'k+', 'markersize', 16, 'linewidth', 2);
+% boxchart(time2FinishBySubject)
 % title(p_data)
+boxchart(time2FinishBySubject)
 % if p_data < 0.05
 %     res_data=multcompare(stats_data, 'Ctype','bonferroni', 'Display', 'off');
 %     %         if disp1
@@ -403,7 +412,8 @@ plot(median(time2FinishBySubject), 'k+', 'markersize', 16, 'linewidth', 2);
 %     sigstar([],res_data,1);
 %     %         end
 % end
-set(gca, 'xtick', 1:8)
+
+% set(gca, 'xtick', 1:8)
 xlabel("Condition")
 ylabel("Time to find (s)")
 ax = gca;
@@ -446,18 +456,19 @@ q(any(any(isnan(q),3),2),:,:) = [];
 for i = 1:size(q,3)
     subplot(2,3,i)
     [p_data, tbl_data, stats_data]=friedman(q(:,:,i), 1, 'off');
-    plot(q(:,:,i)', '-o', 'markersize', 12, 'color', ones(1,3)*.5, 'markerface', ones(1,3)*.75);
-    hold on;
-    plot(median(q(:,:,i)), 'k+', 'markersize', 16, 'linewidth', 2);
+    % plot(q(:,:,i)', '-o', 'markersize', 12, 'color', ones(1,3)*.5, 'markerface', ones(1,3)*.75);
+    % hold on;
+    % plot(median(q(:,:,i)), 'k+', 'markersize', 16, 'linewidth', 2);
+    boxchart(q(:,:,i))
     title(p_data)
-    if p_data < 0.05
-        res_data=multcompare(stats_data, 'Ctype','bonferroni', 'Display', 'off');
-        %         if disp1
-
-        sigstar([],res_data,1);
-        %         end
-    end
-    set(gca, 'xtick', 1:8)
+    % if p_data < 0.05
+    %     res_data=multcompare(stats_data, 'Ctype','bonferroni', 'Display', 'off');
+    %     %         if disp1
+    % 
+    %     sigstar([],res_data,1);
+    %     %         end
+    % end
+    % set(gca, 'xtick', 1:8)
     xlabel("Condition")
     ylabel("TLX Score")
     str = [questions(i),' ',num2str(p_data) ];
@@ -787,14 +798,14 @@ ax.FontSize = 18;
 ax.TickLabelInterpreter = 'latex';
 ax.XTickLabel = trialName;
 
-%% Dwell time percent inside mini-map
-figure(3)
+%% Dwell time percent inside screen (Situational Awareness)
+figure(4)
 c = 1;
 percentDwellTime = [];
 trials = strings;
 for ii = 1:numel(subject)
     for j = 2:numel(trialNum)
-        fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','percentDwellMiniMap.csv'];
+        fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','percentDwellScreen.csv'];
         if isfile(fileName)
             percentDwellTime(ii,j-1) = mean(readmatrix(fileName));
             c = c + 1;
@@ -829,7 +840,7 @@ ax.TickLabelInterpreter = 'latex';
 ax.XTickLabel = trialName;
 
 %% Freeze time
-figure(3)
+
 c = 1;
 completeStop = [];
 partialStop = [];
@@ -851,28 +862,29 @@ for ii = 1:numel(subject)
     end
 end
 
-subplot(1,2,1)
+figure
 [p_data, tbl_data, stats_data]=friedman(completeStop, 1, 'off');
-plot(completeStop', '-o', 'markersize', 12, 'color', ones(1,3)*.5, 'markerface', ones(1,3)*.75);
-hold on;
-plot(median(completeStop), 'k+', 'markersize', 16, 'linewidth', 2);
-title(p_data)
-if p_data < 0.05
-    res_data=multcompare(stats_data, 'Ctype','bonferroni', 'Display', 'off');
-    %         if disp1
-
-    sigstar([],res_data,1);
-    %         end
-end
-set(gca, 'xtick', 1:8)
+% plot(completeStop', '-o', 'markersize', 12, 'color', ones(1,3)*.5, 'markerface', ones(1,3)*.75);
+% hold on;
+% plot(median(completeStop), 'k+', 'markersize', 16, 'linewidth', 2);
+boxchart(completeStop);
+% title(p_data)
+% if p_data < 0.05
+%     res_data=multcompare(stats_data, 'Ctype','bonferroni', 'Display', 'off');
+%     %         if disp1
+% 
+%     sigstar([],res_data,1);
+%     %         end
+% end
+% set(gca, 'xtick', 1:8)
 xlabel("Condition")
-ylabel("Complete Stop")
+ylabel("Fraction freeze time")
 ax = gca;
 ax.FontSize = 18;
 ax.TickLabelInterpreter = 'latex';
 ax.XTickLabel = trialName;
 
-subplot(1,2,2)
+figure
 [p_data, tbl_data, stats_data]=friedman(partialStop, 1, 'off');
 plot(partialStop', '-o', 'markersize', 12, 'color', ones(1,3)*.5, 'markerface', ones(1,3)*.75);
 hold on;
@@ -885,7 +897,7 @@ if p_data < 0.05
     sigstar([],res_data,1);
     %         end
 end
-set(gca, 'xtick', 1:8)
+% set(gca, 'xtick', 1:8)
 xlabel("Condition")
 ylabel("Partial Stop")
 ax = gca;

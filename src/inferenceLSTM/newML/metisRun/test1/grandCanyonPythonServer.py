@@ -97,6 +97,7 @@ def stopServer():
     text_area.insert(INSERT, f"Stop Button Pressed {safeCount} times\n")
     if safeCount >= 3:
         run = False
+        safeCount = 0
 
 mainWin = Tk()
 mainWin.title("Python Server")

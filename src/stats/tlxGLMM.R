@@ -22,7 +22,7 @@ library(interactions)
 #read glm file
 delim = ","
 dec = "."
-testResults = read.csv("E:/GrandCanyonSAR_analysis/src/stats/outputTables/frustrationTLX.csv", header=TRUE, sep=delim, dec=dec, stringsAsFactors=FALSE)
+testResults = read.csv("E:/GrandCanyonSAR_analysis/src/stats/outputTables/temporalTLX.csv", header=TRUE, sep=delim, dec=dec, stringsAsFactors=FALSE)
 #mentalTLX, physicalTLX, performanceTLX, effortTLX, frustrationTLX
 
 # Set predictors as categorical variables
@@ -35,7 +35,7 @@ levels(testResults$SwarmCohesion) <- c('Low', 'High')
 levels(testResults$TargetKnowledge) <- c('No', 'Yes')
 levels(testResults$TerrainKnowledge) <- c('No', 'Yes')
 
-mod0 = glm(FrustrationTLX ~ 1 + SwarmCohesion + TargetKnowledge + TerrainKnowledge , family = gaussian(link="identity"), data = testResults)
+mod0 = glm(TemporalTLX ~ 1 + SwarmCohesion + TargetKnowledge + TerrainKnowledge , family = gaussian(link="identity"), data = testResults)
 summary(mod0)
 #mod0 = glm(MentalTLX ~ 1 , family = gaussian(link="identity"), data = testResults)
 #mod1 = glm(MentalTLX ~ 1 + SwarmCohesion  , family = gaussian(link="identity"), data = testResults)

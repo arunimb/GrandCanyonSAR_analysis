@@ -36,11 +36,11 @@ levels(testResults$TargetKnowledge) <- c('No', 'Yes')
 levels(testResults$TerrainKnowledge) <- c('No', 'Yes')
 
 
-mod0 = glm(performance ~ 1 , family = gaussian(link="identity"), data = testResults)
-mod1 = glm(performance ~ 1 + SwarmCohesion  , family = gaussian(link="identity"), data = testResults)
-mod2 = glm(performance ~ 1 + SwarmCohesion + TargetKnowledge , family = gaussian(link="identity"), data = testResults)
-mod3 = glm(performance ~ 1 + SwarmCohesion + TargetKnowledge + TerrainKnowledge , family = gaussian(link="identity"), data = testResults)
-mod4 = glm(performance ~ 1 + SwarmCohesion + TargetKnowledge + TerrainKnowledge + SwarmCohesion * TargetKnowledge , family = gaussian(link="identity"), data = testResults)
+#mod0 = glm(performance ~ 1 , family = gaussian(link="identity"), data = testResults)
+#mod1 = glm(performance ~ 1 + SwarmCohesion  , family = gaussian(link="identity"), data = testResults)
+#mod2 = glm(performance ~ 1 + SwarmCohesion + TargetKnowledge , family = gaussian(link="identity"), data = testResults)
+mod0 = glm(performance ~ 1 + SwarmCohesion + TargetKnowledge + TerrainKnowledge , family = gaussian(link="identity"), data = testResults)
+#mod4 = glm(performance ~ 1 + SwarmCohesion + TargetKnowledge + TerrainKnowledge + SwarmCohesion * TargetKnowledge , family = gaussian(link="identity"), data = testResults)
 models <- list(mod0,mod1,mod2,mod3)
 aictab(cand.set = models, modnames = c('mod0','mod1','mod2','mod3'))
 # Model comparison 

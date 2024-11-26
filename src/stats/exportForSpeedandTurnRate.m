@@ -15,21 +15,29 @@ subjectAliases = [];
 swarmCohesion = [];
 targetKnowledge = [];
 terrainKnowledge = [];
-cogWindow = [];
 c = 1;
-time2finish = [];
+d = 1;
+avgSpeed = [];
+avgTurnRate = [];
 trials = strings;
 
 
 
 for ii = 1:numel(subject)
-    csvfileName = 'time_to_finish.csv';
+    csvfileName1 = 'avgSpeed.csv';
+    csvfileName2 = 'avgTurnRate.csv';
+    csvfileName3 = ['time_to_finish.csv'];
     for jj = 1:numel(trialNum)
-        fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(jj)),'\',csvfileName];
+        fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(jj)),'\',csvfileName1];
+        fileName3 = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(jj)),'\',csvfileName3];
+        time2finish = readmatrix(fileName3);
         if isfile(fileName)
-            time2finish(c) = readmatrix(fileName);
-            if(time2finish(c)>=599)
-                time2finish(c) = nan;
+            
+            if(time2finish>=599)
+                avgSpeed(c) = nan;
+            end
+            if(time2finish<599)
+                avgSpeed(c) = readmatrix(fileName);
             end            
             swarmCohesion(c)  = cKnowledge(jj);
             targetKnowledge(c)  = tarKnowledge(jj);
@@ -38,16 +46,44 @@ for ii = 1:numel(subject)
             c = c + 1;
         end
         if ~isfile(fileName)
-            time2finish(c) = nan;
+            avgSpeed(c) = nan;
             swarmCohesion(c)  = cKnowledge(jj);
             targetKnowledge(c)  = tarKnowledge(jj);
             terrainKnowledge(c)  = terKnowledge(jj);
             c = c + 1;
         end
     end
+    for jj = 1:numel(trialNum)
+        fileName = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(jj)),'\',csvfileName2];
+        fileName3 = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(jj)),'\',csvfileName3];
+        time2finish = readmatrix(fileName3);
+        if isfile(fileName)
+            if(time2finish>=599)
+                avgTurnRate(d) = nan;
+            end
+            if(time2finish<599)
+                avgTurnRate(d) = readmatrix(fileName);
+            end
+            
+            swarmCohesion(d)  = cKnowledge(jj);
+            targetKnowledge(d)  = tarKnowledge(jj);
+            terrainKnowledge(d)  = terKnowledge(jj);
+
+            d = d + 1;
+        end
+        if ~isfile(fileName)
+            avgTurnRate(d) = nan;
+            swarmCohesion(d)  = cKnowledge(jj);
+            targetKnowledge(d)  = tarKnowledge(jj);
+            terrainKnowledge(d)  = terKnowledge(jj);
+            d = d + 1;
+        end
+    end
 end
-preTable = [time2finish',swarmCohesion',targetKnowledge',terrainKnowledge'];
-preTable(any(isnan(preTable),2),:) = [];
+preTable1 = [avgSpeed',swarmCohesion',targetKnowledge',terrainKnowledge'];
+preTable1(any(isnan(preTable1),2),:) = [];
+preTable2 = [avgTurnRate',swarmCohesion',targetKnowledge',terrainKnowledge'];
+preTable2(any(isnan(preTable2),2),:) = [];
 
 % meanOfCog = mean(preTable(:,1));
 % stdOfCog = std(preTable(:,1));
@@ -58,6 +94,9 @@ preTable(any(isnan(preTable),2),:) = [];
 % 
 % end
 % preTable(any(isnan(preTable),2),:) = [];
-outputTable = array2table(preTable,...
-    'VariableNames',{'performance','SwarmCohesion','TargetKnowledge','TerrainKnowledge'});
-writetable(outputTable,['outputTables/outputForPerformanceGLMM_GrandCanyon_trialsUnder600.csv'],'Delimiter',',');
+outputTable1 = array2table(preTable1,...
+    'VariableNames',{'avgSpeed','SwarmCohesion','TargetKnowledge','TerrainKnowledge'});
+outputTable2 = array2table(preTable2,...
+    'VariableNames',{'avgTurnRate','SwarmCohesion','TargetKnowledge','TerrainKnowledge'});
+writetable(outputTable1,['outputTables/outputForSpeedGLMM_GrandCanyon_trialsUnder600.csv'],'Delimiter',',');
+writetable(outputTable2,['outputTables/outputForTurnRateGLMM_GrandCanyon_trialsUnder600.csv'],'Delimiter',',');
