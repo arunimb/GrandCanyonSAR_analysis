@@ -10,7 +10,7 @@ trialNames = {'NN','YN','NY','YY'};  % Person, Terrain, Swarm cohesion
 trialNum = [111,211,121,221,112,212,122,222];
 trialNumPairs = [111,112;211,212;121,122;221,222];
 trialNumIndices = [1,5;2,6;3,7;4,8];
-auvNumber = 5; %[5 10 15]
+auvNumber = 15; %[5 10 15]
 numRuns = [1];
 humanTimeToLand = 15;
 simulationMode = {'closedLoopType1','closedLoopType2','closedLoopType3','closedLoopType4','randomSearch','spiralSearch'};
@@ -39,12 +39,30 @@ for ii = 1:numel(subject)
         end
     end
 end
+time2FinishBySubject = time2FinishBySubject';
+humanSuccessOrNot = humanSuccessOrNot';
+targetFoundOrNotCombinedCnUC = nan*ones(4,20);
+netSearchTimeCombinedCnUC = nan*ones(4,20);
+for i = 1:4
+    for j = 1:20
+        targetFoundOrNotCombinedCnUC(i,j) = 0.5*(humanSuccessOrNot(i,j)+humanSuccessOrNot(i+4,j));
+        if(~isnan(time2FinishBySubject(i,j)) && ~isnan(time2FinishBySubject(i+4,j)))
+            netSearchTimeCombinedCnUC(i,j) = 0.5*(time2FinishBySubject(i,j)+time2FinishBySubject(i+4,j));
+        elseif (~isnan(time2FinishBySubject(i,j)) && isnan(time2FinishBySubject(i+4,j)))
+            netSearchTimeCombinedCnUC(i,j) = time2FinishBySubject(i,j);
+        elseif (isnan(time2FinishBySubject(i,j)) && ~isnan(time2FinishBySubject(i+4,j)))
+            netSearchTimeCombinedCnUC(i,j) = time2FinishBySubject(i+4,j);
+        end
+    end  
+end
+targetFoundOrNotCombinedCnUC = targetFoundOrNotCombinedCnUC';
+netSearchTimeCombinedCnUC = netSearchTimeCombinedCnUC';
 
-closedLoop = [];
-spiralRandom = [];
-spriralFollow = [];
-random = [];
-follow = [];
+meanTargetFoundOrNotCombinedCnUC = nanmean(targetFoundOrNotCombinedCnUC);
+%meanNetSearchTimeCombinedCnUC = nanmean(netSearchTimeCombinedCnUC);
+
+fractionHumanTargetsFound = meanTargetFoundOrNotCombinedCnUC;
+humanTime = netSearchTimeCombinedCnUC;
 
 %% ClosedLoop1 Search
 targetFoundBySwarm = zeros(numel(trialNum),20);
@@ -97,111 +115,33 @@ for i = 1:numel(subject)
             end
             targetFoundOrNot(j,i) = foundOrNot;
             netSearchTime(j,i) = minSearchTime;
-
-            % if(swarmSearchLength < 0)
-            %     swarmTimeFound(j,i) = nan;
-            %     if(humanSearchLength >= 599)
-            %         netSearchTime(j,i) = 600;
-            %         targetFoundOrNot(j,i) = 0;
-            %     end
-            %     if(humanSearchLength < 599)
-            %         netSearchTime(j,i) = humanSearchLength;
-            %     end
-            % 
-            % end
-            % 
-            % if(swarmSearchLength > 0)
-            %     targetFoundBySwarm(j,i) = 1;
-            %     swarmTimeFound(j,i) = swarmSearchLength;
-            %     if(swarmSearchLength > humanSearchLength)
-            %         netSearchTime(j,i) = humanSearchLength;
-            %         targetFoundOrNot(j,i) = 0;
-            %     end
-            %     if(swarmSearchLength < humanSearchLength - humanTimeToLand)
-            %         netSearchTime(j,i) = swarmSearchLength;
-            %         targetFoundOrNot(j,i) = 1;
-            %         swarmTimeGained(j,i) = humanSearchLength - humanTimeToLand - swarmSearchLength;
-            %     end
-            % end
         end
     end
 end
 
-targetFoundBySwarmOrNot = [];
-targetFoundOrNotReshaped = [];
-swarmTimeGainedReshaped = [];
-netSearchTimeReshaped = [];
-swarmSearchTimeReshaped = [];
-for i = 1:size(swarmTimeGained,2)
-    targetFoundOrNotReshaped = [targetFoundOrNotReshaped;targetFoundOrNot(:,i)'];
-    swarmTimeGainedReshaped = [swarmTimeGainedReshaped;swarmTimeGained(:,i)'];
-    netSearchTimeReshaped = [netSearchTimeReshaped;netSearchTime(:,i)'];
-    targetFoundBySwarmOrNot = [targetFoundBySwarmOrNot;targetFoundBySwarm(:,i)'];
-    swarmSearchTimeReshaped = [swarmSearchTimeReshaped;swarmTimeFound(:,i)'];
-end
-%% replace nan value with the value equal to its corresponding trial value
-for i = 1:size(swarmSearchTimeReshaped,2)
-    for j = 1:size(trialNumIndices,1)
-        if(isnan(swarmSearchTimeReshaped(i,trialNumIndices(j,1))) && ~isnan(swarmSearchTimeReshaped(i,trialNumIndices(j,2))))
-            swarmSearchTimeReshaped(i,trialNumIndices(j,1)) = swarmSearchTimeReshaped(i,trialNumIndices(j,2));
+targetFoundOrNotCombinedCnUC = -1*ones(4,20);
+netSearchTimeCombinedCnUC = -1*ones(4,20);
+for i = 1:4
+    for j = 1:20
+        targetFoundOrNotCombinedCnUC(i,j) = 0.5*(targetFoundOrNot(i,j)+targetFoundOrNot(i+4,j));
+        if(~isnan(netSearchTime(i,j)) && ~isnan(netSearchTime(i+4,j)))
+            netSearchTimeCombinedCnUC(i,j) = 0.5*(netSearchTime(i,j)+netSearchTime(i+4,j));
+        elseif (~isnan(netSearchTime(i,j)) && isnan(netSearchTime(i+4,j)))
+            netSearchTimeCombinedCnUC(i,j) = netSearchTime(i,j);
+        elseif (isnan(netSearchTime(i,j)) && ~isnan(netSearchTime(i+4,j)))
+            netSearchTimeCombinedCnUC(i,j) = netSearchTime(i+4,j);
         end
-        if(isnan(swarmSearchTimeReshaped(i,trialNumIndices(j,2))) && ~isnan(swarmSearchTimeReshaped(i,trialNumIndices(j,1))))
-            swarmSearchTimeReshaped(i,trialNumIndices(j,2)) = swarmSearchTimeReshaped(i,trialNumIndices(j,1));
-        end
-    end
-    %swarmSearchTimeReshaped = [swarmSearchTimeReshaped;swarmTimeFound(:,i)'];
+    end  
 end
+targetFoundOrNotCombinedCnUC = targetFoundOrNotCombinedCnUC';
+netSearchTimeCombinedCnUC = netSearchTimeCombinedCnUC';
 
-% Do the stats
-% Throw away zeros
-%% average clustered+unclustered
-tempp1 = [];
-tempp2 = [];
-tempp3 = [];
-for i = 1:size(trialNumIndices,1)
-    tempp1(:,i) = (swarmTimeGainedReshaped(:,trialNumIndices(i,1))+swarmTimeGainedReshaped(:,trialNumIndices(i,2)))/2;
-    tempp2(:,i) = (netSearchTimeReshaped(:,trialNumIndices(i,1))+netSearchTimeReshaped(:,trialNumIndices(i,2)))/2;
-    tempp3(:,i) = (swarmSearchTimeReshaped(:,trialNumIndices(i,1))+swarmSearchTimeReshaped(:,trialNumIndices(i,2)))/2;
-end
+meanTargetFoundOrNotCombinedCnUC = nanmean(targetFoundOrNotCombinedCnUC);
+%meanNetSearchTimeCombinedCnUC = nanmean(netSearchTimeCombinedCnUC);
 
-%% sum clustered+unclustered
-tempp4  = [];
-tempp5  = [];
-for i = 1:size(trialNumIndices,1)
-    tempp4(:,i)= targetFoundOrNotReshaped(:,trialNumIndices(i,1))+targetFoundOrNotReshaped(:,trialNumIndices(i,2));
-    tempp5(:,i)= targetFoundBySwarm(:,trialNumIndices(i,1))+targetFoundBySwarm(:,trialNumIndices(i,2));
-end
+fractionClosedLoop1TargetsFound = meanTargetFoundOrNotCombinedCnUC;
+swarmTimeClosedLoop1 = netSearchTimeCombinedCnUC;
 
-swarmTimeGainedReshaped = tempp1;
-netSearchTimeReshaped = tempp2;
-swarmSearchTimeReshaped = tempp3;
-targetFoundOrNotReshaped = tempp4;
-targetFoundBySwarm = tempp5;
-
-
-
-swarmTimeGainedReshaped(swarmTimeGainedReshaped == 0) = nan;
-netSearchTimeReshaped(netSearchTimeReshaped == 0) = nan;
-meanSwarmTimeGainedReshaped = nanmean(swarmTimeGainedReshaped);
-stdSwarmTimeGainedReshaped = nanstd(swarmTimeGainedReshaped);
-
-meanSwarmTimeReshaped = nanmean(swarmSearchTimeReshaped); %%
-stdSwarmTimeReshaped = nanstd(swarmSearchTimeReshaped); %%
-
-meanHsiSearchTime = nanmean(netSearchTimeReshaped);
-stdHsiSearchTime = nanstd(netSearchTimeReshaped);
-
-
-sumTargetFoundOrNotReshaped = sum(targetFoundBySwarm);
-fractionOfTrialsTargetFound = sumTargetFoundOrNotReshaped./size(targetFoundBySwarm,1)/2;
-
-meanClosedLoop1Time = meanSwarmTimeReshaped; %%
-stdClosedLoop1Time = stdSwarmTimeReshaped; %%
-meanClosedLoop1SwarmTime = meanHsiSearchTime;
-stdClosedLoop1SwarmTime = stdHsiSearchTime;
-
-fractionClosedLoop1TargetsFound = fractionOfTrialsTargetFound; %%
-swarmTimeClosedLoop1 = swarmSearchTimeReshaped; %%
 
 %%  %% closed loop 2
 
@@ -231,110 +171,56 @@ for i = 1:numel(subject)
             swarmSearchLength = readmatrix(fileNameForTrial);
             humanSearchLength = readmatrix([preFolder, cell2mat(subject(i)),'\',num2str(trialNum(j)),'\','time_to_finish.csv']);
 
+            minSearchTime=[];
+            foundOrNot = [];
             if(swarmSearchLength < 0)
-                swarmTimeFound(j,i) = nan;
-                if(humanSearchLength >= 599)
-                    netSearchTime(j,i) = 600;
-                    targetFoundOrNot(j,i) = 0;
-                end
                 if(humanSearchLength < 599)
-                    netSearchTime(j,i) = humanSearchLength;
+                    minSearchTime = humanSearchLength;
+                    foundOrNot = 1;
+                else 
+                    minSearchTime = nan;
+                    foundOrNot = 0;
                 end
-                
+            else
+                if(humanSearchLength >= 599)
+                    minSearchTime = swarmSearchLength;
+                    foundOrNot = 1;
+                elseif(humanSearchLength < swarmSearchLength)
+                    minSearchTime = humanSearchLength;
+                    foundOrNot = 1;
+                elseif(humanSearchLength > swarmSearchLength)
+                    minSearchTime = swarmSearchLength;
+                    foundOrNot = 1;
+                end
             end
-
-            if(swarmSearchLength > 0)
-                targetFoundBySwarm(j,i) = 1;
-                swarmTimeFound(j,i) = swarmSearchLength;
-                if(swarmSearchLength > humanSearchLength)
-                    netSearchTime(j,i) = humanSearchLength;
-                    targetFoundOrNot(j,i) = 0;
-                end
-                if(swarmSearchLength < humanSearchLength - humanTimeToLand)
-                    netSearchTime(j,i) = swarmSearchLength;
-                    targetFoundOrNot(j,i) = 1;
-                    swarmTimeGained(j,i) = humanSearchLength - humanTimeToLand - swarmSearchLength;
-                end
-            end
+            targetFoundOrNot(j,i) = foundOrNot;
+            netSearchTime(j,i) = minSearchTime;
         end
     end
 end
 
-targetFoundBySwarmOrNot = [];
-targetFoundOrNotReshaped = [];
-swarmTimeGainedReshaped = [];
-netSearchTimeReshaped = [];
-swarmSearchTimeReshaped = [];
-for i = 1:size(swarmTimeGained,2)
-    targetFoundOrNotReshaped = [targetFoundOrNotReshaped;targetFoundOrNot(:,i)'];
-    swarmTimeGainedReshaped = [swarmTimeGainedReshaped;swarmTimeGained(:,i)'];
-    netSearchTimeReshaped = [netSearchTimeReshaped;netSearchTime(:,i)'];
-    targetFoundBySwarmOrNot = [targetFoundBySwarmOrNot;targetFoundBySwarm(:,i)'];
-    swarmSearchTimeReshaped = [swarmSearchTimeReshaped;swarmTimeFound(:,i)'];
-end
-%% replace nan value with the value equal to its corresponding trial value
-for i = 1:size(swarmSearchTimeReshaped,2)
-    for j = 1:size(trialNumIndices,1)
-        if(isnan(swarmSearchTimeReshaped(i,trialNumIndices(j,1))) && ~isnan(swarmSearchTimeReshaped(i,trialNumIndices(j,2))))
-            swarmSearchTimeReshaped(i,trialNumIndices(j,1)) = swarmSearchTimeReshaped(i,trialNumIndices(j,2));
+targetFoundOrNotCombinedCnUC = -1*ones(4,20);
+netSearchTimeCombinedCnUC = -1*ones(4,20);
+for i = 1:4
+    for j = 1:20
+        targetFoundOrNotCombinedCnUC(i,j) = 0.5*(targetFoundOrNot(i,j)+targetFoundOrNot(i+4,j));
+        if(~isnan(netSearchTime(i,j)) && ~isnan(netSearchTime(i+4,j)))
+            netSearchTimeCombinedCnUC(i,j) = 0.5*(netSearchTime(i,j)+netSearchTime(i+4,j));
+        elseif (~isnan(netSearchTime(i,j)) && isnan(netSearchTime(i+4,j)))
+            netSearchTimeCombinedCnUC(i,j) = netSearchTime(i,j);
+        elseif (isnan(netSearchTime(i,j)) && ~isnan(netSearchTime(i+4,j)))
+            netSearchTimeCombinedCnUC(i,j) = netSearchTime(i+4,j);
         end
-        if(isnan(swarmSearchTimeReshaped(i,trialNumIndices(j,2))) && ~isnan(swarmSearchTimeReshaped(i,trialNumIndices(j,1))))
-            swarmSearchTimeReshaped(i,trialNumIndices(j,2)) = swarmSearchTimeReshaped(i,trialNumIndices(j,1));
-        end
-    end
-    %swarmSearchTimeReshaped = [swarmSearchTimeReshaped;swarmTimeFound(:,i)'];
+    end  
 end
+targetFoundOrNotCombinedCnUC = targetFoundOrNotCombinedCnUC';
+netSearchTimeCombinedCnUC = netSearchTimeCombinedCnUC';
 
-% Do the stats
-% Throw away zeros
-%% average clustered+unclustered
-tempp1 = [];
-tempp2 = [];
-tempp3 = [];
-for i = 1:size(trialNumIndices,1)
-    tempp1(:,i) = (swarmTimeGainedReshaped(:,trialNumIndices(i,1))+swarmTimeGainedReshaped(:,trialNumIndices(i,2)))/2;
-    tempp2(:,i) = (netSearchTimeReshaped(:,trialNumIndices(i,1))+netSearchTimeReshaped(:,trialNumIndices(i,2)))/2;
-    tempp3(:,i) = (swarmSearchTimeReshaped(:,trialNumIndices(i,1))+swarmSearchTimeReshaped(:,trialNumIndices(i,2)))/2;
-end
+meanTargetFoundOrNotCombinedCnUC = nanmean(targetFoundOrNotCombinedCnUC);
+%meanNetSearchTimeCombinedCnUC = nanmean(netSearchTimeCombinedCnUC);
 
-%% sum clustered+unclustered
-tempp4  = [];
-tempp5  = [];
-for i = 1:size(trialNumIndices,1)
-    tempp4(:,i)= targetFoundOrNotReshaped(:,trialNumIndices(i,1))+targetFoundOrNotReshaped(:,trialNumIndices(i,2));
-    tempp5(:,i)= targetFoundBySwarm(:,trialNumIndices(i,1))+targetFoundBySwarm(:,trialNumIndices(i,2));
-end
-
-swarmTimeGainedReshaped = tempp1;
-netSearchTimeReshaped = tempp2;
-swarmSearchTimeReshaped = tempp3;
-targetFoundOrNotReshaped = tempp4;
-targetFoundBySwarm = tempp5;
-
-
-
-swarmTimeGainedReshaped(swarmTimeGainedReshaped == 0) = nan;
-netSearchTimeReshaped(netSearchTimeReshaped == 0) = nan;
-meanSwarmTimeGainedReshaped = nanmean(swarmTimeGainedReshaped);
-stdSwarmTimeGainedReshaped = nanstd(swarmTimeGainedReshaped);
-
-meanSwarmTimeReshaped = nanmean(swarmSearchTimeReshaped); %%
-stdSwarmTimeReshaped = nanstd(swarmSearchTimeReshaped); %%
-
-meanHsiSearchTime = nanmean(netSearchTimeReshaped);
-stdHsiSearchTime = nanstd(netSearchTimeReshaped);
-
-
-sumTargetFoundOrNotReshaped = sum(targetFoundBySwarm);
-fractionOfTrialsTargetFound = sumTargetFoundOrNotReshaped./size(targetFoundBySwarm,1)/2;
-
-meanClosedLoop2Time = meanSwarmTimeReshaped; %%
-stdClosedLoop2Time = stdSwarmTimeReshaped; %%
-meanClosedLoop2SwarmTime = meanHsiSearchTime;
-stdClosedLoop2SwarmTime = stdHsiSearchTime;
-
-fractionClosedLoop2TargetsFound = fractionOfTrialsTargetFound; %%
-swarmTimeClosedLoop2 = swarmSearchTimeReshaped; %%
+fractionClosedLoop2TargetsFound = meanTargetFoundOrNotCombinedCnUC;
+swarmTimeClosedLoop2 = netSearchTimeCombinedCnUC;
 
 %%  %% closed loop 3
 
@@ -364,111 +250,56 @@ for i = 1:numel(subject)
             swarmSearchLength = readmatrix(fileNameForTrial);
             humanSearchLength = readmatrix([preFolder, cell2mat(subject(i)),'\',num2str(trialNum(j)),'\','time_to_finish.csv']);
 
+            minSearchTime=[];
+            foundOrNot = [];
             if(swarmSearchLength < 0)
-                swarmTimeFound(j,i) = nan;
-                if(humanSearchLength >= 599)
-                    netSearchTime(j,i) = 600;
-                    targetFoundOrNot(j,i) = 0;
-                end
                 if(humanSearchLength < 599)
-                    netSearchTime(j,i) = humanSearchLength;
+                    minSearchTime = humanSearchLength;
+                    foundOrNot = 1;
+                else 
+                    minSearchTime = nan;
+                    foundOrNot = 0;
                 end
-                
+            else
+                if(humanSearchLength >= 599)
+                    minSearchTime = swarmSearchLength;
+                    foundOrNot = 1;
+                elseif(humanSearchLength < swarmSearchLength)
+                    minSearchTime = humanSearchLength;
+                    foundOrNot = 1;
+                elseif(humanSearchLength > swarmSearchLength)
+                    minSearchTime = swarmSearchLength;
+                    foundOrNot = 1;
+                end
             end
-
-            if(swarmSearchLength > 0)
-                targetFoundBySwarm(j,i) = 1;
-                swarmTimeFound(j,i) = swarmSearchLength;
-                if(swarmSearchLength > humanSearchLength)
-                    netSearchTime(j,i) = humanSearchLength;
-                    targetFoundOrNot(j,i) = 0;
-                end
-                if(swarmSearchLength < humanSearchLength - humanTimeToLand)
-                    netSearchTime(j,i) = swarmSearchLength;
-                    targetFoundOrNot(j,i) = 1;
-                    swarmTimeGained(j,i) = humanSearchLength - humanTimeToLand - swarmSearchLength;
-                end
-            end
+            targetFoundOrNot(j,i) = foundOrNot;
+            netSearchTime(j,i) = minSearchTime;
         end
     end
 end
 
-targetFoundBySwarmOrNot = [];
-targetFoundOrNotReshaped = [];
-swarmTimeGainedReshaped = [];
-netSearchTimeReshaped = [];
-swarmSearchTimeReshaped = [];
-for i = 1:size(swarmTimeGained,2)
-    targetFoundOrNotReshaped = [targetFoundOrNotReshaped;targetFoundOrNot(:,i)'];
-    swarmTimeGainedReshaped = [swarmTimeGainedReshaped;swarmTimeGained(:,i)'];
-    netSearchTimeReshaped = [netSearchTimeReshaped;netSearchTime(:,i)'];
-    targetFoundBySwarmOrNot = [targetFoundBySwarmOrNot;targetFoundBySwarm(:,i)'];
-    swarmSearchTimeReshaped = [swarmSearchTimeReshaped;swarmTimeFound(:,i)'];
-end
-%% replace nan value with the value equal to its corresponding trial value
-for i = 1:size(swarmSearchTimeReshaped,2)
-    for j = 1:size(trialNumIndices,1)
-        if(isnan(swarmSearchTimeReshaped(i,trialNumIndices(j,1))) && ~isnan(swarmSearchTimeReshaped(i,trialNumIndices(j,2))))
-            swarmSearchTimeReshaped(i,trialNumIndices(j,1)) = swarmSearchTimeReshaped(i,trialNumIndices(j,2));
+targetFoundOrNotCombinedCnUC = -1*ones(4,20);
+netSearchTimeCombinedCnUC = -1*ones(4,20);
+for i = 1:4
+    for j = 1:20
+        targetFoundOrNotCombinedCnUC(i,j) = 0.5*(targetFoundOrNot(i,j)+targetFoundOrNot(i+4,j));
+        if(~isnan(netSearchTime(i,j)) && ~isnan(netSearchTime(i+4,j)))
+            netSearchTimeCombinedCnUC(i,j) = 0.5*(netSearchTime(i,j)+netSearchTime(i+4,j));
+        elseif (~isnan(netSearchTime(i,j)) && isnan(netSearchTime(i+4,j)))
+            netSearchTimeCombinedCnUC(i,j) = netSearchTime(i,j);
+        elseif (isnan(netSearchTime(i,j)) && ~isnan(netSearchTime(i+4,j)))
+            netSearchTimeCombinedCnUC(i,j) = netSearchTime(i+4,j);
         end
-        if(isnan(swarmSearchTimeReshaped(i,trialNumIndices(j,2))) && ~isnan(swarmSearchTimeReshaped(i,trialNumIndices(j,1))))
-            swarmSearchTimeReshaped(i,trialNumIndices(j,2)) = swarmSearchTimeReshaped(i,trialNumIndices(j,1));
-        end
-    end
-    %swarmSearchTimeReshaped = [swarmSearchTimeReshaped;swarmTimeFound(:,i)'];
+    end  
 end
+targetFoundOrNotCombinedCnUC = targetFoundOrNotCombinedCnUC';
+netSearchTimeCombinedCnUC = netSearchTimeCombinedCnUC';
 
-% Do the stats
-% Throw away zeros
-%% average clustered+unclustered
-tempp1 = [];
-tempp2 = [];
-tempp3 = [];
-for i = 1:size(trialNumIndices,1)
-    tempp1(:,i) = (swarmTimeGainedReshaped(:,trialNumIndices(i,1))+swarmTimeGainedReshaped(:,trialNumIndices(i,2)))/2;
-    tempp2(:,i) = (netSearchTimeReshaped(:,trialNumIndices(i,1))+netSearchTimeReshaped(:,trialNumIndices(i,2)))/2;
-    tempp3(:,i) = (swarmSearchTimeReshaped(:,trialNumIndices(i,1))+swarmSearchTimeReshaped(:,trialNumIndices(i,2)))/2;
-end
+meanTargetFoundOrNotCombinedCnUC = nanmean(targetFoundOrNotCombinedCnUC);
+%meanNetSearchTimeCombinedCnUC = nanmean(netSearchTimeCombinedCnUC);
 
-%% sum clustered+unclustered
-tempp4  = [];
-tempp5  = [];
-for i = 1:size(trialNumIndices,1)
-    tempp4(:,i)= targetFoundOrNotReshaped(:,trialNumIndices(i,1))+targetFoundOrNotReshaped(:,trialNumIndices(i,2));
-    tempp5(:,i)= targetFoundBySwarm(:,trialNumIndices(i,1))+targetFoundBySwarm(:,trialNumIndices(i,2));
-end
-
-swarmTimeGainedReshaped = tempp1;
-netSearchTimeReshaped = tempp2;
-swarmSearchTimeReshaped = tempp3;
-targetFoundOrNotReshaped = tempp4;
-targetFoundBySwarm = tempp5;
-
-
-
-swarmTimeGainedReshaped(swarmTimeGainedReshaped == 0) = nan;
-netSearchTimeReshaped(netSearchTimeReshaped == 0) = nan;
-meanSwarmTimeGainedReshaped = nanmean(swarmTimeGainedReshaped);
-stdSwarmTimeGainedReshaped = nanstd(swarmTimeGainedReshaped);
-
-meanSwarmTimeReshaped = nanmean(swarmSearchTimeReshaped); %%
-stdSwarmTimeReshaped = nanstd(swarmSearchTimeReshaped); %%
-
-meanHsiSearchTime = nanmean(netSearchTimeReshaped);
-stdHsiSearchTime = nanstd(netSearchTimeReshaped);
-
-
-sumTargetFoundOrNotReshaped = sum(targetFoundBySwarm);
-fractionOfTrialsTargetFound = sumTargetFoundOrNotReshaped./size(targetFoundBySwarm,1)/2;
-
-meanClosedLoop3Time = meanSwarmTimeReshaped; %%
-stdClosedLoop3Time = stdSwarmTimeReshaped; %%
-meanClosedLoop3SwarmTime = meanHsiSearchTime;
-stdClosedLoop3SwarmTime = stdHsiSearchTime;
-
-fractionClosedLoop3TargetsFound = fractionOfTrialsTargetFound; %%
-swarmTimeClosedLoop3 = swarmSearchTimeReshaped; %%
-
+fractionClosedLoop3TargetsFound = meanTargetFoundOrNotCombinedCnUC;
+swarmTimeClosedLoop3 = netSearchTimeCombinedCnUC;
 %%  %% closed loop 4
 
 targetFoundBySwarm = zeros(numel(trialNum),20);
@@ -497,111 +328,56 @@ for i = 1:numel(subject)
             swarmSearchLength = readmatrix(fileNameForTrial);
             humanSearchLength = readmatrix([preFolder, cell2mat(subject(i)),'\',num2str(trialNum(j)),'\','time_to_finish.csv']);
 
+                        minSearchTime=[];
+            foundOrNot = [];
             if(swarmSearchLength < 0)
-                swarmTimeFound(j,i) = nan;
-                if(humanSearchLength >= 599)
-                    netSearchTime(j,i) = 600;
-                    targetFoundOrNot(j,i) = 0;
-                end
                 if(humanSearchLength < 599)
-                    netSearchTime(j,i) = humanSearchLength;
+                    minSearchTime = humanSearchLength;
+                    foundOrNot = 1;
+                else 
+                    minSearchTime = nan;
+                    foundOrNot = 0;
                 end
-                
+            else
+                if(humanSearchLength >= 599)
+                    minSearchTime = swarmSearchLength;
+                    foundOrNot = 1;
+                elseif(humanSearchLength < swarmSearchLength)
+                    minSearchTime = humanSearchLength;
+                    foundOrNot = 1;
+                elseif(humanSearchLength > swarmSearchLength)
+                    minSearchTime = swarmSearchLength;
+                    foundOrNot = 1;
+                end
             end
-
-            if(swarmSearchLength > 0)
-                targetFoundBySwarm(j,i) = 1;
-                swarmTimeFound(j,i) = swarmSearchLength;
-                if(swarmSearchLength > humanSearchLength)
-                    netSearchTime(j,i) = humanSearchLength;
-                    targetFoundOrNot(j,i) = 0;
-                end
-                if(swarmSearchLength < humanSearchLength - humanTimeToLand)
-                    netSearchTime(j,i) = swarmSearchLength;
-                    targetFoundOrNot(j,i) = 1;
-                    swarmTimeGained(j,i) = humanSearchLength - humanTimeToLand - swarmSearchLength;
-                end
-            end
+            targetFoundOrNot(j,i) = foundOrNot;
+            netSearchTime(j,i) = minSearchTime;
         end
     end
 end
 
-targetFoundBySwarmOrNot = [];
-targetFoundOrNotReshaped = [];
-swarmTimeGainedReshaped = [];
-netSearchTimeReshaped = [];
-swarmSearchTimeReshaped = [];
-for i = 1:size(swarmTimeGained,2)
-    targetFoundOrNotReshaped = [targetFoundOrNotReshaped;targetFoundOrNot(:,i)'];
-    swarmTimeGainedReshaped = [swarmTimeGainedReshaped;swarmTimeGained(:,i)'];
-    netSearchTimeReshaped = [netSearchTimeReshaped;netSearchTime(:,i)'];
-    targetFoundBySwarmOrNot = [targetFoundBySwarmOrNot;targetFoundBySwarm(:,i)'];
-    swarmSearchTimeReshaped = [swarmSearchTimeReshaped;swarmTimeFound(:,i)'];
-end
-%% replace nan value with the value equal to its corresponding trial value
-for i = 1:size(swarmSearchTimeReshaped,2)
-    for j = 1:size(trialNumIndices,1)
-        if(isnan(swarmSearchTimeReshaped(i,trialNumIndices(j,1))) && ~isnan(swarmSearchTimeReshaped(i,trialNumIndices(j,2))))
-            swarmSearchTimeReshaped(i,trialNumIndices(j,1)) = swarmSearchTimeReshaped(i,trialNumIndices(j,2));
+targetFoundOrNotCombinedCnUC = -1*ones(4,20);
+netSearchTimeCombinedCnUC = -1*ones(4,20);
+for i = 1:4
+    for j = 1:20
+        targetFoundOrNotCombinedCnUC(i,j) = 0.5*(targetFoundOrNot(i,j)+targetFoundOrNot(i+4,j));
+        if(~isnan(netSearchTime(i,j)) && ~isnan(netSearchTime(i+4,j)))
+            netSearchTimeCombinedCnUC(i,j) = 0.5*(netSearchTime(i,j)+netSearchTime(i+4,j));
+        elseif (~isnan(netSearchTime(i,j)) && isnan(netSearchTime(i+4,j)))
+            netSearchTimeCombinedCnUC(i,j) = netSearchTime(i,j);
+        elseif (isnan(netSearchTime(i,j)) && ~isnan(netSearchTime(i+4,j)))
+            netSearchTimeCombinedCnUC(i,j) = netSearchTime(i+4,j);
         end
-        if(isnan(swarmSearchTimeReshaped(i,trialNumIndices(j,2))) && ~isnan(swarmSearchTimeReshaped(i,trialNumIndices(j,1))))
-            swarmSearchTimeReshaped(i,trialNumIndices(j,2)) = swarmSearchTimeReshaped(i,trialNumIndices(j,1));
-        end
-    end
-    %swarmSearchTimeReshaped = [swarmSearchTimeReshaped;swarmTimeFound(:,i)'];
+    end  
 end
+targetFoundOrNotCombinedCnUC = targetFoundOrNotCombinedCnUC';
+netSearchTimeCombinedCnUC = netSearchTimeCombinedCnUC';
 
-% Do the stats
-% Throw away zeros
-%% average clustered+unclustered
-tempp1 = [];
-tempp2 = [];
-tempp3 = [];
-for i = 1:size(trialNumIndices,1)
-    tempp1(:,i) = (swarmTimeGainedReshaped(:,trialNumIndices(i,1))+swarmTimeGainedReshaped(:,trialNumIndices(i,2)))/2;
-    tempp2(:,i) = (netSearchTimeReshaped(:,trialNumIndices(i,1))+netSearchTimeReshaped(:,trialNumIndices(i,2)))/2;
-    tempp3(:,i) = (swarmSearchTimeReshaped(:,trialNumIndices(i,1))+swarmSearchTimeReshaped(:,trialNumIndices(i,2)))/2;
-end
+meanTargetFoundOrNotCombinedCnUC = nanmean(targetFoundOrNotCombinedCnUC);
+%meanNetSearchTimeCombinedCnUC = nanmean(netSearchTimeCombinedCnUC);
 
-%% sum clustered+unclustered
-tempp4  = [];
-tempp5  = [];
-for i = 1:size(trialNumIndices,1)
-    tempp4(:,i)= targetFoundOrNotReshaped(:,trialNumIndices(i,1))+targetFoundOrNotReshaped(:,trialNumIndices(i,2));
-    tempp5(:,i)= targetFoundBySwarm(:,trialNumIndices(i,1))+targetFoundBySwarm(:,trialNumIndices(i,2));
-end
-
-swarmTimeGainedReshaped = tempp1;
-netSearchTimeReshaped = tempp2;
-swarmSearchTimeReshaped = tempp3;
-targetFoundOrNotReshaped = tempp4;
-targetFoundBySwarm = tempp5;
-
-
-
-swarmTimeGainedReshaped(swarmTimeGainedReshaped == 0) = nan;
-netSearchTimeReshaped(netSearchTimeReshaped == 0) = nan;
-meanSwarmTimeGainedReshaped = nanmean(swarmTimeGainedReshaped);
-stdSwarmTimeGainedReshaped = nanstd(swarmTimeGainedReshaped);
-
-meanSwarmTimeReshaped = nanmean(swarmSearchTimeReshaped); %%
-stdSwarmTimeReshaped = nanstd(swarmSearchTimeReshaped); %%
-
-meanHsiSearchTime = nanmean(netSearchTimeReshaped);
-stdHsiSearchTime = nanstd(netSearchTimeReshaped);
-
-
-sumTargetFoundOrNotReshaped = sum(targetFoundBySwarm);
-fractionOfTrialsTargetFound = sumTargetFoundOrNotReshaped./size(targetFoundBySwarm,1)/2;
-
-meanClosedLoop4Time = meanSwarmTimeReshaped; %%
-stdClosedLoop4Time = stdSwarmTimeReshaped; %%
-meanClosedLoop4SwarmTime = meanHsiSearchTime;
-stdClosedLoop4SwarmTime = stdHsiSearchTime;
-
-fractionClosedLoop4TargetsFound = fractionOfTrialsTargetFound; %%
-swarmTimeClosedLoop4 = swarmSearchTimeReshaped; %%
-
+fractionClosedLoop4TargetsFound = meanTargetFoundOrNotCombinedCnUC;
+swarmTimeClosedLoop4 = netSearchTimeCombinedCnUC;
 %%  %% random search
 
 targetFoundBySwarm = zeros(numel(trialNum),20);
@@ -630,111 +406,43 @@ for i = 1:numel(subject)
             swarmSearchLength = readmatrix(fileNameForTrial);
             humanSearchLength = readmatrix([preFolder, cell2mat(subject(i)),'\',num2str(trialNum(j)),'\','time_to_finish.csv']);
 
+            minSearchTime=[];
+            foundOrNot = [];
             if(swarmSearchLength < 0)
-                swarmTimeFound(j,i) = nan;
-                if(humanSearchLength >= 599)
-                    netSearchTime(j,i) = 600;
-                    targetFoundOrNot(j,i) = 0;
-                end
-                if(humanSearchLength < 599)
-                    netSearchTime(j,i) = humanSearchLength;
-                end
-                
+                minSearchTime = nan;
+                foundOrNot = 0;
+            else
+                minSearchTime = swarmSearchLength;
+                foundOrNot = 1;
             end
-
-            if(swarmSearchLength > 0)
-                targetFoundBySwarm(j,i) = 1;
-                swarmTimeFound(j,i) = swarmSearchLength;
-                if(swarmSearchLength > humanSearchLength)
-                    netSearchTime(j,i) = humanSearchLength;
-                    targetFoundOrNot(j,i) = 0;
-                end
-                if(swarmSearchLength < humanSearchLength - humanTimeToLand)
-                    netSearchTime(j,i) = swarmSearchLength;
-                    targetFoundOrNot(j,i) = 1;
-                    swarmTimeGained(j,i) = humanSearchLength - humanTimeToLand - swarmSearchLength;
-                end
-            end
+            targetFoundOrNot(j,i) = foundOrNot;
+            netSearchTime(j,i) = minSearchTime;
         end
     end
 end
 
-targetFoundBySwarmOrNot = [];
-targetFoundOrNotReshaped = [];
-swarmTimeGainedReshaped = [];
-netSearchTimeReshaped = [];
-swarmSearchTimeReshaped = [];
-for i = 1:size(swarmTimeGained,2)
-    targetFoundOrNotReshaped = [targetFoundOrNotReshaped;targetFoundOrNot(:,i)'];
-    swarmTimeGainedReshaped = [swarmTimeGainedReshaped;swarmTimeGained(:,i)'];
-    netSearchTimeReshaped = [netSearchTimeReshaped;netSearchTime(:,i)'];
-    targetFoundBySwarmOrNot = [targetFoundBySwarmOrNot;targetFoundBySwarm(:,i)'];
-    swarmSearchTimeReshaped = [swarmSearchTimeReshaped;swarmTimeFound(:,i)'];
-end
-%% replace nan value with the value equal to its corresponding trial value
-for i = 1:size(swarmSearchTimeReshaped,2)
-    for j = 1:size(trialNumIndices,1)
-        if(isnan(swarmSearchTimeReshaped(i,trialNumIndices(j,1))) && ~isnan(swarmSearchTimeReshaped(i,trialNumIndices(j,2))))
-            swarmSearchTimeReshaped(i,trialNumIndices(j,1)) = swarmSearchTimeReshaped(i,trialNumIndices(j,2));
+targetFoundOrNotCombinedCnUC = -1*ones(4,20);
+netSearchTimeCombinedCnUC = -1*ones(4,20);
+for i = 1:4
+    for j = 1:20
+        targetFoundOrNotCombinedCnUC(i,j) = 0.5*(targetFoundOrNot(i,j)+targetFoundOrNot(i+4,j));
+        if(~isnan(netSearchTime(i,j)) && ~isnan(netSearchTime(i+4,j)))
+            netSearchTimeCombinedCnUC(i,j) = 0.5*(netSearchTime(i,j)+netSearchTime(i+4,j));
+        elseif (~isnan(netSearchTime(i,j)) && isnan(netSearchTime(i+4,j)))
+            netSearchTimeCombinedCnUC(i,j) = netSearchTime(i,j);
+        elseif (isnan(netSearchTime(i,j)) && ~isnan(netSearchTime(i+4,j)))
+            netSearchTimeCombinedCnUC(i,j) = netSearchTime(i+4,j);
         end
-        if(isnan(swarmSearchTimeReshaped(i,trialNumIndices(j,2))) && ~isnan(swarmSearchTimeReshaped(i,trialNumIndices(j,1))))
-            swarmSearchTimeReshaped(i,trialNumIndices(j,2)) = swarmSearchTimeReshaped(i,trialNumIndices(j,1));
-        end
-    end
-    %swarmSearchTimeReshaped = [swarmSearchTimeReshaped;swarmTimeFound(:,i)'];
+    end  
 end
+targetFoundOrNotCombinedCnUC = targetFoundOrNotCombinedCnUC';
+netSearchTimeCombinedCnUC = netSearchTimeCombinedCnUC';
 
-% Do the stats
-% Throw away zeros
-%% average clustered+unclustered
-tempp1 = [];
-tempp2 = [];
-tempp3 = [];
-for i = 1:size(trialNumIndices,1)
-    tempp1(:,i) = (swarmTimeGainedReshaped(:,trialNumIndices(i,1))+swarmTimeGainedReshaped(:,trialNumIndices(i,2)))/2;
-    tempp2(:,i) = (netSearchTimeReshaped(:,trialNumIndices(i,1))+netSearchTimeReshaped(:,trialNumIndices(i,2)))/2;
-    tempp3(:,i) = (swarmSearchTimeReshaped(:,trialNumIndices(i,1))+swarmSearchTimeReshaped(:,trialNumIndices(i,2)))/2;
-end
+meanTargetFoundOrNotCombinedCnUC = nanmean(targetFoundOrNotCombinedCnUC);
+%meanNetSearchTimeCombinedCnUC = nanmean(netSearchTimeCombinedCnUC);
 
-%% sum clustered+unclustered
-tempp4  = [];
-tempp5  = [];
-for i = 1:size(trialNumIndices,1)
-    tempp4(:,i)= targetFoundOrNotReshaped(:,trialNumIndices(i,1))+targetFoundOrNotReshaped(:,trialNumIndices(i,2));
-    tempp5(:,i)= targetFoundBySwarm(:,trialNumIndices(i,1))+targetFoundBySwarm(:,trialNumIndices(i,2));
-end
-
-swarmTimeGainedReshaped = tempp1;
-netSearchTimeReshaped = tempp2;
-swarmSearchTimeReshaped = tempp3;
-targetFoundOrNotReshaped = tempp4;
-targetFoundBySwarm = tempp5;
-
-
-
-swarmTimeGainedReshaped(swarmTimeGainedReshaped == 0) = nan;
-netSearchTimeReshaped(netSearchTimeReshaped == 0) = nan;
-meanSwarmTimeGainedReshaped = nanmean(swarmTimeGainedReshaped);
-stdSwarmTimeGainedReshaped = nanstd(swarmTimeGainedReshaped);
-
-meanSwarmTimeReshaped = nanmean(swarmSearchTimeReshaped); %%
-stdSwarmTimeReshaped = nanstd(swarmSearchTimeReshaped); %%
-
-meanHsiSearchTime = nanmean(netSearchTimeReshaped);
-stdHsiSearchTime = nanstd(netSearchTimeReshaped);
-
-
-sumTargetFoundOrNotReshaped = sum(targetFoundBySwarm);
-fractionOfTrialsTargetFound = sumTargetFoundOrNotReshaped./size(targetFoundBySwarm,1)/2;
-
-meanRandomSearchTime = meanSwarmTimeReshaped; %%
-stdRandomSearchTime = stdSwarmTimeReshaped; %%
-meanRandomSearchSwarmTime = meanHsiSearchTime;
-stdRandomSearchSwarmTime = stdHsiSearchTime;
-
-fractionRandomSearchTargetsFound = fractionOfTrialsTargetFound; %%
-swarmTimeRandomSearch = swarmSearchTimeReshaped; %%
-
+fractionRandomSearchTargetsFound = meanTargetFoundOrNotCombinedCnUC;
+swarmTimeRandomSearch = netSearchTimeCombinedCnUC;
 %%  %% spiral search
 
 targetFoundBySwarm = zeros(numel(trialNum),20);
@@ -763,110 +471,42 @@ for i = 1:numel(subject)
             swarmSearchLength = readmatrix(fileNameForTrial);
             humanSearchLength = readmatrix([preFolder, cell2mat(subject(i)),'\',num2str(trialNum(j)),'\','time_to_finish.csv']);
 
+            minSearchTime=[];
+            foundOrNot = [];
             if(swarmSearchLength < 0)
-                swarmTimeFound(j,i) = nan;
-                if(humanSearchLength >= 599)
-                    netSearchTime(j,i) = 600;
-                    targetFoundOrNot(j,i) = 0;
-                end
-                if(humanSearchLength < 599)
-                    netSearchTime(j,i) = humanSearchLength;
-                end
-                
+                minSearchTime = nan;
+                foundOrNot = 0;
+            else
+                minSearchTime = swarmSearchLength;
+                foundOrNot = 1;
             end
-
-            if(swarmSearchLength > 0)
-                targetFoundBySwarm(j,i) = 1;
-                swarmTimeFound(j,i) = swarmSearchLength;
-                if(swarmSearchLength > humanSearchLength)
-                    netSearchTime(j,i) = humanSearchLength;
-                    targetFoundOrNot(j,i) = 0;
-                end
-                if(swarmSearchLength < humanSearchLength - humanTimeToLand)
-                    netSearchTime(j,i) = swarmSearchLength;
-                    targetFoundOrNot(j,i) = 1;
-                    swarmTimeGained(j,i) = humanSearchLength - humanTimeToLand - swarmSearchLength;
-                end
-            end
+            targetFoundOrNot(j,i) = foundOrNot;
+            netSearchTime(j,i) = minSearchTime;
         end
     end
 end
-
-targetFoundBySwarmOrNot = [];
-targetFoundOrNotReshaped = [];
-swarmTimeGainedReshaped = [];
-netSearchTimeReshaped = [];
-swarmSearchTimeReshaped = [];
-for i = 1:size(swarmTimeGained,2)
-    targetFoundOrNotReshaped = [targetFoundOrNotReshaped;targetFoundOrNot(:,i)'];
-    swarmTimeGainedReshaped = [swarmTimeGainedReshaped;swarmTimeGained(:,i)'];
-    netSearchTimeReshaped = [netSearchTimeReshaped;netSearchTime(:,i)'];
-    targetFoundBySwarmOrNot = [targetFoundBySwarmOrNot;targetFoundBySwarm(:,i)'];
-    swarmSearchTimeReshaped = [swarmSearchTimeReshaped;swarmTimeFound(:,i)'];
-end
-%% replace nan value with the value equal to its corresponding trial value
-for i = 1:size(swarmSearchTimeReshaped,2)
-    for j = 1:size(trialNumIndices,1)
-        if(isnan(swarmSearchTimeReshaped(i,trialNumIndices(j,1))) && ~isnan(swarmSearchTimeReshaped(i,trialNumIndices(j,2))))
-            swarmSearchTimeReshaped(i,trialNumIndices(j,1)) = swarmSearchTimeReshaped(i,trialNumIndices(j,2));
+targetFoundOrNotCombinedCnUC = -1*ones(4,20);
+netSearchTimeCombinedCnUC = -1*ones(4,20);
+for i = 1:4
+    for j = 1:20
+        targetFoundOrNotCombinedCnUC(i,j) = 0.5*(targetFoundOrNot(i,j)+targetFoundOrNot(i+4,j));
+        if(~isnan(netSearchTime(i,j)) && ~isnan(netSearchTime(i+4,j)))
+            netSearchTimeCombinedCnUC(i,j) = 0.5*(netSearchTime(i,j)+netSearchTime(i+4,j));
+        elseif (~isnan(netSearchTime(i,j)) && isnan(netSearchTime(i+4,j)))
+            netSearchTimeCombinedCnUC(i,j) = netSearchTime(i,j);
+        elseif (isnan(netSearchTime(i,j)) && ~isnan(netSearchTime(i+4,j)))
+            netSearchTimeCombinedCnUC(i,j) = netSearchTime(i+4,j);
         end
-        if(isnan(swarmSearchTimeReshaped(i,trialNumIndices(j,2))) && ~isnan(swarmSearchTimeReshaped(i,trialNumIndices(j,1))))
-            swarmSearchTimeReshaped(i,trialNumIndices(j,2)) = swarmSearchTimeReshaped(i,trialNumIndices(j,1));
-        end
-    end
-    %swarmSearchTimeReshaped = [swarmSearchTimeReshaped;swarmTimeFound(:,i)'];
+    end  
 end
+targetFoundOrNotCombinedCnUC = targetFoundOrNotCombinedCnUC';
+netSearchTimeCombinedCnUC = netSearchTimeCombinedCnUC';
 
-% Do the stats
-% Throw away zeros
-%% average clustered+unclustered
-tempp1 = [];
-tempp2 = [];
-tempp3 = [];
-for i = 1:size(trialNumIndices,1)
-    tempp1(:,i) = (swarmTimeGainedReshaped(:,trialNumIndices(i,1))+swarmTimeGainedReshaped(:,trialNumIndices(i,2)))/2;
-    tempp2(:,i) = (netSearchTimeReshaped(:,trialNumIndices(i,1))+netSearchTimeReshaped(:,trialNumIndices(i,2)))/2;
-    tempp3(:,i) = (swarmSearchTimeReshaped(:,trialNumIndices(i,1))+swarmSearchTimeReshaped(:,trialNumIndices(i,2)))/2;
-end
+meanTargetFoundOrNotCombinedCnUC = nanmean(targetFoundOrNotCombinedCnUC);
+%meanNetSearchTimeCombinedCnUC = nanmean(netSearchTimeCombinedCnUC);
 
-%% sum clustered+unclustered
-tempp4  = [];
-tempp5  = [];
-for i = 1:size(trialNumIndices,1)
-    tempp4(:,i)= targetFoundOrNotReshaped(:,trialNumIndices(i,1))+targetFoundOrNotReshaped(:,trialNumIndices(i,2));
-    tempp5(:,i)= targetFoundBySwarm(:,trialNumIndices(i,1))+targetFoundBySwarm(:,trialNumIndices(i,2));
-end
-
-swarmTimeGainedReshaped = tempp1;
-netSearchTimeReshaped = tempp2;
-swarmSearchTimeReshaped = tempp3;
-targetFoundOrNotReshaped = tempp4;
-targetFoundBySwarm = tempp5;
-
-
-
-swarmTimeGainedReshaped(swarmTimeGainedReshaped == 0) = nan;
-netSearchTimeReshaped(netSearchTimeReshaped == 0) = nan;
-meanSwarmTimeGainedReshaped = nanmean(swarmTimeGainedReshaped);
-stdSwarmTimeGainedReshaped = nanstd(swarmTimeGainedReshaped);
-
-meanSwarmTimeReshaped = nanmean(swarmSearchTimeReshaped); %%
-stdSwarmTimeReshaped = nanstd(swarmSearchTimeReshaped); %%
-
-meanHsiSearchTime = nanmean(netSearchTimeReshaped);
-stdHsiSearchTime = nanstd(netSearchTimeReshaped);
-
-
-sumTargetFoundOrNotReshaped = sum(targetFoundBySwarm);
-fractionOfTrialsTargetFound = sumTargetFoundOrNotReshaped./size(targetFoundBySwarm,1)/2;
-
-meanSpiralSearchTime = meanSwarmTimeReshaped; %%
-stdSpiralSearchTime = stdSwarmTimeReshaped; %%
-meanSpiralSearchSwarmTime = meanHsiSearchTime;
-stdSpiralSearchSwarmTime = stdHsiSearchTime;
-
-fractionSpiralSearchTargetsFound = fractionOfTrialsTargetFound; %%
-swarmTimeSpiralSearch = swarmSearchTimeReshaped; %%
+fractionSpiralSearchTargetsFound = meanTargetFoundOrNotCombinedCnUC;
+swarmTimeSpiralSearch = netSearchTimeCombinedCnUC;
 
 %% %%%%%%%%%%%%%%%%%%%%%% Plotssssss %%%%%%%%%%%%%%%%%%%%%%%%
 %trialNames = {'NNL','YNL','NYL','YYL','NNH','YNH','NYH','YYH'};
@@ -881,8 +521,9 @@ scatter(1:1:4,fractionClosedLoop3TargetsFound,200,'d','filled','MarkerFaceColor'
 scatter(1:1:4,fractionClosedLoop4TargetsFound,200,'^','filled','MarkerFaceColor',[1 0.5 0.1]);
 scatter(1:1:4,fractionRandomSearchTargetsFound,200,'d','filled','MarkerFaceColor',[0.2 1.0 0.2]);
 scatter(1:1:4,fractionSpiralSearchTargetsFound,200,'s','filled','MarkerFaceColor',[0.5 0.5 0.5]);
+scatter(1:1:4,fractionHumanTargetsFound,200,'s','MarkerEdgeColor',[0.5 0.5 0.5]);
 grid on
-legend("Closed Loop type 1","Closed Loop type 2","Closed Loop type 3","Closed Loop type 4","Random Search","Spiral Search",'NumColumns',2)
+legend("Closed Loop type 1","Closed Loop type 2","Closed Loop type 3","Closed Loop type 4","Random Search","Spiral Search","Human Search",'NumColumns',2)
 % legend("Follow Search","Closed Loop","Random Search")
 %ylabel("Fraction of trials target found by swarm")
 ylabel("Fraction of trials target found by Swarm")
@@ -893,12 +534,12 @@ ylim([0, 1]);
 %%%%%%%%% Search time
 figure(2)
 clf;
-cats = [ones(size(swarmSearchTimeReshaped,1),1);2*ones(size(swarmSearchTimeReshaped,1),1); ...
-    3*ones(size(swarmSearchTimeReshaped,1),1);4*ones(size(swarmSearchTimeReshaped,1),1) ...
-    ;5*ones(size(swarmSearchTimeReshaped,1),1);6*ones(size(swarmSearchTimeReshaped,1),1)];
+cats = [ones(size(swarmTimeClosedLoop1,1),1);2*ones(size(swarmTimeClosedLoop1,1),1); ...
+    3*ones(size(swarmTimeClosedLoop1,1),1);4*ones(size(swarmTimeClosedLoop1,1),1) ...
+    ;5*ones(size(swarmTimeClosedLoop1,1),1);6*ones(size(swarmTimeClosedLoop1,1),1);7*ones(size(swarmTimeClosedLoop1,1),1)];
 aggData = [swarmTimeClosedLoop1;swarmTimeClosedLoop2;swarmTimeClosedLoop3;swarmTimeClosedLoop4;swarmTimeRandomSearch; ...
-   swarmTimeSpiralSearch ];
-categories = categorical(cats,[1 2 3 4 5 6],{'Closed Loop type 1','Closed Loop type 2','Closed Loop type 3','Closed Loop type 4','Random Search','Spiral Search'});
+   swarmTimeSpiralSearch;humanTime ];
+categories = categorical(cats,[1 2 3 4 5 6 7],{'Closed Loop type 1','Closed Loop type 2','Closed Loop type 3','Closed Loop type 4','Random Search','Spiral Search','Human Search'});
 c = 1;
 l = [];
 for i = 1:4
@@ -912,6 +553,7 @@ for i = 1:4
     h(4).BoxFaceColor='m';
     h(5).BoxFaceColor='c';
     h(6).BoxFaceColor='k';
+    h(7).BoxFaceColor='y';
     % if(i == 1)
     %     legend('Follow Search','Closed Loop','Random Search','Spiral');
     % end
@@ -921,5 +563,6 @@ ylabel("Average time taken to find \newline missing person by H-S team")
 xlabel("Conditions")
 xticks(l);
 xticklabels(trialNames)
-legend('Closed Loop type 1','Closed Loop type 2','Closed Loop type 3','Closed Loop type 4','Random Search','Spiral Search', ...
+legend('Closed Loop type 1','Closed Loop type 2','Closed Loop type 3','Closed Loop type 4','Random Search','Spiral Search','Human Search', ...
     '','','','','','','','','','','','','','','','','','','','','');
+ylim([0, 600]);

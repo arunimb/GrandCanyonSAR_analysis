@@ -23,9 +23,9 @@ swarmTimeFound = zeros(numel(trialNum),20);
 preFolderSim = strcat("D:\UWmonitoring\RunMissingPersonSim\simulationRecord\",cell2mat(simulationMode(1)),"\");
 counter = 1;
 
-participant = 90112;
-numSwarm = 15;
-trial = 112;
+participant = 45873;
+numSwarm = 10;
+trial = 122;
 numRun = "run1";
 offsetAx = 0.15;
 %% closedLoop1
@@ -144,7 +144,7 @@ viscircles([operatorTraj(1,1),operatorTraj(1,3)],0.72/10,'Color',[0.8 0.8 0.8])
 viscircles([operatorTraj(1,1),operatorTraj(1,3)],1.08/10,'Color',[0.8 0.8 0.8])
 hold on
 scatter(missingPersonPos(1),missingPersonPos(3),100,'blue','filled')
-plot(operatorTraj(:,1),operatorTraj(:,3),'r')
+%plot(operatorTraj(:,1),operatorTraj(:,3),'r')
 grid on
 for i = 1:3:floor(size(swarmTrajectory,2))
     plot(swarmTrajectory(:,i),swarmTrajectory(:,i+2),'g');
@@ -168,7 +168,7 @@ viscircles([operatorTraj(1,1),operatorTraj(1,3)],0.72/10,'Color',[0.8 0.8 0.8])
 viscircles([operatorTraj(1,1),operatorTraj(1,3)],1.08/10,'Color',[0.8 0.8 0.8])
 hold on
 scatter(missingPersonPos(1),missingPersonPos(3),100,'blue','filled')
-plot(operatorTraj(:,1),operatorTraj(:,3),'r')
+%plot(operatorTraj(:,1),operatorTraj(:,3),'r')
 grid on
 for i = 1:3:floor(size(swarmTrajectory,2))
     plot(swarmTrajectory(:,i),swarmTrajectory(:,i+2),'g');

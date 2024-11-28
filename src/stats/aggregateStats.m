@@ -886,20 +886,21 @@ ax.XTickLabel = trialName;
 
 figure
 [p_data, tbl_data, stats_data]=friedman(partialStop, 1, 'off');
-plot(partialStop', '-o', 'markersize', 12, 'color', ones(1,3)*.5, 'markerface', ones(1,3)*.75);
-hold on;
-plot(median(partialStop), 'k+', 'markersize', 16, 'linewidth', 2);
-title(p_data)
-if p_data < 0.05
-    res_data=multcompare(stats_data, 'Ctype','bonferroni', 'Display', 'off');
-    %         if disp1
-
-    sigstar([],res_data,1);
-    %         end
-end
-% set(gca, 'xtick', 1:8)
+% plot(partialStop', '-o', 'markersize', 12, 'color', ones(1,3)*.5, 'markerface', ones(1,3)*.75);
+% hold on;
+% plot(median(partialStop), 'k+', 'markersize', 16, 'linewidth', 2);
+% title(p_data)
+% if p_data < 0.05
+%     res_data=multcompare(stats_data, 'Ctype','bonferroni', 'Display', 'off');
+%     %         if disp1
+% 
+%     sigstar([],res_data,1);
+%     %         end
+% end
+% % set(gca, 'xtick', 1:8)
+boxchart(partialStop);
 xlabel("Condition")
-ylabel("Partial Stop")
+ylabel("Turning while still")
 ax = gca;
 ax.FontSize = 18;
 ax.TickLabelInterpreter = 'latex';

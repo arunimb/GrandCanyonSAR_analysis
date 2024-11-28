@@ -31,7 +31,7 @@ for j = 1:numel(trialNum)
     heading = trajFile(:,5);
 
     opt = [0.06 0.06];
-    subtightplot(4,4,j,opt,opt,opt)
+    subtightplot(5,4,j,opt,opt,opt)
     plot3(xPos,yPos,zPos,LineWidth=2) % Plot trajectory of human controlled drone
     hold on
     scatter3 (xPos(1),yPos(1),zPos(1),"green","filled","o") % Plot Drone start position
@@ -71,7 +71,7 @@ for j = 1:numel(trialNum)
         gazeCalibrated = gaze(:,2:3);
         [~,ind] = min(abs(gazeTime-30));
         opt = [0.04 0.04];
-        subtightplot(4,4,j+12,opt,opt,opt)
+        subtightplot(5,4,j+12,opt,opt,opt)
         scatter(gazeCalibrated(1:ind,1),gazeCalibrated(1:ind,2),0.1,'+')
 
         %         hold on
@@ -97,7 +97,7 @@ for j = 1:numel(trialNum)
         speed = readmatrix(fileName1);
         time = readmatrix(fileName2);
         opt = [0.06 0.06];
-        subtightplot(4,4,j+4,opt,opt,opt)
+        subtightplot(5,4,j+4,opt,opt,opt)
         plot(time(2:end),speed,LineWidth=2);
         xlim([0 plotWindow]);
         ylim([0 60]);
@@ -118,7 +118,7 @@ for j = 1:numel(trialNum)
         turnRate = readmatrix(fileName1);
         time = readmatrix(fileName2);
         opt = [0.06 0.06];
-        subtightplot(4,4,j+8,opt,opt,opt)
+        subtightplot(5,4,j+8,opt,opt,opt)
         plot(time(2:end),turnRate,LineWidth=2);
         xlim([0 plotWindow]);
         ylim([0 25]);
@@ -162,66 +162,66 @@ end
 % end
 
 %% Cognitive Load
-% samplerate = 256; % Hz
-% baselineWindow = 5; % in second
-% EEGThreshold = 1000; % Max allowable EEG muV
-% threshold2 = 0.001; % fraction of data allowed to be over EEGThreshold value
-% windowStartTime = 0;
-% eegChannelWeighting = [ 0.0398,    0.370,    0.1741 ,   0.6393 ,  ...
-%     0   ,      0   ,      0   ,      0 ,        0  ,       0  , ...
-%     0.6393  ,  0.1741 ,0.3706,    0.0398];
-% for j = 1:numel(trialNum)
-%     % Get filtered EEG filename for the trial section
-%     fileName1 = ['..\..\data\', cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','eegFiltered.csv'];
-%     % Get baseline filtered EEG filename for the trial section
-%     fileName2 = ['..\..\data\', cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','eegBaselineFiltered.csv'];
-%     if isfile(fileName1)
-%         disp(cell2mat(subject(ii)));
-%         eeg = readmatrix(fileName1);
-%         time = eeg(:,1);
-%         time = time-time(1); % set start time to 0
-%         % Frontal EEG cannels
-%         eegChannels = ["AF3","F7","F3","FC5","FC6","F4","F8","AF4"];
-%         % Extract frontal EEG samples
-%         frontalEEG = [eeg(:,2:5),eeg(:,12:15)];
-% 
-%         %Calculate cognitive load
-%         cogLoad = [];
-%         cogLoadTime = [];
-%         cogLoadIndexer = 1;
-%         baselineEEG = readmatrix(fileName2);
-%         c = 1;
-%         for k = 1:1*samplerate:plotWindow*samplerate
-%             [~,~,~,~,~,cogLoad(1,c)] = cogload(baselineEEG(end-baselineWindow*samplerate:end,2:end)',eeg(k:k+1*samplerate,2:end)', ...
-%                 1/samplerate,eegChannelWeighting/sum(eegChannelWeighting),'alphaDiff','fft');
-%             c = c + 1;
-%         end
-% 
-%         opt = [0.06 0.06];
-%         eegChannels = ["AF3","F7","F3","FC5","FC6","F4","F8","AF4"];
-%         % Extract frontal EEG samples
-%         frontalEEG = [eeg(:,2:5),eeg(:,12:15)];
-%         frontalEEG = frontalEEG';
-%         subtightplot(5,4,j+12,opt,opt,opt)
-%         plot(linspace(0,59,numel(cogLoad)),cogLoad,LineWidth=2);
-%         if j==1
-%             %legend("Trajectory","Start","End","Swarm","Missing Person");
-%             %xlabel("Time (s)")
-%             ylabel(textwrap(uicontrol('Style','text'),"Cognitive Load(uV^2/Hz)"));
-%         end
-%         yticks(-10:2:0)
-%         xlabel("Time (s)")
-%         xlim([0,plotWindow]);
-%         ylim([-10 0])
-%         grid on
-%         %         if(windowStartTime*samplerate + 1*samplerate <= size(eeg,1))
-%         %             [~,~,~,~,~,cogLoad] = cogload(baselineEEG(end-baselineWindow*samplerate:end,2:end)', eeg((windowStartTime*samplerate)+1:(windowStartTime*samplerate)+1*samplerate,2:end)', ...
-%         %                 1/samplerate,eegChannelWeighting/sum(eegChannelWeighting),'alphaDiff','fft');
-%         %             %saveFolder = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','cogload_First',num2str(cogWindow(mm)),'s','_from',num2str(windowStartTime),'s.csv'];
-%         %             %writematrix("uV^2/Hz",saveFolder);
-%         %             %writematrix(cogLoad,saveFolder,'WriteMode','append');
-%         %         end
-%     end
-% end
+samplerate = 256; % Hz
+baselineWindow = 5; % in second
+EEGThreshold = 1000; % Max allowable EEG muV
+threshold2 = 0.001; % fraction of data allowed to be over EEGThreshold value
+windowStartTime = 0;
+eegChannelWeighting = [ 0.0398,    0.370,    0.1741 ,   0.6393 ,  ...
+    0   ,      0   ,      0   ,      0 ,        0  ,       0  , ...
+    0.6393  ,  0.1741 ,0.3706,    0.0398];
+for j = 1:numel(trialNum)
+    % Get filtered EEG filename for the trial section
+    fileName1 = ['..\..\data\', cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','eegFiltered.csv'];
+    % Get baseline filtered EEG filename for the trial section
+    fileName2 = ['..\..\data\', cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','eegBaselineFiltered.csv'];
+    if isfile(fileName1)
+        disp(cell2mat(subject(ii)));
+        eeg = readmatrix(fileName1);
+        time = eeg(:,1);
+        time = time-time(1); % set start time to 0
+        % Frontal EEG cannels
+        eegChannels = ["AF3","F7","F3","FC5","FC6","F4","F8","AF4"];
+        % Extract frontal EEG samples
+        frontalEEG = [eeg(:,2:5),eeg(:,12:15)];
+
+        %Calculate cognitive load
+        cogLoad = [];
+        cogLoadTime = [];
+        cogLoadIndexer = 1;
+        baselineEEG = readmatrix(fileName2);
+        c = 1;
+        for k = 1:1*samplerate:plotWindow*samplerate
+            [~,~,~,~,~,cogLoad(1,c)] = cogload(baselineEEG(end-baselineWindow*samplerate:end,2:end)',eeg(k:k+1*samplerate,2:end)', ...
+                1/samplerate,eegChannelWeighting/sum(eegChannelWeighting),'alphaDiff','fft');
+            c = c + 1;
+        end
+
+        opt = [0.06 0.06];
+        eegChannels = ["AF3","F7","F3","FC5","FC6","F4","F8","AF4"];
+        % Extract frontal EEG samples
+        frontalEEG = [eeg(:,2:5),eeg(:,12:15)];
+        frontalEEG = frontalEEG';
+        subtightplot(5,4,j+16,opt,opt,opt)
+        plot(linspace(0,59,numel(cogLoad)),cogLoad,LineWidth=2);
+        if j==1
+            %legend("Trajectory","Start","End","Swarm","Missing Person");
+            %xlabel("Time (s)")
+            ylabel(textwrap(uicontrol('Style','text'),"Cognitive Load(uV^2/Hz)"));
+        end
+        yticks(-10:2:0)
+        xlabel("Time (s)")
+        xlim([0,plotWindow]);
+        ylim([-10 0])
+        grid on
+        %         if(windowStartTime*samplerate + 1*samplerate <= size(eeg,1))
+        %             [~,~,~,~,~,cogLoad] = cogload(baselineEEG(end-baselineWindow*samplerate:end,2:end)', eeg((windowStartTime*samplerate)+1:(windowStartTime*samplerate)+1*samplerate,2:end)', ...
+        %                 1/samplerate,eegChannelWeighting/sum(eegChannelWeighting),'alphaDiff','fft');
+        %             %saveFolder = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','cogload_First',num2str(cogWindow(mm)),'s','_from',num2str(windowStartTime),'s.csv'];
+        %             %writematrix("uV^2/Hz",saveFolder);
+        %             %writematrix(cogLoad,saveFolder,'WriteMode','append');
+        %         end
+    end
+end
 
 

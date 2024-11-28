@@ -38,3 +38,4 @@ levels(testResults$TerrainKnowledge) <- c('No', 'Yes')
 mod0 = glm(fracCompleteStops ~ 1 + SwarmCohesion + TargetKnowledge + TerrainKnowledge , family = gaussian(link="identity"), data = testResults)
 summary(mod0)
 
+
