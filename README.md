@@ -16,3 +16,12 @@ To recreate all the plots the scripts have to be run in the following order:
 
 To run the stats, run step 6.
 Also, running one can run 4a through 6, if the *_v2.mat files are available on the github
+
+
+-tlxGLMM.R -> GLMM results in Table 2  %need to change line 26 and 39 to the correct metric (effortTLX, frustrationTLX, mentalTLX, performanceTLX, physicalTLX, temporalTLX)
+-performanceGLMM.R -> GLMM results for Table 3
+-speedGLMM.R -> GLMM results for table 4
+-turnRateGLMM.R -> GLMM results for table 4
+-FracFreezeTimeGLMM.R -> GLMM results for table 4
+-FracTurningWhileStillGLMM.R -> GLMM results for table 4
+
