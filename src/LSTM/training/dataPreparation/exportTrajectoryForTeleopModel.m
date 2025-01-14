@@ -1,10 +1,10 @@
 % This script exports trajectory data for the first X seconds.
 
 % Read subject id list
-subject = cellstr(num2str(readmatrix('..\..\..\data\participantID1.csv')));
-preFolder = '..\..\..\data\'; % location of subject data folders
+subject = cellstr(num2str(readmatrix('..\..\..\..\data\participantID1.csv')));
+preFolder = '..\..\..\..\data\'; % location of subject data folders
 addpath('..\..\');
-saveFolder = '..\exportedTrajectoryTeleoperatorModelling\';
+saveFolder = 'exportedTrajectoryTeleoperatorModelling\';
 % Standard order of trials, which is different from subjectwise trial
 % order
 trialNum = [111,211,121,221,112,212,122,222];

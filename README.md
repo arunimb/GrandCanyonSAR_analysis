@@ -25,3 +25,30 @@ Also, running one can run 4a through 6, if the *_v2.mat files are available on t
 -FracFreezeTimeGLMM.R -> GLMM results for table 4
 -FracTurningWhileStillGLMM.R -> GLMM results for table 4
 
+7) src/Unity/ -> Unity source code to export the binaries.
+
+8) src/LSTM/training/dataPreparation/ -> Folder containing scripts to prepare training dataPreparation
+- exportTrajectoryForTeleopModel.m -> Exports trajectories of participants resampled at 1/24s
+- spiralTrajectory.m -> Creates trajectory for spiral search trajectory
+
+9) src/LSTM/training/ -> Folder contains prepared data and output data for ML training
+- dataFormattingWin.ipynb -> Script to export data for python pandas readability
+
+10) src/LSTM/training/metisRun/ -> Folder contains K-fold training of the inference model
+- LSTM_inputData/ -> folder containing training data for the inference model
+- saveData/ -> Folder containing output data obtained by running kFoldMultilabel_Inference.py
+- kFoldMultilabel_Inference.py -> python script to check for optimal hyper-parameters for the inference model using k-fold method
+- grandCanyonPythonServer.py -> script to create a python server which returns inference values when requested in real-time based on trajectory data
+- multilabelProductionmodel.ipynb -> script to train inference model from using the optimal hyper-parameters and save it to CNN_LSTM_trainedModel/ folder
+- progress.txt -> Accuracy Logs for k-fold optimisation
+- kClusteringResult.xlsx -> tabulated data for the accuracy values of every k-fold run
+- LSTM_observationTimeVsAccuracy.m -> script to plot accuracy data over window size fig8 in the paper
+
+11) src/LSTM/stats/ -> Stats for the prior knowledge based simulation
+- MissingPersonSimulationStats.m -> plots figures 13 and 14 in the paper
+- plotTrajectories.m -> plots figure 12 in the paper
+- priorKnowledgeAndSAEstimates.m -> Plots figure 11 in the paper
+
+12) src/Unity/ -> folder containing source code for simulation
+
+13) src/Simulation/ -> folder containing the trained ML model, binaries for various search strategies, batch scripts to run different scenarios
