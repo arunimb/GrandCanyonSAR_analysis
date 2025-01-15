@@ -84,3 +84,8 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# Package files
+SciSharp.TensorFlow.Redist.2.16.0/
+
+UnitySource/

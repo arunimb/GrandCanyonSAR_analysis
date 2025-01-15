@@ -1,18 +1,23 @@
-To recreate all the plots the scripts have to be run in the following order:
+This paper has 3 main parts: Experiments, LSTM and simulation
+
+# Experiments
+- The data for the experiments can be downloaded from https://niuits-my.sharepoint.com/:f:/r/personal/z1776960_students_niu_edu/Documents/SARVR_Data?csf=1&web=1&e=VjOEob
+- The data folder contains subfolders for each subject. E
 
 
-1) preprocessingLSLData/stitchData.m --> combines *.xdf LSL files (keystrokes, EEG, gaze) to individual subject *.mat files; Aligns EEG timestamps with keystrokes for later; 
-2) preprocessingLSLData/preprocessData.m --> Chopping into conditions.
-3) preprocessingLSLData/findOverlaps.m --> Finds overlapping trials and trims them from end to end
-4) preprocessingLSLData/reexportMatFiles.m --> Truncates time series over 600s to 600s
+
+1) src/ExperimentStats/preprocessingLSLData/stitchData.m --> combines *.xdf LSL files (keystrokes, EEG, gaze) to individual subject *.mat files; Aligns EEG timestamps with keystrokes for later; 
+2) src/ExperimentStats/preprocessingLSLData/preprocessData.m --> Chopping into conditions.
+3) src/ExperimentStats/preprocessingLSLData/findOverlaps.m --> Finds overlapping trials and trims them from end to end
+4) src/ExperimentStats/preprocessingLSLData/reexportMatFiles.m --> Truncates time series over 600s to 600s
 
 
-5a) stats/plotEEGbyTrial.m --> Exports cognitive load for all subjects in one matlab files
-5b) stats/plotSpeedTurnRate.m --> Exports speed, turn rate for all subjects
-5c) stats/timeViolinPlots.m --> Exports time to finish for all subjects
-5d) stats/plotGazeFromInsetCorner.m --> Exports gaze distance for all subjects
+5a) src/ExperimentStats/plotEEGbyTrial.m --> Exports cognitive load for all subjects in one matlab files
+5b) src/ExperimentStats/plotSpeedTurnRate.m --> Exports speed, turn rate for all subjects
+5c) src/ExperimentStats/timeViolinPlots.m --> Exports time to finish for all subjects
+5d) src/ExperimentStats/plotGazeFromInsetCorner.m --> Exports gaze distance for all subjects
 
-6) stats/aggregateStats.m --> Plots the friedman stats
+6) src/ExperimentStats/aggregateStats.m --> Plots the friedman stats
 
 To run the stats, run step 6.
 Also, running one can run 4a through 6, if the *_v2.mat files are available on the github
