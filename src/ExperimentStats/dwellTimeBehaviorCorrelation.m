@@ -3,7 +3,7 @@ clearvars
 close all
 clc
 
-% This file plots filtered EEG and cognitive load
+
 
 subject = cellstr(num2str(readmatrix('..\..\data\participantID1.csv')));
 trialName = {'NNU','YNU','NYU','YYU','NNC','YNC','NYC','YYC'};  % Person, Terrain, Swarm cohesion
@@ -11,14 +11,8 @@ preFolder = '..\..\data\'; % location of subject data folders
 % Standard order of trials, which is different from subjectwise trial
 % order
 trialNum = [111,211,121,221,112,212,122,222];
-% Bhattacharya, Arunim, and Sachit Butail. "Measurement and Analysis of Cognitive Load
-% Associated with Moving Object Classification in Underwater Environments."
-% International Journal of Human–Computer Interaction (2023): 1-11.
-eegChannelWeighting = [ 0.0398,    0.370,    0.1741 ,   0.6393 ,  ...
-    0   ,      0   ,      0   ,      0 ,        0  ,       0  , ...
-    0.6393  ,  0.1741 ,0.3706,    0.0398];
 windowSizes = [5 10 15 20]; % Cognitive load calculation window
-samplingRate = 256; % EEG sampling rate (Hz)
+
 regularizationDt = 1/24;
 
 
@@ -52,12 +46,6 @@ for ll = 1:numel(windowSizes)
                 trajFile = readmatrix(fileName2);
                 trajTime = trajFile(:,1); % 1st column of trajectory data is time stamps
 
-                % Routine to identify paused simulation, f2 key marks the beginning
-                % of the trial, also unpauses the simulation for the subject. F11
-                % key marks the end of the trial, pauses the trial for the subject.
-                % When the simulation is paused, the recorded timestamps do not
-                % change, so the diff function lets us identify beginning and
-                % ending of a trial.
                 diffTimeStamps = diff(trajTime(2:end));
 
                 pause1 = 0; % start of trial index (guess)
@@ -107,8 +95,8 @@ for ll = 1:numel(windowSizes)
                     [~,temp4] = funcIdt(gaze(k:k+numSamples,:),AOI4coord);
                     [~,temp5] = funcIdt(gaze(k:k+numSamples,:),AOI5coord);
                     [~,temp6] = funcIdt(gaze(k:k+numSamples,:),AOI6coord);
-                    %dwellTime(c) = temp5-temp2-temp3-temp4;
-                    dwellTime(c) = temp1+temp6;
+                    dwellTime(c) = temp5-temp2-temp3-temp4;
+                    %dwellTime(c) = temp1+temp6;
                     % dwellTime(c) = temp1;
                     c = c + 1;
                 end

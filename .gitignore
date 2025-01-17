@@ -3,6 +3,7 @@ src/data.zip
 src/data/
 *.asv
 *.mat
+*.meta
 nppBackup/
 otherScripts/
 ignore/
@@ -10,7 +11,8 @@ ignore/
 RomanConference/
 discard/
 logs/
-
+preprocessingLSLData/
+stats_/
 # This .gitignore file should be placed at the root of your Unity project directory
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore

@@ -14,7 +14,7 @@ eegChannelWeighting = [ 0.0398,    0.370,    0.1741 ,   0.6393 ,  ...
 aggFracCompleteStops= [];
 aggFracPartialStops = [];
 aggPupilDiaAvg = [];
-windowSize = 20;
+windowSize = 10;
 for ii = 1:numel(subject)
     % Import trial order
     for j = 1:numel(trialNum)
@@ -113,12 +113,12 @@ for ii = 1:numel(subject)
             subjectDelDistance = [];
             subjectDelGroundDistance = [];
             subjectSpeed = [];
-            xDot = [];
-            yDot =[];
-            zDot = [];
+            % xDot = [];
+            % yDot =[];
+            % zDot = [];
             subjectTurnRate = [];
-            subjectGroundSpeed = [];
-            subjectHeightDot = [];
+            % subjectGroundSpeed = [];
+            % subjectHeightDot = [];
             time = 1;
 
             for dNo = 1:numel(subjectXPos)-1
@@ -178,9 +178,9 @@ for ii = 1:numel(subject)
     end
 end
 [RR1,pp1 ] = corrcoef(aggPupilDiaAvg,aggFracCompleteStops);
-RfracCompleteStops = RR1(1,2);
-pfracCompleteStops = pp1(1,2);
+RfracCompleteStops = RR1(1,2)
+pfracCompleteStops = pp1(1,2)
 
 [RR2,pp2 ] = corrcoef(aggPupilDiaAvg,aggFracPartialStops);
-RfracPartialStops = RR2(1,2);
-pfracPartialStops = pp2(1,2);
+RfracPartialStops = RR2(1,2)
+pfracPartialStops = pp2(1,2)

@@ -36,5 +36,10 @@ meanScores1 = mean(accPres(:,1:end-1))';
 stdScores1 = std(accPres(:,1:end-1))';
 tempAcc = accPres(:,end);
 tempAcc(tempAcc == -1)=nan;
-meanScore = mean(tempAcc,'omitnan');
-stdScore = std(tempAcc,'omitnan');
+meanScore2 = mean(tempAcc,'omitnan');
+stdScore2 = std(tempAcc,'omitnan');
+
+
+% Final values
+meanScores =[meanScores1;meanScore2];
+stdScores =[stdScores1;stdScore2];

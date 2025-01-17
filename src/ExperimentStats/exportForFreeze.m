@@ -51,15 +51,6 @@ preTable1(any(isnan(preTable1),2),:) = [];
 preTable2 = [fracPartialStops',swarmCohesion',targetKnowledge',terrainKnowledge'];
 preTable2(any(isnan(preTable2),2),:) = [];
 
-% meanOfCog = mean(preTable(:,1));
-% stdOfCog = std(preTable(:,1));
-% for i = 1:size(preTable(:,1),1)
-%     if( preTable(i,1)>=meanOfCog+3*stdOfCog || preTable(i,1)<=meanOfCog-3*stdOfCog)
-%         preTable(i,1) = nan;
-%     end
-% 
-% end
-% preTable(any(isnan(preTable),2),:) = [];
 outputTable1 = array2table(preTable1,...
     'VariableNames',{'fracCompleteStops','SwarmCohesion','TargetKnowledge','TerrainKnowledge'});
 writetable(outputTable1,['outputTables/outputForFracCompleteStops.csv'],'Delimiter',',');
