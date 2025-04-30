@@ -16,15 +16,15 @@ This paper has 3 main parts: Experiments, LSTM and simulation
         - subject_11940.mat -> *processed data*
     
 
-# Processing the raw data
+## Processing the raw data
 
 1. First run the *src/ExperimentStats/stitchData.m* script, this combines the recorded LSL data containing keystrokes, EEG, gaze to individual subject *.mat files; Aligns EEG timestamps with keystrokes for later segmentation of data.
 2. Then run *src/ExperimentStats/preprocessData.m*, this  script chops up the recorded data into inidividual trials taking into account possible overlaps and exceptions for anomalous recordings.
 
 
-# Stats and plots
+## Plots and statistics
 
-## Plots
+### Plots
 1. *src/ExperimentStats/trajHeatmapPriorKnowledgeComparison.m* script plots figure 6
 2. *src/ExperimentStats/TwoDTrajPlotting.m* script plots figure 7
 3. *src/ExperimentStats/aggregateStats.m* script plots figure 5 and figure 8
@@ -34,7 +34,7 @@ This paper has 3 main parts: Experiments, LSTM and simulation
 7. *src/LSTM/training/metisRun/LSTM_observationTimeVsAccuracy.m* script plot figure 10
 8. *src/ExperimentStats/multiPlots.m* script plots figure 4
 
-## Stats
+### Stats
 1. *src/ExperimentStats/tlxGLMM.R* script exports GLMM results in Table 2 ***need to change line 26 and 39 to the correct metric*** (effortTLX, frustrationTLX, mentalTLX, performanceTLX, physicalTLX, temporalTLX)
 2. *src/ExperimentStats/performanceGLMM.R* script exports GLMM results for Table 3
 3. *src/ExperimentStats/speedGLMM.R* script exports GLMM results for portion of table 4
@@ -48,8 +48,7 @@ This paper has 3 main parts: Experiments, LSTM and simulation
 11. *src/ExperimentStats/NasaTLX_analysis.m* produces values of table 1 in supplementary material
 12. *src/ExperimentStats/situationAwarenessBehaviorFit.m* calculates fit between alpha power (SA) and moving while still behavior
 
-
-## Support scripts
+### Support scripts
 1. *src/ExperimentStats/funcIdt.m* function to identify fixations using IDT method
 2. *src/ExperimentStats/cogload.m* function to calculate cognitive load
 2. *src/ExperimentStats/eegAlphaPower.m* function to calculate eeg based SA
@@ -74,16 +73,7 @@ This paper has 3 main parts: Experiments, LSTM and simulation
 11. *src/LSTM/training/metisRun/kClusteringResult.xlsx* tabulated data for the accuracy values of every k-fold run
 
 # Simulation
-There are 6 binaries (for windows) exported for 6 types of search algorithms as described in the paper
-
-## Binaries
-
-1. *src/Simulation/closedLoop1/MissingPersonSearchSim.exe* binary for strategy ***AsPkTk***
-2. *src/Simulation/closedLoop2/MissingPersonSearchSim.exe* binary for strategy ***AsPk***
-3. *src/Simulation/closedLoop3/MissingPersonSearchSim.exe* binary for strategy ***AsPkTkSA***
-4. *src/Simulation/closedLoop4/MissingPersonSearchSim.exe* binary for strategy ***AsPkSA***
-5. *src/Simulation/randomSearch/MissingPersonSearchSim.exe* binary for strategy ***Rs***
-6. *src/Simulation/spiralSearch/MissingPersonSearchSim.exe* binary for strategy ***Ss***
+There are 6 binaries (for windows) exported for 6 types of search strategies as described in the paper. Each binary file is run through a batch file which updates the paramters and then simulates a particular strategy
 
 ## Batch scripts for batch running of the simulation
 1. *src/Simulation/simBatchScriptLSTMType1.bat* batch script for strategy ***AsPkTk***
@@ -93,7 +83,7 @@ There are 6 binaries (for windows) exported for 6 types of search algorithms as 
 5. *src/Simulation/simBatchScriptRandomSearch.bat* batch script for strategy ***Rs***
 6. *src/Simulation/ssimBatchScriptSpiralSearch.bat* batch script for strategy ***Ss***
 
-To run the simulation 
+## To run the simulation 
 
 1. Run script *grandCanyonPythonServer.py*, it will load the trained model in *Simulation/CNN_LSTM_trainedModel/** and start a window. On clicking Start it will wait for data from the binaries.
 2. Run the batch script corresponding to the search strategy
