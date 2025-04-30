@@ -2,7 +2,7 @@ This paper has 3 main parts: Experiments, LSTM and simulation
 
 # Experiments
 - The data for the experiments can be downloaded from 
-[SARVR data](https://niuits-my.sharepoint.com/:f:/r/personal/z1776960_students_niu_edu/Documents/SARVR_Data?csf=1&web=1&e=VjOEob) (Raw data availabile upon request can be downloaded from [Raw data](https://niuits-my.sharepoint.com/:f:/r/personal/z1776960_students_niu_edu/Documents/SAR_VR_experimentData?csf=1&web=1&e=536rSK)
+[Processed data](https://niuits-my.sharepoint.com/:f:/r/personal/z1776960_students_niu_edu/Documents/SARVR_Data?csf=1&web=1&e=VjOEob) and [Raw data](https://niuits-my.sharepoint.com/:f:/r/personal/z1776960_students_niu_edu/Documents/SAR_VR_experimentData?csf=1&web=1&e=536rSK)
 - The data folder contains subfolders for each subject, and the subfolders are organized as follows (example files and folders are represented): 
 - **data** -> *parent data folder*
     - **11940** -> *participant id*
