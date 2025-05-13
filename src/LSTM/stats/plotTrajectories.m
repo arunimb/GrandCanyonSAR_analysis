@@ -2,7 +2,7 @@ clearvars
 close all
 clc
 
-addpath("D:\UWmonitoring\RunMissingPersonSim\simulationRecord\")
+addpath("..\..\src\Simulation\trajData\simulationRecord")
 subject = cellstr(num2str(readmatrix('..\..\..\data\participantID1.csv')));
 preFolder = '..\..\..\data\';
 trialNames = {'NNU','YNU','NYU','YYU','NNC','YNC','NYC','YYC'};  % Person, Terrain, Swarm cohesion
@@ -23,7 +23,7 @@ swarmTimeFound = zeros(numel(trialNum),20);
 preFolderSim = strcat("D:\UWmonitoring\RunMissingPersonSim\simulationRecord\",cell2mat(simulationMode(1)),"\");
 counter = 1;
 
-participant = 63579;
+participant = 77028;
 numSwarm = 5;
 trial = 111;
 numRun = "run1";
