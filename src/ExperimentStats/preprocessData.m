@@ -27,6 +27,7 @@ for ii = 1:numel(subject)
     trialOrder = readmatrix(lookFile2);
     % Import exception
     exceptionTrials = [preFolder, cell2mat(subject(ii)),'\',exceptionFile];
+    eegGazeExceptionTrials = [];
     if isfile(exceptionTrials)
         eegGazeExceptionTrials = readmatrix(exceptionTrials);
     end
@@ -306,18 +307,18 @@ for ii = 1:numel(subject)
 
     % write file timestamps for each subject
     file = [preFolder, cell2mat(subject(ii)),'\','fileTimeStamps.csv'];
-    writematrix(["Start time","End time"],file);
-    writematrix(data{6}.trialTimeStamps,file,'WriteMode','append');
+    % writematrix(["Start time","End time"],file);
+    % writematrix(data{6}.trialTimeStamps,file,'WriteMode','append');
 
     % write file EEG trial indices for each subject
     file = [preFolder, cell2mat(subject(ii)),'\','eegTrialIndices.csv'];
-    writematrix(["Start Index","End Index"],file);
-    writematrix(nonNanEegTrialIndices,file,'WriteMode','append');
+    % writematrix(["Start Index","End Index"],file);
+    % writematrix(nonNanEegTrialIndices,file,'WriteMode','append');
 
     % write file EEG trial indices for each subject
     file = [preFolder, cell2mat(subject(ii)),'\','gazeTrialIndices.csv'];
-    writematrix(["Start Index","End Index"],file);
-    writematrix(nonNanGazeTrialIndices,file,'WriteMode','append');
+    % writematrix(["Start Index","End Index"],file);
+    % writematrix(nonNanGazeTrialIndices,file,'WriteMode','append');
 
     % write EEG values
     %     counter = 1;
@@ -328,35 +329,35 @@ for ii = 1:numel(subject)
             file = [preFolder, cell2mat(subject(ii)),'\',num2str(trialOrder(eeg)),'\','eegUnfiltered.csv'];
             eegData = [data{eegIndex}.time_stamps(eegTrialIndices(eeg,1):eegTrialIndices(eeg,2))', ...
                 data{eegIndex}.time_series(4:17,eegTrialIndices(eeg,1):eegTrialIndices(eeg,2))']; % [timestamp, AF3...Af4]
-            writematrix(["Time (s)","AF3(uV)", "F7(uV)", "F3(uV)", "FC5(uV)", "T7(uV)", "P7(uV)", ...
-                "O1(uV)", "O2(uV)", "P8(uV)", "T8(uV)", "FC6(uV)", "F4(uV)", "F8(uV)", "AF4(uV)"],file);
-            writematrix(eegData,file,'WriteMode','append');
+            % writematrix(["Time (s)","AF3(uV)", "F7(uV)", "F3(uV)", "FC5(uV)", "T7(uV)", "P7(uV)", ...
+            %     "O1(uV)", "O2(uV)", "P8(uV)", "T8(uV)", "FC6(uV)", "F4(uV)", "F8(uV)", "AF4(uV)"],file);
+            % writematrix(eegData,file,'WriteMode','append');
 
             % write filtered eeg
             file = [preFolder, cell2mat(subject(ii)),'\',num2str(trialOrder(eeg)),'\','eegFiltered.csv'];
             filteredEEG = bandpass_filter_1ch_test(data{eegIndex}.time_series(4:17,eegTrialIndices(eeg,1):eegTrialIndices(eeg,2))');
             filteredEEGData = [data{eegIndex}.time_stamps(eegTrialIndices(eeg,1):eegTrialIndices(eeg,2))', ...
                 filteredEEG]; % [timestamp, AF3...Af4]
-            writematrix(["Time (s)","AF3(uV)", "F7(uV)", "F3(uV)", "FC5(uV)", "T7(uV)", "P7(uV)", ...
-                "O1(uV)", "O2(uV)", "P8(uV)", "T8(uV)", "FC6(uV)", "F4(uV)", "F8(uV)", "AF4(uV)"],file);
-            writematrix(filteredEEGData,file,'WriteMode','append');
+            % writematrix(["Time (s)","AF3(uV)", "F7(uV)", "F3(uV)", "FC5(uV)", "T7(uV)", "P7(uV)", ...
+            %     "O1(uV)", "O2(uV)", "P8(uV)", "T8(uV)", "FC6(uV)", "F4(uV)", "F8(uV)", "AF4(uV)"],file);
+            % writematrix(filteredEEGData,file,'WriteMode','append');
 
             % write unfiltered baseline eeg
             file = [preFolder, cell2mat(subject(ii)),'\',num2str(trialOrder(eeg)),'\','eegBaselineUnfiltered.csv'];
             baselineEegData = [data{eegIndex}.time_stamps(eegTrialIndices(eeg,1)-baselineWindow*256:eegTrialIndices(eeg,1))', ...
                 data{eegIndex}.time_series(4:17,eegTrialIndices(eeg,1)-baselineWindow*256:eegTrialIndices(eeg,1))']; % [timestamp, AF3...Af4]
-            writematrix(["Time (s)","AF3(uV)", "F7(uV)", "F3(uV)", "FC5(uV)", "T7(uV)", "P7(uV)", ...
-                "O1(uV)", "O2(uV)", "P8(uV)", "T8(uV)", "FC6(uV)", "F4(uV)", "F8(uV)", "AF4(uV)"],file);
-            writematrix(baselineEegData,file,'WriteMode','append');
+            % writematrix(["Time (s)","AF3(uV)", "F7(uV)", "F3(uV)", "FC5(uV)", "T7(uV)", "P7(uV)", ...
+            %     "O1(uV)", "O2(uV)", "P8(uV)", "T8(uV)", "FC6(uV)", "F4(uV)", "F8(uV)", "AF4(uV)"],file);
+            % writematrix(baselineEegData,file,'WriteMode','append');
 
             % write filtered baseline eeg
             file = [preFolder, cell2mat(subject(ii)),'\',num2str(trialOrder(eeg)),'\','eegBaselineFiltered.csv'];
             filteredBaselineEEG = bandpass_filter_1ch_test(data{eegIndex}.time_series(4:17,eegTrialIndices(eeg,1)-baselineWindow*256:eegTrialIndices(eeg,1))');
             filteredBaselineEEGData = [data{eegIndex}.time_stamps(eegTrialIndices(eeg,1)-baselineWindow*256:eegTrialIndices(eeg,1))', ...
                 filteredBaselineEEG]; % [timestamp, AF3...Af4]
-            writematrix(["Time (s)","AF3(uV)", "F7(uV)", "F3(uV)", "FC5(uV)", "T7(uV)", "P7(uV)", ...
-                "O1(uV)", "O2(uV)", "P8(uV)", "T8(uV)", "FC6(uV)", "F4(uV)", "F8(uV)", "AF4(uV)"],file);
-            writematrix(filteredBaselineEEGData,file,'WriteMode','append');
+            %writematrix(["Time (s)","AF3(uV)", "F7(uV)", "F3(uV)", "FC5(uV)", "T7(uV)", "P7(uV)", ...
+                %"O1(uV)", "O2(uV)", "P8(uV)", "T8(uV)", "FC6(uV)", "F4(uV)", "F8(uV)", "AF4(uV)"],file);
+            %writematrix(filteredBaselineEEGData,file,'WriteMode','append');
             %             counter = counter + 1;
         end
 
@@ -366,10 +367,27 @@ for ii = 1:numel(subject)
     counter = 1;
     for gaze = 1:size(gazeTrialIndices,1)
         if (~isnan(gazeTrialIndices(gaze,1)))
-            % write gaze
+            % write raw gaze
             file = [preFolder, cell2mat(subject(ii)),'\',num2str(trialOrder(counter)),'\','rawGaze.csv'];
             gazeData = [data{gazeIndex}.time_stamps(gazeTrialIndices(gaze,1):gazeTrialIndices(gaze,2))', ...
                 data{gazeIndex}.time_series(2:end,gazeTrialIndices(gaze,1):gazeTrialIndices(gaze,2))'];
+            % writematrix(["Time (s)","norm_x (normalised)", "norm_y (normalised)","gaze_point_3d_x (mm)" ...
+            %     ,"gaze_point_3d_y (mm)","gaze_point_3d_z (mm)","eye_center0_3d_x (mm) (right)" ,"eye_center0_3d_y (mm) (right)","eye_center0_3d_z (mm) (right)" ...
+            %     ,"eye_center1_3d_x (mm) (left)" ,"eye_center1_3d_y (mm) (left)","eye_center1_3d_z (mm) (left)" ...
+            %     ,"gaze_normal0_x (mm) (right)","gaze_normal0_y (mm) (right)","gaze_normal0_z (mm) (right)" ...
+            %     ,"gaze_normal1_x (mm) (left)","gaze_normal1_y (mm) (left)","gaze_normal1_z (mm) (left)" ...
+            %     ,"diameter0_2d (pixels) (right)","diameter1_2d (pixels) (left)" ...
+            %     ,"diameter0_3d (mm) (right)","diameter1_2d (mm) (left)"] ,file);
+            % writematrix(gazeData,file,'WriteMode','append');
+
+            % write baseline raw gaze
+            timeStammps = data{gazeIndex}.time_stamps;
+            dd = diff(timeStammps);
+            dd = dd(dd>0);
+            avgSamplingRate = int32(1/mean(dd));
+            file = [preFolder, cell2mat(subject(ii)),'\',num2str(trialOrder(counter)),'\','baselineRawGaze.csv'];
+            gazeData = [data{gazeIndex}.time_stamps(gazeTrialIndices(gaze,1)-avgSamplingRate*baselineWindow+1:gazeTrialIndices(gaze,1))', ...
+                data{gazeIndex}.time_series(2:end,gazeTrialIndices(gaze,1)-avgSamplingRate*baselineWindow+1:gazeTrialIndices(gaze,1))'];
             writematrix(["Time (s)","norm_x (normalised)", "norm_y (normalised)","gaze_point_3d_x (mm)" ...
                 ,"gaze_point_3d_y (mm)","gaze_point_3d_z (mm)","eye_center0_3d_x (mm) (right)" ,"eye_center0_3d_y (mm) (right)","eye_center0_3d_z (mm) (right)" ...
                 ,"eye_center1_3d_x (mm) (left)" ,"eye_center1_3d_y (mm) (left)","eye_center1_3d_z (mm) (left)" ...

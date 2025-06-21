@@ -18,24 +18,36 @@ for ii = 1:numel(subject)
     %clf;
     for j = 1:numel(trialNum)
         fileName1 = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','rawGaze.csv'];
-        if isfile(fileName1)
+        fileName2 = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','baselineRawGaze.csv'];
+        if isfile(fileName1) && isfile(fileName2)
             disp(cell2mat(subject(ii)));
-            data = readmatrix(fileName1);
-%             pupilDiaLeft = filloutliers(data(:,22),"linear");  %mm
-%             pupilDiaRight = filloutliers(data(:,21),"linear");  %mm
+            data1 = readmatrix(fileName1);
+            data2 = readmatrix(fileName2);
+            %             pupilDiaLeft = filloutliers(data(:,22),"linear");  %mm
+            %             pupilDiaRight = filloutliers(data(:,21),"linear");  %mm
+
+            pupilDiaLeft1 = fillmissing(data1(:,20),'linear');  %mm
+            pupilDiaRight1 = fillmissing(data1(:,19),'linear');  %mm
+            pupilDia1 = (pupilDiaLeft1+pupilDiaRight1)*0.5;
+
+            pupilDiaLeft2 = fillmissing(data2(:,20),'linear');  %mm
+            pupilDiaRight2 = fillmissing(data2(:,19),'linear');  %mm
+            pupilDia2 = (pupilDiaLeft2+pupilDiaRight2)*0.5;
+
+            timeStamps = data1(:,1);
+            timeStamps = timeStamps-timeStamps(1);
+            % % figure(1)
+            % % clf;
+            % % plot(pupilDiaLeft)
+            % % hold on
+            % % plot(pupilDiaRight)
             
-            pupilDiaLeft = fillmissing(data(:,22),'linear');  %mm
-            pupilDiaRight = fillmissing(data(:,21),'linear');  %mm
-            
-            figure(1)
-            clf;
-            plot(pupilDiaLeft)
-            hold on
-            plot(pupilDiaRight)
-            avgPupilDia = nanmean(pupilDiaRight);
-            fileName = ['..\..\data\', cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','avgPupilDilation.csv'];
-            writematrix("Pupil Dia (mm)",fileName);
-            writematrix(avgPupilDia,fileName,'WriteMode','append');
+            avgPupilBaseline = nanmean(pupilDia2);
+            pupilDil = pupilDia1-avgPupilBaseline;
+
+            fileName = ['..\..\data\', cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','pupilDilation.csv'];
+            writematrix('Time(s), Pupil Dia (mm)',fileName);
+            writematrix([timeStamps,pupilDil],fileName,'WriteMode','append');
 
         end
     end

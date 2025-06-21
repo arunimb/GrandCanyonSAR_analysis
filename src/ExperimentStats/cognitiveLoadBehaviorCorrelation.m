@@ -59,13 +59,13 @@ end
 
 
 % speed correlation
-figure(1)
+subplot(1,2,1)
 scatter(mixedArray(:,2),mixedArray(:,1));
 title(num2str(corr(mixedArray(:,2),mixedArray(:,1))));
 xlabel("Speed")
 ylabel("Cognitive Load")
 % turn rate correlation
-figure(2)
+subplot(1,2,2)
 scatter(mixedArray(:,3),mixedArray(:,1));
 title(num2str(corr(mixedArray(:,3),mixedArray(:,1))));
 xlabel("Turn Rate")

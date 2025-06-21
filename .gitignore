@@ -92,3 +92,7 @@ SciSharp.TensorFlow.Redist.2.16.0/
 
 UnitySource/
 videoframes/
+*.png
+*.jpg
+*.jpeg
+*.mp4
