@@ -50,7 +50,7 @@ yr=y(1);
 
 wp=2; % first waypoint
 k=1; % timestep initialize
-sp=50; % speed -- this should be constant
+sp=26; % speed -- this should be constant
 dt=0.1; % timestep length, can be different from how the spiral was created
 dist_t=3; % threshold distance at which waypoint is switched, keep it above sp*dt otherwise overshoot
 while wp < numel(xw)
@@ -70,14 +70,14 @@ while wp < numel(xw)
     k=k+1;
     
     % check
-    figure(2); gcf;
-    subplot(122);
-    fh=plot(xr(k), yr(k), 'rd');
+    % figure(2); gcf;
+    % subplot(122);
+    % fh=plot(xr(k), yr(k), 'rd');
 end
 
 % %check
-% subplot(133);
-% sp=sqrt((diff(xr,1,2)/dt).^2+(diff(yr,1,2)/dt).^2);
-% plot((1:numel(xr)-1)*dt, sp);
-% ylabel('speed (m/s)');
-% xlabel('time(s)');
+subplot(133);
+sp=sqrt((diff(xr,1,2)/dt).^2+(diff(yr,1,2)/dt).^2);
+plot((1:numel(xr)-1)*dt, sp);
+ylabel('speed (m/s)');
+xlabel('time(s)');

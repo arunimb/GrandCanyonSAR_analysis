@@ -21,18 +21,27 @@ for ii = 1:numel(subject)
         fileName2 = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','baselineRawGaze.csv'];
         if isfile(fileName1) && isfile(fileName2)
             disp(cell2mat(subject(ii)));
-            data1 = readmatrix(fileName1);
-            data2 = readmatrix(fileName2);
+            data1 = readmatrix(fileName1); %Raw
+            data2 = readmatrix(fileName2); %baseline
+           
             %             pupilDiaLeft = filloutliers(data(:,22),"linear");  %mm
             %             pupilDiaRight = filloutliers(data(:,21),"linear");  %mm
 
-            pupilDiaLeft1 = fillmissing(data1(:,20),'linear');  %mm
-            pupilDiaRight1 = fillmissing(data1(:,19),'linear');  %mm
+            pupilDiaLeft1 = fillmissing(data1(:,22),'linear');  %mm
+            pupilDiaRight1 = fillmissing(data1(:,21),'linear');  %mm
             pupilDia1 = (pupilDiaLeft1+pupilDiaRight1)*0.5;
+            
 
-            pupilDiaLeft2 = fillmissing(data2(:,20),'linear');  %mm
-            pupilDiaRight2 = fillmissing(data2(:,19),'linear');  %mm
+            pupilDiaLeft2 = fillmissing(data2(:,21),'linear');  %mm
+            pupilDiaRight2 = fillmissing(data2(:,22),'linear');  %mm
             pupilDia2 = (pupilDiaLeft2+pupilDiaRight2)*0.5;
+            pupilDia2 = pupilDia1(pupilDia1<=9);
+            
+            idx = find(pupilDia1>9);
+            if (~isempty(idx))
+                pupilDia1(idx) = nan;
+                pupilDia1 = fillmissing(pupilDia1,'linear');  %mm
+            end
 
             timeStamps = data1(:,1);
             timeStamps = timeStamps-timeStamps(1);
@@ -46,8 +55,8 @@ for ii = 1:numel(subject)
             pupilDil = pupilDia1-avgPupilBaseline;
 
             fileName = ['..\..\data\', cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','pupilDilation.csv'];
-            writematrix('Time(s), Pupil Dia (mm)',fileName);
-            writematrix([timeStamps,pupilDil],fileName,'WriteMode','append');
+            %writematrix('Time(s), Pupil Dia (mm)',fileName);
+            %writematrix([timeStamps,pupilDil],fileName,'WriteMode','append');
 
         end
     end

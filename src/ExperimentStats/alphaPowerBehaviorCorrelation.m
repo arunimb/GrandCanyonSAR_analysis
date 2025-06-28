@@ -17,7 +17,7 @@ trialNum = [111,211,121,221,112,212,122,222];
 eegChannelWeighting = [ 0.0398,    0.370,    0.1741 ,   0.6393 ,  ...
     0   ,      0   ,      0   ,      0 ,        0  ,       0  , ...
     0.6393  ,  0.1741 ,0.3706,    0.0398];
-windowSizes = 15; %[5 10 15 20]; % Cognitive load calculation window
+windowSizes = 5; %[5 10 15 20]; % Cognitive load calculation window
 samplingRate = 256; % EEG sampling rate (Hz)
 regularizationDt = 1/24;
 
@@ -27,7 +27,7 @@ AggCorrelationsR = zeros(numel(windowSizes),4);
 AggCorrelationsP = zeros(numel(windowSizes),4);
 for ll = 1:numel(windowSizes)
     windowSize = windowSizes(ll);
-    aggCogload = [];
+    aggAlphaPower = [];
     aggAvgTurnRate = [];
     aggAvgSpeed = [];
     aggFreeze = [];
@@ -98,9 +98,9 @@ for ll = 1:numel(windowSizes)
                 baselineEEG = readmatrix(fileName2);
 
                 c = 1;
-                cogLoad=[];
+                alphaPower=[];
                 for k = 1:windowSize*256:eegTimeEnd*256-(windowSize*256)
-                    [~,~,~,~,~,cogLoad(c)] = eegAlphaPower(baselineEEG(:,2:end)', eeg(k:k+windowSize*256-1,2:end)', ...
+                    [~,~,~,~,~,alphaPower(c)] = eegAlphaPower(baselineEEG(:,2:end)', eeg(k:k+windowSize*256-1,2:end)', ...
                         1/256,eegChannelWeighting/sum(eegChannelWeighting),'alphaDiff','fft');
                     c = c + 1;
                 end
@@ -154,15 +154,15 @@ for ll = 1:numel(windowSizes)
                 end
             end
 
-            if(numel(cogLoad)>numel(avgTurnRate))
-                cogLoad = cogLoad(1:numel(avgTurnRate));
-            elseif (numel(cogLoad)<numel(avgTurnRate))
-                avgTurnRate = avgTurnRate(1:numel(cogLoad));
-                avgSpeed = avgSpeed(1:numel(cogLoad));
-                fracCompleteStops = fracCompleteStops(1:numel(cogLoad));
-                fracPartialStops = fracPartialStops(1:numel(cogLoad));
+            if(numel(alphaPower)>numel(avgTurnRate))
+                alphaPower = alphaPower(1:numel(avgTurnRate));
+            elseif (numel(alphaPower)<numel(avgTurnRate))
+                avgTurnRate = avgTurnRate(1:numel(alphaPower));
+                avgSpeed = avgSpeed(1:numel(alphaPower));
+                fracCompleteStops = fracCompleteStops(1:numel(alphaPower));
+                fracPartialStops = fracPartialStops(1:numel(alphaPower));
             end
-            aggCogload = [aggCogload,cogLoad];
+            aggAlphaPower = [aggAlphaPower,alphaPower];
             aggAvgTurnRate = [aggAvgTurnRate,avgTurnRate];
             aggAvgSpeed = [aggAvgSpeed,avgSpeed];
             aggFreeze = [aggFreeze,fracCompleteStops];
@@ -170,26 +170,45 @@ for ll = 1:numel(windowSizes)
         end
     end
 
-    [RR,pp ] = corrcoef(aggCogload,aggAvgTurnRate);
+    [RR,pp ] = corrcoef(aggAlphaPower,aggAvgTurnRate);
     AggCorrelationsR(ll,1)  = RR(1,2);
     AggCorrelationsP(ll,1) = pp(1,2);
 
-    [RR,pp ] = corrcoef(aggCogload,aggAvgSpeed);
+    [RR,pp ] = corrcoef(aggAlphaPower,aggAvgSpeed);
     AggCorrelationsR(ll,2) = RR(1,2);
     AggCorrelationsP(ll,2) = pp(1,2);
 
-    [RR,pp ] = corrcoef(aggCogload,aggFreeze);
+    [RR,pp ] = corrcoef(aggAlphaPower,aggFreeze);
     AggCorrelationsR(ll,3)  = RR(1,2);
     AggCorrelationsP(ll,3) = pp(1,2);
-    fileName = ['outputTables\', 'alphaPowerFreezeSA_',num2str(windowSizes(ll)),'s','.csv'];
-    writematrix(["AlphaPower","freezeFraction"],fileName);
-    writematrix([aggCogload',aggFreeze'],fileName,'WriteMode','append');
+    % fileName = ['outputTables\', 'alphaPowerFreezeSA_',num2str(windowSizes(ll)),'s','.csv'];
+    % writematrix(["AlphaPower","freezeFraction"],fileName);
+    % writematrix([aggCogload',aggFreeze'],fileName,'WriteMode','append');
 
-    [RR,pp ] = corrcoef(aggCogload,aggPartialFreeze);
+    [RR,pp ] = corrcoef(aggAlphaPower,aggPartialFreeze);
     AggCorrelationsR(ll,4) = RR(1,2);
     AggCorrelationsP(ll,4) = pp(1,2);
-    fileName = ['outputTables\', 'alphaPowerPartialFreezeSA_',num2str(windowSizes(ll)),'s','.csv'];
-    writematrix(["AlphaPower","partialFreezeFraction"],fileName);
-    writematrix([aggCogload',aggPartialFreeze'],fileName,'WriteMode','append');
+    % fileName = ['outputTables\', 'alphaPowerPartialFreezeSA_',num2str(windowSizes(ll)),'s','.csv'];
+    % writematrix(["AlphaPower","partialFreezeFraction"],fileName);
+    % writematrix([aggCogload',aggPartialFreeze'],fileName,'WriteMode','append');
 end
+figure(1)
+subplot(2,2,1)
+scatter(aggAlphaPower, aggAvgSpeed,'.')
+ylabel("Average Speed (m/s)")
+xlabel("Alpha Power")
 
+subplot(2,2,2)
+scatter(aggAlphaPower,aggAvgTurnRate,'.')
+ylabel("Average Turn rate (deg/s)")
+xlabel("Alpha Power")
+
+subplot(2,2,3)
+scatter(aggAlphaPower,aggFreeze,'.')
+ylabel("Freeze Fraction (hz)")
+xlabel("Alpha Power")
+
+subplot(2,2,4)
+scatter(aggAlphaPower, aggPartialFreeze,'.' )
+ylabel("Turn while still fraction (hz)")
+xlabel("Alpha Power")

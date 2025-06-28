@@ -24,7 +24,7 @@ turnWhileStillFrac = [];
 avgSpeed =[];
 avgTurnRate=[];
 pupilDilAgg = [];
-windowSize = 15;
+windowSize = 20;
 for ii = 1:numel(subject)
     for j = 1:numel(trialNum)
         fileName1 = [preFolder, cell2mat(subject(ii)),'\',num2str(trialNum(j)),'\','freeze_win=',num2str(windowSize),'s','.csv'];
@@ -32,7 +32,7 @@ for ii = 1:numel(subject)
         if isfile(fileName1) && isfile(fileName2)
 
             speedTurnRateFreeze = readmatrix(fileName1);
-            pupilDil = readmatrix(fileName2);       
+            pupilDil = readmatrix(fileName2);
 
             timeStamps = pupilDil(:,1);
             pupilDil = pupilDil(:,2);
@@ -44,7 +44,7 @@ for ii = 1:numel(subject)
             for k = 1:meanSampleRate*windowSize:numel(timeStamps)-meanSampleRate*windowSize+1
                 avgPupilDil = [avgPupilDil, mean(pupilDil(k:k+meanSampleRate*windowSize-1)) ];
             end
-            
+
             avgPupilDil = avgPupilDil';
             if(numel(avgPupilDil)>size(speedTurnRateFreeze,1))
                 avgPupilDil = avgPupilDil(numel(avgPupilDil)-size(speedTurnRateFreeze,1)+1:end);
@@ -53,39 +53,35 @@ for ii = 1:numel(subject)
                 speedTurnRateFreeze = speedTurnRateFreeze(size(speedTurnRateFreeze,1)- numel(avgPupilDil)+1:end,:);
             end
 
-            pupilDilAgg = [pupilDilAgg; avgPupilDil];
-            freezeFrac = [freezeFrac; speedTurnRateFreeze(:,3)];
-            turnWhileStillFrac = [turnWhileStillFrac; speedTurnRateFreeze(:,4)];
-            avgSpeed = [avgSpeed; speedTurnRateFreeze(:,1)];
-            avgTurnRate = [avgTurnRate; speedTurnRateFreeze(:,2)];
+            if(~isempty(speedTurnRateFreeze))
+                pupilDilAgg = [pupilDilAgg; avgPupilDil];
+                freezeFrac = [freezeFrac; speedTurnRateFreeze(:,3)];
+                turnWhileStillFrac = [turnWhileStillFrac; speedTurnRateFreeze(:,4)];
+                avgSpeed = [avgSpeed; speedTurnRateFreeze(:,1)];
+                avgTurnRate = [avgTurnRate; speedTurnRateFreeze(:,2)];
+            end
 
-            
+            if(isempty(speedTurnRateFreeze))
+                lss = 1;
+            end
+
+
 
         end
-
-
     end
 end
-subplot(3,4,5)
-scatter(pupilDilAgg,avgSpeed,'.')
-ylabel("Average Speed (m/s)")
-xlabel("Average Pupil Dilation")
-xlim([-1,1])
+nanIndices = find(isnan(pupilDilAgg));
+pupilDilAgg(nanIndices)= [];
+freezeFrac(nanIndices)= [];
+turnWhileStillFrac(nanIndices)= [];
+avgSpeed(nanIndices)= [];
+avgTurnRate(nanIndices)= [];
 
-subplot(3,4,6)
-scatter(pupilDilAgg,avgTurnRate,'.')
-ylabel("Average Turn rate (deg/s)")
-xlabel("Average Pupil Dilation")
-xlim([-1,1])
 
-subplot(3,4,7)
-scatter(pupilDilAgg,freezeFrac,'.')
-ylabel("Freeze Fraction (hz)")
-xlabel("Average Pupil Dilation")
-xlim([-1,1])
+[RR1,pp1 ] = corrcoef(pupilDilAgg,avgTurnRate);
+[RR2,pp2 ] = corrcoef(pupilDilAgg,avgSpeed);
+[RR3,pp3 ] = corrcoef(pupilDilAgg,freezeFrac);
+[RR4,pp4 ] = corrcoef(pupilDilAgg,turnWhileStillFrac);
 
-subplot(3,4,8)
-scatter(pupilDilAgg,turnWhileStillFrac, '.')
-ylabel("Turn while still fraction (hz)")
-xlabel("Average Pupil Dilation")
-xlim([-1,1])
+RR = [RR1(1,2),RR2(1,2),RR3(1,2),RR4(1,2)];
+pp = [pp1(1,2),pp2(1,2),pp3(1,2),pp4(1,2)];

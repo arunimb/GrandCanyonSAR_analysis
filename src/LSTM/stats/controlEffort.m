@@ -1,4 +1,4 @@
-%clearvars
+clearvars
 close all
 clc
 
@@ -306,14 +306,14 @@ xticklabels(trialNames)
 
 legend('AsPkTk','','AsPk','','AsPkTkSA','','AsPkSA','','Rs','','Ss','');
 xlabel("Conditions (Person know Y/N, Terrain Know. Y/N, Clustered. U/C)")
-ylabel("Acceleration")
+ylabel("Acceleration (m/s^2)")
 
 
 
 figure(2)
 
 meanAggData = [nanmean(speedMegaAggClosedLoop1);nanmean(speedMegaAggClosedLoop2);nanmean(speedMegaAggClosedLoop3);nanmean(speedMegaAggClosedLoop4);
-    nanmean(accelMegaAggRandomSearch);nanmean(accelMegaAggSpiralSearch)];
+    nanmean(speedMegaAggRandomSearch);nanmean(speedMegaAggSpiralSearch)];
 stdAggData = [nanstd(speedMegaAggClosedLoop1);nanstd(speedMegaAggClosedLoop2);nanstd(speedMegaAggClosedLoop3);nanstd(speedMegaAggClosedLoop4);
     nanstd(speedMegaAggRandomSearch);nanstd(speedMegaAggSpiralSearch)];
 xaaxxis = [1,4,7,10,13,16,19,22];
@@ -353,4 +353,4 @@ xticklabels(trialNames)
 
 legend('AsPkTk','','AsPk','','AsPkTkSA','','AsPkSA','','Rs','','Ss','');
 xlabel("Conditions (Person know Y/N, Terrain Know. Y/N, Clustered. U/C)")
-ylabel("Speed")
+ylabel("Speed (m/s)")

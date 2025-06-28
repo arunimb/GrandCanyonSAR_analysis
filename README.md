@@ -43,10 +43,11 @@ This paper has 3 main parts: Experiments, LSTM and simulation
 6. *src/ExperimentStats/FracTurningWhileStillGLMM.R* script exports GLMM results for portion of table 4
 7. *src/ExperimentStats/presenceQuestionnaire_analysis.m* script generates values for table 1
 8. *src/ExperimentStats/dwellTimeBehaviorCorrelation.m* calculates dwell time (SA) correlations with teleoperator behavior in table 5
-9. *src/ExperimentStats/pupilDilationBehaviourCorrelation.m* calculates correlation b/w pupil dilation and teleoperator behavior in table 5
-10. *src/ExperimentStats/saccadeFrequencyBehaviourCorrelation.m* calculates correlation b/w saccadic frequency and teleoperator behavior in table 5
-11. *src/ExperimentStats/NasaTLX_analysis.m* produces values of table 1 in supplementary material
-12. *src/ExperimentStats/situationAwarenessBehaviorFit.m* calculates fit between alpha power (SA) and moving while still behavior
+9. *src/ExperimentStats/pupilDilationMovementCorrelation.m* calculates correlation b/w pupil dilation and teleoperator behavior in table 5
+10. *src/ExperimentStats/saccadeFrequencyMovementCorrelation.m* calculates correlation b/w saccadic frequency and teleoperator behavior in table 5
+11. *src/ExperimentStats/cogloadMovementCorrelation.m* calculates correlation b/w cognitive load and teleoperator behavior in table 5
+12. *src/ExperimentStats/NasaTLX_analysis.m* produces values of table 1 in supplementary material
+13. *src/ExperimentStats/situationAwarenessBehaviorFit.m* calculates fit between alpha power (SA) and moving while still behavior
 
 ### Support scripts
 1. *src/ExperimentStats/funcIdt.m* function to identify fixations using IDT method

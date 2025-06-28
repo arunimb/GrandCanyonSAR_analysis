@@ -625,7 +625,7 @@ stdAggData = [nanstd(swarmTimeClosedLoop1);nanstd(swarmTimeClosedLoop2);nanstd(s
     grid on
     
     if(lmn == 1)
-        ylabel("Time to find (s)")
+        ylabel("Time-to-find (s)")
     end
     if(lmn == 1)
         xlabel({" ","(a)"})

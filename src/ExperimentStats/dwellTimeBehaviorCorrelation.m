@@ -11,7 +11,7 @@ preFolder = '..\..\data\'; % location of subject data folders
 % Standard order of trials, which is different from subjectwise trial
 % order
 trialNum = [111,211,121,221,112,212,122,222];
-windowSizes = [5 10 15 20]; % Cognitive load calculation window
+windowSizes = [5]; % Cognitive load calculation window
 
 regularizationDt = 1/24;
 
@@ -184,11 +184,23 @@ for ll = 1:numel(windowSizes)
 
 end
 
-% d1=dataset(aggDwellTime, aggAvgTurnRate);
-% % mdl=fitlm(d, 'cognitiveLoad~reactionTime+ageYrs') % use this only if the alpha range is set by age
-% mdl=fitlm(d1, 'aggAvgTurnRate~aggDwellTime')
-% figure(1); gcf; clf;
-% subplot(121)
-% plot(mdl);
-% xlabel('Average Turn Rate (deg/s)');
-% ylabel('Dwell Time (s)');
+figure(1)
+subplot(2,2,1)
+scatter(aggDwellTime, aggAvgSpeed,'.')
+ylabel("Average Speed (m/s)")
+xlabel("Dwell Time")
+
+subplot(2,2,2)
+scatter(aggDwellTime,aggAvgTurnRate,'.')
+ylabel("Average Turn rate (deg/s)")
+xlabel("Dwell Time")
+
+subplot(2,2,3)
+scatter(aggDwellTime,aggFreeze,'.')
+ylabel("Freeze Fraction (hz)")
+xlabel("Dwell Time")
+
+subplot(2,2,4)
+scatter(aggDwellTime, aggPartialFreeze,'.' )
+ylabel("Turn while still fraction (hz)")
+xlabel("Dwell Time")

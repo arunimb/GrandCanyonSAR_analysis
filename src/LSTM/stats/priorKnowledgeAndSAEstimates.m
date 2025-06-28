@@ -1,5 +1,5 @@
 clearvars
-%close all
+close all
 clc
 
 
@@ -35,7 +35,10 @@ for i = 1:numel(trialNum)
     inferenceTime = readmatrix(strcat(preFolderSim1,"predictedDataReceiveTimeStamps.csv"));
     situationalAwareness = readmatrix(strcat(preFolderSim1,"situationalAwareness.csv"));
     situationalAwarenessTime = situationalAwareness(:,2);
+    
     sa = situationalAwareness(:,1);
+    sa = sa - 0.1808;
+    sa = sa./(133.488-0.1808);
     subplot(2,2,i)
     dt = 15/360;
     time1 = 0:dt:15+(dt*numel(operatorInference(:,1))-dt);
@@ -58,16 +61,16 @@ for i = 1:numel(trialNum)
     %     time2(j+1) = time2(j)+dt;
     % end
     ylabel("Estimated value")
-    yyaxis right
+    %yyaxis right
     % time2 = 0:dt:15+(dt*numel(sa)-dt);
     % 
     % plot([(0:dt:time2(1)-dt),time2(2:end)],[zeros(1,numel(0:dt:inferenceTime(1)-dt)),sa],LineWidth=2)
     % plot(situationalAwarenessTime,sa,LineWidth=2)
-    plot([(0:dt:situationalAwarenessTime(1)-dt)' ;situationalAwarenessTime],[zeros(numel(0:dt:situationalAwarenessTime(1)-dt),1);sa],LineWidth=2)
+    plot([(0:dt:situationalAwarenessTime(1)-dt)' ;situationalAwarenessTime],[zeros(numel(0:dt:situationalAwarenessTime(1)-dt),1);sa],'g')
     if (i ==1)
         legend(["Person Knowledge","Terrain Knowledge", "Situational Awareness"])
     end
-    xlim([0 60])
+    xlim([10 60])
     % 
     % xlim([0 time1(end)])
     % if(time1(end)>60)
