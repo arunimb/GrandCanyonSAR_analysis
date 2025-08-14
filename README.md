@@ -1,6 +1,6 @@
 # Code and data
 for the following paper
-A. Bhattacharya, S. Butail. Robot Movement Based Inference of Teleoperator State for Multi-robot Search. Complex & Intelligent Systems, 2025
+A. Bhattacharya, S. Butail. Robot Movement Based Inference of Teleoperator State for Multi-robot Search. *Complex & Intelligent Systems*, 2025
 
 
 # Experiments
